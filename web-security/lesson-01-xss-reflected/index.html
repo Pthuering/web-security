@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 01: Reflected XSS — CyberSec Lab</title>
+  <link rel="stylesheet" href="../../styles/main.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="../../index.html" class="site-logo">~/cybersec<span>-lab</span></a>
+    <nav>
+      <ul class="site-nav">
+        <li><a href="../index.html" class="active">Web-Security</a></li>
+        <li><a href="../../ai-security/index.html">AI-Security</a></li>
+        <li><a href="../../glossary.html">Glossar</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <span class="tag-badge web">LESSON 01</span>
+  <h1>Reflected XSS</h1>
+  <p class="subtitle">Benutzereingaben, die unkontrolliert in HTML landen — der Klassiker unter den Webangriffen.</p>
+
+  <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem;">
+    
+    <a href="theory.html" class="card" style="text-decoration: none;">
+      <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.3rem;">SCHRITT 1</div>
+      <div style="font-family: var(--font-display); font-weight: 600; font-size: 1.2rem;">📚 Theorie</div>
+      <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.3rem;">Verstehe wie Reflected XSS funktioniert und welche Angriffsvektoren existieren.</div>
+    </a>
+
+    <a href="exercise.html" class="card" style="text-decoration: none;">
+      <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.3rem;">SCHRITT 2</div>
+      <div style="font-family: var(--font-display); font-weight: 600; font-size: 1.2rem;">🧩 Rätsel</div>
+      <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.3rem;">Nutze die Sicherheitslücke aus und finde das versteckte Flag.</div>
+    </a>
+
+    <a href="solution.html" class="card" style="text-decoration: none;">
+      <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.3rem;">SCHRITT 3</div>
+      <div style="font-family: var(--font-display); font-weight: 600; font-size: 1.2rem;">🔓 Lösung</div>
+      <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.3rem;">Erfahre wie die Lücke geschlossen werden kann.</div>
+    </a>
+
+  </div>
+
+  <div style="margin-top: 2rem;">
+    <a href="../index.html" style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">← Zurück zur Übersicht</a>
+  </div>
+
+</main>
+
+</body>
+</html>
