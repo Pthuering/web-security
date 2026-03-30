@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rätsel: Reflected XSS — CyberSec Lab</title>
+  <link rel="stylesheet" href="../../styles/main.css">
+  <style>
+    .vuln-app {
+      margin: 1.5rem 0;
+      border: 2px solid var(--accent-red);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .vuln-app-header {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      padding: 0.8rem 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .vuln-app-header .app-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #e94560;
+    }
+    .vuln-app-header .app-badge {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      padding: 0.2em 0.6em;
+      background: var(--accent-red-dim);
+      color: var(--accent-red);
+      border-radius: 99px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .vuln-app-body {
+      background: #0f0f1a;
+      padding: 1.5rem;
+    }
+    .vuln-search-bar {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.8rem;
+    }
+    .vuln-search-bar input {
+      flex: 1;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      padding: 0.6rem 1rem;
+      background: #1a1a2e;
+      border: 1px solid #333355;
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      outline: none;
+    }
+    .vuln-search-bar input:focus { border-color: #e94560; }
+    .vuln-search-bar button {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      padding: 0.6rem 1.2rem;
+      background: #e94560;
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .vuln-search-bar button:hover { opacity: 0.85; }
+    #search-output {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #1a1a2e;
+      border-radius: var(--radius-md);
+      min-height: 50px;
+      font-size: 0.92rem;
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="../../index.html" class="site-logo">~/cybersec<span>-lab</span></a>
+    <nav>
+      <ul class="site-nav">
+        <li><a href="../index.html" class="active">Web-Security</a></li>
+        <li><a href="../../ai-security/index.html">AI-Security</a></li>
+        <li><a href="../../glossary.html">Glossar</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <div class="lesson-nav">
+    <a href="index.html">Übersicht</a>
+    <a href="theory.html">1. Theorie</a>
+    <a href="exercise.html" class="active">2. Rätsel</a>
+    <a href="solution.html">3. Lösung</a>
+  </div>
+
+  <h1>Rätsel: Reflected XSS</h1>
+  <p class="subtitle">Finde das versteckte Passwort — mit dem, was du gerade gelernt hast.</p>
+
+  <h2>Deine Aufgabe</h2>
+
+  <p>Unten siehst du <strong>NeonShop</strong> — einen verwundbaren Online-Shop mit Suchfunktion. Die Suchfunktion hat eine XSS-Schwachstelle. Irgendwo im JavaScript der Seite ist ein geheimes Admin-Passwort gespeichert, das nirgendwo sichtbar angezeigt wird.</p>
+
+  <div class="callout warning">
+    <div class="callout-title">Ziel</div>
+    <p style="margin: 0;">Nutze die XSS-Schwachstelle in der Suchfunktion, um das versteckte Passwort sichtbar zu machen. Gib es dann unten ein, um die Lektion abzuschließen.</p>
+  </div>
+
+  <!-- 3 Hints -->
+  <h3>Hinweise</h3>
+
+  <div class="hint">
+    <button class="hint-trigger" onclick="this.classList.add('used'); this.nextElementSibling.classList.add('visible');">
+      🔑 Hinweis 1 aufdecken
+    </button>
+    <div class="hint-content">
+      <p>Die Suchfunktion nimmt deinen Input und fügt ihn <strong>direkt ins HTML ein</strong>. Was passiert, wenn dein Input selbst HTML oder JavaScript enthält?</p>
+    </div>
+  </div>
+
+  <div class="hint">
+    <button class="hint-trigger" onclick="this.classList.add('used'); this.nextElementSibling.classList.add('visible');">
+      🔑 Hinweis 2 aufdecken
+    </button>
+    <div class="hint-content">
+      <p>Moderne Browser blockieren <code>&lt;script&gt;</code>-Tags, die über <code>innerHTML</code> eingefügt werden. Aber es gibt andere Wege, JavaScript auszuführen — z.B. über <strong>Event-Handler</strong> in HTML-Elementen. Denk an <code>onerror</code>, <code>onload</code>, <code>onmouseover</code>...</p>
+    </div>
+  </div>
+
+  <div class="hint">
+    <button class="hint-trigger" onclick="this.classList.add('used'); this.nextElementSibling.classList.add('visible');">
+      🔑 Hinweis 3 aufdecken
+    </button>
+    <div class="hint-content">
+      <p>Versuche diesen Payload in die Suche einzugeben: <code>&lt;img src=x onerror="alert(SECRET_KEY)"&gt;</code> — die Variable <code>SECRET_KEY</code> ist im JavaScript der Seite definiert, aber nirgendwo angezeigt. Dein XSS-Payload kann auf alle globalen Variablen zugreifen.</p>
+    </div>
+  </div>
+
+  <!-- The vulnerable app -->
+  <h3 style="margin-top: 2rem;">NeonShop — Verwundbare Suche</h3>
+
+  <div class="vuln-app">
+    <div class="vuln-app-header">
+      <span class="app-title">🛒 NeonShop</span>
+      <span class="app-badge">⚠ verwundbar</span>
+    </div>
+    <div class="vuln-app-body">
+      <div class="vuln-search-bar">
+        <input type="text" id="search-input" placeholder="Produkt suchen...">
+        <button onclick="doSearch()">Suchen</button>
+      </div>
+      <div id="search-output">
+        <span style="color: var(--text-muted); font-size: 0.85rem;">Gib einen Suchbegriff ein...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Password Gate -->
+  <div class="password-gate">
+    <h3>🔐 Lektion abschließen</h3>
+    <p style="color: var(--text-secondary);">Gib das Passwort ein, das du durch die XSS-Schwachstelle gefunden hast:</p>
+    <div class="password-input-group">
+      <input type="text" id="pw-input" placeholder="Passwort...">
+      <button onclick="checkPassword()">Prüfen</button>
+    </div>
+    <div id="pw-feedback" class="password-feedback"></div>
+  </div>
+
+  <p style="margin-top: 2rem; font-size: 0.85rem; color: var(--text-muted);">Geschafft? Dann weiter zur <a href="solution.html">Lösung & Reflexion →</a></p>
+
+</main>
+
+<!-- ============================================ -->
+<!-- VULNERABLE APP LOGIC                         -->
+<!-- ============================================ -->
+<script>
+  // The hidden admin password — not displayed anywhere on the page.
+  // Only accessible through JavaScript execution (e.g., via XSS).
+  var SECRET_KEY = "xss-m4ster-2024";
+
+  function doSearch() {
+    const query = document.getElementById('search-input').value;
+    const output = document.getElementById('search-output');
+
+    if (!query.trim()) {
+      output.innerHTML = '<span style="color: var(--text-muted); font-size: 0.85rem;">Gib einen Suchbegriff ein...</span>';
+      return;
+    }
+
+    // ⚠️ VULNERABLE: User input directly injected as HTML via innerHTML
+    output.innerHTML = `
+      <div style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.6rem;">
+        Suchergebnisse für: <strong>${query}</strong>
+      </div>
+      <div style="color: var(--text-muted); font-size: 0.82rem; font-style: italic;">
+        Keine Produkte gefunden für "${query}".
+      </div>
+    `;
+  }
+
+  // Also trigger search on Enter key
+  document.getElementById('search-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doSearch();
+  });
+
+  // Password check
+  function checkPassword() {
+    const input = document.getElementById('pw-input').value.trim();
+    const feedback = document.getElementById('pw-feedback');
+    if (input === SECRET_KEY) {
+      feedback.className = 'password-feedback success';
+      feedback.textContent = '✅ Korrekt! Lektion abgeschlossen. Weiter zur Lösung & Reflexion →';
+    } else {
+      feedback.className = 'password-feedback error';
+      feedback.textContent = '❌ Nicht korrekt. Hast du die Schwachstelle schon gefunden?';
+    }
+  }
+</script>
+
+</body>
+</html>

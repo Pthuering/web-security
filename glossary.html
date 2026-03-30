@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glossar — CyberSec Lab</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="index.html" class="site-logo">~/cybersec<span>-lab</span></a>
+    <nav>
+      <ul class="site-nav">
+        <li><a href="web-security/index.html">Web-Security</a></li>
+        <li><a href="ai-security/index.html">AI-Security</a></li>
+        <li><a href="glossary.html" class="active">Glossar</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <h1>Glossar</h1>
+  <p class="subtitle">Alle Kernbegriffe aus beiden Tracks — wächst mit jeder Lektion.</p>
+
+  <ul class="glossary-list">
+
+    <!-- === Einträge aus Lesson 01: Reflected XSS === -->
+
+    <li>
+      <div class="glossary-term">Cross-Site Scripting (XSS)</div>
+      <div class="glossary-def">Eine Klasse von Sicherheitslücken, bei der ein Angreifer eigenen JavaScript-Code im Browser eines anderen Nutzers ausführen lässt. Drei Varianten: Reflected, Stored, DOM-based.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-xss-reflected/theory.html">Web-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">HTML Injection</div>
+      <div class="glossary-def">Das Einschleusen von HTML-Markup in eine Webseite über nicht-sanitisierte Benutzereingaben. Oft Vorstufe oder Bestandteil von XSS.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-xss-reflected/theory.html">Web-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Input Sanitization</div>
+      <div class="glossary-def">Das Bereinigen von Benutzereingaben, bevor sie verarbeitet oder angezeigt werden — z.B. durch Entfernen oder Escapen von HTML-Sonderzeichen.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-xss-reflected/theory.html">Web-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Output Encoding</div>
+      <div class="glossary-def">Das kontextgerechte Umwandeln von Sonderzeichen (z.B. <code>&lt;</code> → <code>&amp;lt;</code>), bevor Daten in HTML, JavaScript oder andere Ausgabekontexte geschrieben werden.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-xss-reflected/theory.html">Web-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Payload</div>
+      <div class="glossary-def">Der ausführbare Teil eines Angriffs — bei XSS typischerweise ein JavaScript-Snippet wie <code>&lt;script&gt;alert(1)&lt;/script&gt;</code>.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-xss-reflected/theory.html">Web-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Reflected (Non-Persistent)</div>
+      <div class="glossary-def">Eine XSS-Variante, bei der die bösartige Eingabe vom Server sofort in die Antwort reflektiert wird, ohne gespeichert zu werden. Der Angriff steckt typischerweise in der URL.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-xss-reflected/theory.html">Web-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">URL-Parameter (Query String)</div>
+      <div class="glossary-def">Key-Value-Paare nach dem <code>?</code> in einer URL (z.B. <code>?search=hello</code>). Häufiger Eintrittspunkt für Reflected XSS, da sie vom Nutzer kontrolliert werden.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-xss-reflected/theory.html">Web-Security Lesson 01</a></div>
+    </li>
+
+    <!-- === Neue Glossar-Einträge bei jeder Lektion HIER einfügen (alphabetisch sortiert) === -->
+
+  </ul>
+
+</main>
+
+</body>
+</html>

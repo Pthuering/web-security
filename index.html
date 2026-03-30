@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberSec Lab — Lernplattform</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="index.html" class="site-logo">~/cybersec<span>-lab</span></a>
+    <nav>
+      <ul class="site-nav">
+        <li><a href="web-security/index.html">Web-Security</a></li>
+        <li><a href="ai-security/index.html">AI-Security</a></li>
+        <li><a href="glossary.html">Glossar</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <h1>CyberSec Lab</h1>
+  <p class="subtitle">Hands-on Security lernen — Angreifen, Verstehen, Absichern.</p>
+
+  <p>Zwei Tracks, ein Ziel: Sicherheitslücken erkennen und verhindern. Jede Lektion enthält Theorie, eine Bewegungspause und ein praktisches Rätsel mit verstecktem Passwort, das du durch Anwendung der gelernten Technik findest.</p>
+
+  <div class="track-grid">
+
+    <!-- Web Security Track -->
+    <div class="card track-card">
+      <span class="tag-badge web">Web-Security</span>
+      <h2>Web-Security</h2>
+      <p style="color: var(--text-secondary); font-size: 0.9rem;">Klassische Webangriffe und Verteidigungsmuster — von XSS über CSRF bis hin zu Authentication-Bypasses.</p>
+      <ul class="lesson-list">
+        <li>
+          <a href="web-security/lesson-01-xss-reflected/index.html">01 — Reflected XSS</a>
+          <span class="difficulty easy"><span class="lock">🔓</span> Einstieg</span>
+        </li>
+        <!-- Neue Lektionen hier einfügen -->
+      </ul>
+      <a href="web-security/index.html" style="font-family: var(--font-mono); font-size: 0.8rem;">Alle Lektionen →</a>
+    </div>
+
+    <!-- AI Security Track -->
+    <div class="card track-card">
+      <span class="tag-badge ai">AI-Security</span>
+      <h2>AI-Security</h2>
+      <p style="color: var(--text-secondary); font-size: 0.9rem;">Bedrohungen rund um LLM-integrierte Systeme — Prompt Injection, Output Handling, Tool Use Security.</p>
+      <ul class="lesson-list">
+        <li style="color: var(--text-muted); font-style: italic; font-size: 0.85rem;">
+          Erste Lektion kommt bald...
+        </li>
+      </ul>
+      <a href="ai-security/index.html" style="font-family: var(--font-mono); font-size: 0.8rem;">Alle Lektionen →</a>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+  <h2>Wie funktioniert's?</h2>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+    <div class="callout info" style="margin: 0;">
+      <div class="callout-title">1. Theorie</div>
+      <p style="margin: 0; font-size: 0.88rem;">Spiral-Review vergangener Konzepte, dann neuer Stoff mit Worked Examples und Diagrammen. ~15 Min.</p>
+    </div>
+    <div class="callout" style="margin: 0;">
+      <div class="callout-title">2. Bewegungspause</div>
+      <p style="margin: 0; font-size: 0.88rem;">Kurze körperliche Übung als Konsolidierungs-Gate zwischen Aufnahme und Anwendung. ~3 Min.</p>
+    </div>
+    <div class="callout warning" style="margin: 0;">
+      <div class="callout-title">3. Rätsel</div>
+      <p style="margin: 0; font-size: 0.88rem;">Verwundbare Webseite knacken, verstecktes Passwort finden. 3 stufenweise Hinweise verfügbar. ~15 Min.</p>
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>

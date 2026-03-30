@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lösung: Reflected XSS — CyberSec Lab</title>
+  <link rel="stylesheet" href="../../styles/main.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="../../index.html" class="site-logo">~/cybersec<span>-lab</span></a>
+    <nav>
+      <ul class="site-nav">
+        <li><a href="../index.html" class="active">Web-Security</a></li>
+        <li><a href="../../ai-security/index.html">AI-Security</a></li>
+        <li><a href="../../glossary.html">Glossar</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <div class="lesson-nav">
+    <a href="index.html">Übersicht</a>
+    <a href="theory.html">1. Theorie</a>
+    <a href="exercise.html">2. Rätsel</a>
+    <a href="solution.html" class="active">3. Lösung</a>
+  </div>
+
+  <h1>Lösung: Reflected XSS</h1>
+  <p class="subtitle">Wie das Passwort gefunden wird — und warum der Fix funktioniert.</p>
+
+  <div class="callout danger">
+    <div class="callout-title">⚠ Spoiler</div>
+    <p style="margin: 0;">Diese Seite enthält die vollständige Lösung. Nur lesen, wenn du das Rätsel gelöst hast oder nicht weiterkommst.</p>
+  </div>
+
+  <!-- ======================================== -->
+  <!-- LÖSUNGSWEG                               -->
+  <!-- ======================================== -->
+  <h2>Schritt-für-Schritt-Lösungsweg</h2>
+
+  <h3>1. Die Schwachstelle identifizieren</h3>
+
+  <p>Die Suchfunktion von NeonShop nimmt den User-Input und fügt ihn via <code>innerHTML</code> direkt ins DOM ein:</p>
+
+  <pre><code><span class="label">Verwundbarer Code</span>
+output.<span class="vuln">innerHTML</span> = <span class="str">`Suchergebnisse für: &lt;strong&gt;${query}&lt;/strong&gt;`</span>;
+<span class="cm">// ⚠️ query enthält unescapten User-Input</span></code></pre>
+
+  <p>Das bedeutet: Alles, was du in das Suchfeld eingibst, wird als <strong>HTML interpretiert</strong>, nicht als reiner Text.</p>
+
+  <h3>2. HTML Injection testen</h3>
+
+  <p>Ein erster Test — gib in die Suche ein:</p>
+
+  <pre><code><span class="vuln">&lt;b&gt;Test&lt;/b&gt;</span></code></pre>
+
+  <p>Wenn "Test" <strong>fettgedruckt</strong> erscheint, ist HTML Injection bestätigt. Der Browser interpretiert deinen Input als HTML-Markup.</p>
+
+  <h3>3. JavaScript-Ausführung (XSS)</h3>
+
+  <p>Der nächste Schritt: JavaScript ausführen. Ein direkter <code>&lt;script&gt;</code>-Tag funktioniert nicht über <code>innerHTML</code> (Browser blocken das). Aber Event-Handler funktionieren:</p>
+
+  <pre><code><span class="vuln">&lt;img src=x onerror="alert(1)"&gt;</span></code></pre>
+
+  <p>Dieser Payload erzeugt ein <code>&lt;img&gt;</code>-Element, das versucht, das Bild <code>x</code> zu laden. Das schlägt fehl, und der <code>onerror</code>-Handler feuert — mit beliebigem JavaScript.</p>
+
+  <h3>4. Das versteckte Passwort extrahieren</h3>
+
+  <p>Im JavaScript-Code der Seite ist eine globale Variable <code>SECRET_KEY</code> definiert. Da dein XSS-Payload im Kontext der Seite läuft, kann er auf alle globalen Variablen zugreifen:</p>
+
+  <pre><code><span class="vuln">&lt;img src=x onerror="alert(SECRET_KEY)"&gt;</span></code></pre>
+
+  <p>Das zeigt einen Alert mit dem Passwort: <code style="color: var(--accent-green); font-weight: 600;">xss-m4ster-2024</code></p>
+
+  <div class="callout">
+    <div class="callout-title">Alternative Payloads</div>
+    <p style="margin: 0;">Es gibt viele Wege zum Ziel. Einige Varianten:</p>
+    <pre style="margin-top: 0.5rem;"><code><span class="cm">// Alert</span>
+<span class="vuln">&lt;img src=x onerror="alert(SECRET_KEY)"&gt;</span>
+
+<span class="cm">// Direkt in die Seite schreiben</span>
+<span class="vuln">&lt;img src=x onerror="document.body.innerText=SECRET_KEY"&gt;</span>
+
+<span class="cm">// In die Konsole loggen</span>
+<span class="vuln">&lt;img src=x onerror="console.log(SECRET_KEY)"&gt;</span>
+
+<span class="cm">// SVG-basiert (anderer Element-Typ)</span>
+<span class="vuln">&lt;svg onload="alert(SECRET_KEY)"&gt;</span></code></pre>
+  </div>
+
+  <!-- ======================================== -->
+  <!-- ERKLÄRUNG                                -->
+  <!-- ======================================== -->
+  <h2>Warum funktioniert das?</h2>
+
+  <p>Die Schwachstelle hat zwei Zutaten:</p>
+
+  <p><strong>1. Unkontrollierter Input → HTML-Kontext:</strong> <code>innerHTML</code> behandelt den String nicht als Daten, sondern als HTML-Code. Der Browser kann nicht unterscheiden, ob das <code>&lt;img&gt;</code>-Tag vom Entwickler stammt oder vom Angreifer eingeschleust wurde.</p>
+
+  <p><strong>2. JavaScript hat vollen Kontext-Zugriff:</strong> Einmal ausgeführt, hat der eingeschleuste Code denselben Zugriff wie jedes andere Script auf der Seite — Variablen, Cookies, DOM, alles. In einem realen Szenario könnte ein Angreifer Session-Cookies stehlen, Formulare manipulieren oder den Nutzer auf eine Phishing-Seite umleiten.</p>
+
+  <!-- ======================================== -->
+  <!-- FIX                                      -->
+  <!-- ======================================== -->
+  <h2>Der Fix</h2>
+
+  <p>Vergleiche den verwundbaren Code mit der sicheren Version:</p>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;">
+    <div>
+      <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-red); margin-bottom: 0.3rem;">❌ VERWUNDBAR</div>
+      <pre><code>output.<span class="vuln">innerHTML</span> =
+  <span class="str">`Ergebnisse für: ${query}`</span>;</code></pre>
+    </div>
+    <div>
+      <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-green); margin-bottom: 0.3rem;">✅ SICHER</div>
+      <pre><code>output.<span class="fn">textContent</span> =
+  <span class="str">`Ergebnisse für: ${query}`</span>;</code></pre>
+    </div>
+  </div>
+
+  <p><code>textContent</code> behandelt den String <strong>immer als reinen Text</strong>. Selbst wenn der User <code>&lt;script&gt;</code> eingibt, wird es als die Buchstaben <code>&lt;</code>, <code>s</code>, <code>c</code>, <code>r</code>, ... angezeigt — nicht als HTML interpretiert.</p>
+
+  <p>Wenn du HTML-Struktur brauchst (z.B. den Suchbegriff fett machen), verwende eine Escape-Funktion:</p>
+
+  <pre><code><span class="label">Sicherer Code mit HTML-Struktur</span>
+<span class="kw">function</span> <span class="fn">escapeHtml</span>(str) {
+  <span class="kw">const</span> div = document.<span class="fn">createElement</span>(<span class="str">'div'</span>);
+  div.<span class="fn">textContent</span> = str;
+  <span class="kw">return</span> div.<span class="fn">innerHTML</span>;
+}
+
+<span class="cm">// Jetzt sicher:</span>
+output.<span class="fn">innerHTML</span> = <span class="str">`Ergebnisse für: &lt;strong&gt;${<span class="fn">escapeHtml</span>(query)}&lt;/strong&gt;`</span>;</code></pre>
+
+  <div class="callout">
+    <div class="callout-title">Merke: Die Escape-Regel</div>
+    <p style="margin: 0;"><strong>Daten und Code müssen immer getrennt bleiben.</strong> Wenn User-Input in einen Kontext eingefügt wird, der Code ausführen kann (HTML, SQL, Shell...), muss er vorher so transformiert werden, dass er nur als Daten interpretiert werden kann. Das ist das grundlegendste Sicherheitsprinzip im Web — und kommt in fast jeder Lektion in abgewandelter Form wieder.</p>
+  </div>
+
+  <!-- ======================================== -->
+  <!-- REFLEXION                                -->
+  <!-- ======================================== -->
+  <h2>Reflexion</h2>
+
+  <div class="reveal-group" style="margin: 1rem 0;">
+    <button class="reveal-trigger" onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('visible');">
+      <span class="arrow">▶</span> Was war der schwierigste Schritt für dich?
+    </button>
+    <div class="reveal-content">
+      <p>Häufige Hürden bei dieser Übung:</p>
+      <ul>
+        <li><strong>"Ich hab &lt;script&gt; probiert und nichts passierte"</strong> — Moderne Browser blockieren Script-Tags via innerHTML. Das ist kein Schutz gegen XSS, weil Event-Handler (onerror, onload) trotzdem funktionieren.</li>
+        <li><strong>"Ich wusste nicht, dass ich auf SECRET_KEY zugreifen kann"</strong> — Jedes JavaScript auf einer Seite teilt denselben globalen Scope. Eingeschleuster Code hat vollen Zugriff auf alle Variablen, Cookies und das DOM.</li>
+        <li><strong>"Ich hab nicht an Event-Handler gedacht"</strong> — XSS-Payloads nutzen selten &lt;script&gt;-Tags. In der Praxis sind Event-Handler, SVG, und andere HTML-Features die gängigen Vektoren.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ======================================== -->
+  <!-- TRANSFER                                 -->
+  <!-- ======================================== -->
+  <h2>Transfer</h2>
+
+  <div class="reveal-group" style="margin: 1rem 0;">
+    <button class="reveal-trigger" onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('visible');">
+      <span class="arrow">▶</span> Wo könnte dir dieses Wissen in einem eigenen Projekt begegnen?
+    </button>
+    <div class="reveal-content">
+      <p>Überall, wo User-Input angezeigt wird:</p>
+      <ul>
+        <li><strong>Suchfunktionen</strong>: "Sie suchten nach: ..." — der Klassiker.</li>
+        <li><strong>Profilseiten</strong>: Benutzername, Bio, Statusnachrichten.</li>
+        <li><strong>Kommentare / Chat</strong>: Jede User-generierte Textanzeige.</li>
+        <li><strong>Fehlerseiten</strong>: "Die Seite /BENUTZEREINGABE wurde nicht gefunden."</li>
+        <li><strong>URL-Parameter in Dashboards</strong>: Filter, Sortierung, Tabs, die aus der URL gelesen und angezeigt werden.</li>
+      </ul>
+      <p style="margin-top: 0.8rem;"><strong>Faustregel:</strong> Jedes Mal, wenn du <code>innerHTML</code>, <code>document.write()</code>, oder Template Literals mit User-Input in einem HTML-Kontext verwendest — aufpassen.</p>
+    </div>
+  </div>
+
+  <div class="callout info" style="margin-top: 2rem;">
+    <div class="callout-title">Ausblick</div>
+    <p style="margin: 0;">In der nächsten Lektion schauen wir uns <strong>DOM-based XSS</strong> an — eine Variante, bei der der Server gar nicht beteiligt ist. Das Prinzip ist dasselbe (Daten → Code), aber der Angriffsvektor und die Verteidigung sehen anders aus.</p>
+    <p style="margin: 0.5rem 0 0; font-size: 0.85rem; color: var(--text-muted);"><strong>Verbindung zu AI-Security:</strong> Das Muster "unvertrauenswürdiger Input wird als Instruktion interpretiert" ist identisch mit Prompt Injection bei LLMs. Wenn du XSS verstehst, hast du die Intuition für Prompt Injection bereits.</p>
+  </div>
+
+  <hr class="divider">
+
+  <p style="text-align: center;">
+    <a href="../index.html" style="font-family: var(--font-mono); font-size: 0.85rem;">← Zurück zur Track-Übersicht</a>
+  </p>
+
+</main>
+
+</body>
+</html>
