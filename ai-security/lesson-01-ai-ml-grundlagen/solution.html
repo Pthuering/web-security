@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lösung: AI/ML-Grundlagen für Security | KI-Security Track</title>
+    <link rel="stylesheet" href="../../styles/main.css">
+    <style>
+        /* Map lesson variables to main.css design system */
+        :root {
+            --accent: var(--accent-cyan);
+            --accent-dim: var(--accent-cyan-dim);
+            --accent-glow: rgba(34, 211, 238, 0.12);
+            --warning: var(--accent-orange);
+            --warning-dim: var(--accent-orange-dim);
+            --success: var(--accent-green);
+            --success-dim: var(--accent-green-dim);
+            --danger: var(--accent-red);
+            --danger-dim: var(--accent-red-dim);
+            --purple: var(--accent-purple);
+            --purple-dim: var(--accent-purple-dim);
+            --border: var(--border-subtle);
+            --radius: var(--radius-md);
+            --radius-lg: 12px;
+        }
+        .container { max-width: 780px; }
+        .track-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.9rem;
+            background: var(--purple-dim);
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            border-radius: 20px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--purple);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 1.5rem;
+        }
+        .track-badge::before { content: '🤖'; font-size: 0.85rem; }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 2.5rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Solution Steps */
+        .solution-step {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+        }
+        .step-title {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .step-answer {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            padding: 0.25rem 0.7rem;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+        .step-answer.stage {
+            background: var(--accent-glow);
+            color: var(--accent);
+            border: 1px solid rgba(34, 211, 238, 0.2);
+        }
+        .step-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+        .step-why {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem;
+            font-size: 0.88rem;
+        }
+        .step-why .why-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 0.3rem;
+        }
+        .step-why p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* Common Mistake Box */
+        .mistake-box {
+            background: var(--danger-dim);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: var(--radius);
+            padding: 1rem 1.2rem;
+            margin-top: 0.8rem;
+            font-size: 0.88rem;
+        }
+        .mistake-box::before {
+            content: '⚠ Häufiger Denkfehler';
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--danger);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.3rem;
+        }
+        .mistake-box p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* OWASP Mapping Table */
+        .mapping-section {
+            margin: 3rem 0;
+        }
+        .mapping-section h2 {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .mapping-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .mapping-table th {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            text-align: left;
+            padding: 0.6rem 0.8rem;
+            border-bottom: 2px solid var(--border);
+        }
+        .mapping-table td {
+            padding: 0.6rem 0.8rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+        .mapping-table .letter {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            color: var(--accent);
+            text-align: center;
+        }
+        .mapping-table .stage {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .mapping-table .attack {
+            color: var(--danger);
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+        }
+
+        /* Reflection */
+        .reflection, .transfer {
+            margin: 3rem 0;
+        }
+        .reflection h2, .transfer h2 {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .reflection h2 { color: var(--warning); }
+        .transfer h2 { color: var(--purple); }
+        .r-question {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+        }
+        .r-question strong {
+            color: var(--text-primary);
+        }
+
+        /* Navigation */
+        .nav-links {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .nav-link {
+            padding: 0.7rem 1.4rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--accent);
+            text-decoration: none;
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .nav-link:hover {
+            border-color: rgba(34, 211, 238, 0.3);
+            background: var(--bg-card-hover);
+        }
+        .nav-link.next { margin-left: auto; }
+
+        .lesson-footer {
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="../../index.html" class="site-logo">~/cybersec<span>-lab</span></a>
+    <nav>
+      <ul class="site-nav">
+        <li><a href="../../web-security/index.html">Web-Security</a></li>
+        <li><a href="../index.html" class="active">AI-Security</a></li>
+        <li><a href="../../glossary.html">Glossar</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+    <div class="container">
+        <nav class="breadcrumb">
+            <a href="../../index.html">Home</a>
+            <span class="sep">/</span>
+            <a href="../index.html">AI-Security</a>
+            <span class="sep">/</span>
+            <a href="index.html">Modul 1</a>
+            <span class="sep">/</span>
+            <span>Lösung</span>
+        </nav>
+
+        <div class="track-badge">KI-Security Track</div>
+        <h1>Lösung: Pipeline-Angriffskartierung</h1>
+
+        <!-- STEP 1 -->
+        <div class="solution-step">
+            <div class="step-header">
+                <span class="step-title">Vorfall #1 — Gefälschte Reviews</span>
+                <span class="step-answer stage">Trainingsdaten → T</span>
+            </div>
+            <div class="step-desc">
+                Tausende gefälschte Reviews werden in den Crawling-Datensatz eingeschleust, der als Trainingsgrundlage dient.
+            </div>
+            <div class="step-why">
+                <div class="why-label">Warum Trainingsdaten?</div>
+                <p>
+                    Der Angriff verändert die <strong>Datenbasis, aus der das Modell lernt</strong>. Das ist klassisches <strong>Data Poisoning (OWASP LLM04)</strong>. Die Wirkung entfaltet sich erst beim nächsten Training — langsam, persistent und schwer zu erkennen.
+                </p>
+            </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="solution-step">
+            <div class="step-header">
+                <span class="step-title">Vorfall #2 — Gestohlene Gewichtsdateien</span>
+                <span class="step-answer stage">Modellgewichte → E</span>
+            </div>
+            <div class="step-desc">
+                Ein Ex-Mitarbeiter kopiert die vollständigen Modellgewichte und veröffentlicht ein Klon-Modell.
+            </div>
+            <div class="step-why">
+                <div class="why-label">Warum Modellgewichte?</div>
+                <p>
+                    Die Gewichte <strong>sind</strong> das Modell. Wer die Gewichte hat, kann das Modell replizieren. Unter <strong>Supply Chain (OWASP LLM03)</strong>, weil gestohlene Modelle oft unter falscher Provenance weiterverbreitet werden.
+                </p>
+            </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="solution-step">
+            <div class="step-header">
+                <span class="step-title">Vorfall #3 — „Ignoriere alle Anweisungen"</span>
+                <span class="step-answer stage">User-Prompt → N</span>
+            </div>
+            <div class="step-desc">
+                Ein Nutzer gibt eine manipulierte Eingabe, die das System Prompt überschreibt.
+            </div>
+            <div class="step-why">
+                <div class="why-label">Warum User-Prompt?</div>
+                <p>
+                    Das ist der Lehrbuch-Fall von <strong>Direct Prompt Injection (OWASP LLM01)</strong>. Der Angriffspunkt ist die User-Eingabe in der Inference-Pipeline. Das Modell behandelt die Anweisung des Nutzers als gleichwertig mit (oder sogar vorrangig gegenüber) dem System Prompt.
+                </p>
+            </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="solution-step">
+            <div class="step-header">
+                <span class="step-title">Vorfall #4 — Unicode-Manipulation</span>
+                <span class="step-answer stage">Tokenizer → S</span>
+            </div>
+            <div class="step-desc">
+                Unsichtbare Unicode-Zeichen werden eingesetzt, um die Textzerlegung zu manipulieren und einen Keyword-Filter zu umgehen.
+            </div>
+            <div class="step-why">
+                <div class="why-label">Warum Tokenizer?</div>
+                <p>
+                    Der Angriff zielt nicht auf das Modell selbst, sondern auf den <strong>Verarbeitungsschritt davor</strong>. Der Tokenizer zerlegt den Text in Fragmente — und wenn diese Fragmente nicht den gesperrten Mustern entsprechen, greift der Filter nicht. Der Mensch liest „Waffe", der Tokenizer sieht [„Wa", „​", „ffe"] (mit unsichtbarem Zero-Width-Joiner).
+                </p>
+            </div>
+            <div class="mistake-box">
+                <p>
+                    <strong>Verwechslungsgefahr mit Prompt Injection:</strong> Prompt Injection manipuliert den <em>Inhalt</em> der Eingabe (was gesagt wird). Adversarial Tokens manipulieren die <em>Darstellung</em> (wie es zerlegt wird). Der Unterschied: Bei Prompt Injection versteht das Modell die Anweisung — bei Tokenizer-Angriffen „sieht" das Modell bzw. der Filter etwas anderes als der Mensch.
+                </p>
+            </div>
+        </div>
+
+        <!-- STEP 5 -->
+        <div class="solution-step">
+            <div class="step-header">
+                <span class="step-title">Vorfall #5 — SQL aus LLM-Output</span>
+                <span class="step-answer stage">Modell-Output → O</span>
+            </div>
+            <div class="step-desc">
+                Das LLM generiert SQL-Queries, die ohne Sanitization an die Datenbank weitergegeben werden.
+            </div>
+            <div class="step-why">
+                <div class="why-label">Warum Modell-Output?</div>
+                <p>
+                    Das Problem ist nicht, was ins Modell reingeht, sondern was <strong>mit der Ausgabe passiert</strong>. Der Output des LLMs wird als vertrauenswürdiger Code behandelt und direkt ausgeführt — <strong>Insecure Output Handling (OWASP LLM05)</strong>. Die Verteidigung ist Output-Validation, nicht Input-Filtering.
+                </p>
+            </div>
+            <div class="mistake-box">
+                <p>
+                    <strong>„Aber der Angreifer tippt doch den Prompt ein — ist das nicht Prompt Injection?"</strong> Ja, der Trigger kommt über den Prompt. Aber die <em>Schwachstelle</em> liegt im Output-Handling: Selbst ohne bösen Nutzer könnte ein Halluzinations-bedingtes <code>DROP TABLE</code> Schaden anrichten. Prompt Injection ist der Angriffsvektor, Insecure Output ist die Schwachstelle.
+                </p>
+            </div>
+        </div>
+
+        <!-- STEP 6 -->
+        <div class="solution-step">
+            <div class="step-header">
+                <span class="step-title">Vorfall #6 — Manipuliertes HR-Dokument</span>
+                <span class="step-answer stage">Vector DB / RAG → R</span>
+            </div>
+            <div class="step-desc">
+                Ein manipuliertes Dokument mit versteckten Anweisungen wird in die Wissensdatenbank hochgeladen.
+            </div>
+            <div class="step-why">
+                <div class="why-label">Warum Vector DB / RAG?</div>
+                <p>
+                    Das Dokument wird nicht zum Training verwendet — es wird <strong>zur Laufzeit als Kontext in den Prompt eingefügt</strong>. Das ist <strong>RAG Poisoning (OWASP LLM08)</strong>, eine Form von Indirect Prompt Injection. Der Angriff nutzt das RAG-System als Transportmechanismus für bösartige Anweisungen.
+                </p>
+            </div>
+            <div class="mistake-box">
+                <p>
+                    <strong>Verwechslungsgefahr mit Data Poisoning:</strong> Data Poisoning verändert die Trainingsdaten → das Modell selbst wird korrumpiert. RAG Poisoning verändert die abrufbaren Dokumente → das Modell bleibt intakt, aber sein Kontext wird manipuliert. Zeitpunkt: Training vs. Inference.
+                </p>
+            </div>
+        </div>
+
+        <!-- Mapping Overview -->
+        <div class="mapping-section">
+            <h2>📊 Gesamtübersicht</h2>
+            <table class="mapping-table">
+                <thead>
+                    <tr>
+                        <th>Vorfall</th>
+                        <th>Pipeline-Stufe</th>
+                        <th>Angriff</th>
+                        <th>OWASP</th>
+                        <th>Buchstabe</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#1 Gefälschte Reviews</td>
+                        <td class="stage">Trainingsdaten</td>
+                        <td class="attack">Data Poisoning</td>
+                        <td>LLM04</td>
+                        <td class="letter">T</td>
+                    </tr>
+                    <tr>
+                        <td>#2 Gestohlene Gewichte</td>
+                        <td class="stage">Modellgewichte</td>
+                        <td class="attack">Model Theft</td>
+                        <td>LLM03</td>
+                        <td class="letter">E</td>
+                    </tr>
+                    <tr>
+                        <td>#3 Prompt Override</td>
+                        <td class="stage">User-Prompt</td>
+                        <td class="attack">Prompt Injection</td>
+                        <td>LLM01</td>
+                        <td class="letter">N</td>
+                    </tr>
+                    <tr>
+                        <td>#4 Unicode-Manipulation</td>
+                        <td class="stage">Tokenizer</td>
+                        <td class="attack">Adversarial Tokens</td>
+                        <td>—</td>
+                        <td class="letter">S</td>
+                    </tr>
+                    <tr>
+                        <td>#5 SQL via LLM</td>
+                        <td class="stage">Modell-Output</td>
+                        <td class="attack">Insecure Output</td>
+                        <td>LLM05</td>
+                        <td class="letter">O</td>
+                    </tr>
+                    <tr>
+                        <td>#6 Manipuliertes Dokument</td>
+                        <td class="stage">Vector DB / RAG</td>
+                        <td class="attack">RAG Poisoning</td>
+                        <td>LLM08</td>
+                        <td class="letter">R</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="text-align: center; font-family: var(--font-mono); color: var(--accent); margin-top: 1rem; font-size: 1.1rem; letter-spacing: 0.3em;">
+                Passwort: TENSOR
+            </p>
+        </div>
+
+        <!-- Reflection -->
+        <div class="reflection">
+            <h2>🤔 Reflexion</h2>
+            <div class="r-question">
+                <strong>Was war der schwierigste Vorfall?</strong> — Für die meisten ist #4 (Tokenizer) am schwierigsten, weil er wie Prompt Injection aussieht. Der entscheidende Unterschied: Der Angriff manipuliert nicht <em>was</em> gesagt wird, sondern <em>wie es verarbeitet wird</em>.
+            </div>
+            <div class="r-question">
+                <strong>Wo hast du zuerst falsch gedacht?</strong> — Wenn du #5 als „Prompt Injection" eingestuft hast: Das ist nachvollziehbar, weil der Trigger tatsächlich über den Prompt kommt. Die Unterscheidung „Angriffsvektor vs. Schwachstelle" ist subtil aber wichtig. Prompt Injection ist der <em>wie</em>, Insecure Output ist das <em>wo</em>.
+            </div>
+            <div class="r-question">
+                <strong>Welches Muster zieht sich durch?</strong> — Die Pipeline hat eine klare Richtung: Daten → Verarbeitung → Output. Jede Stufe vertraut der vorherigen. <em>Übermäßiges Vertrauen zwischen Pipeline-Stufen ist das wiederkehrende Security-Problem.</em>
+            </div>
+        </div>
+
+        <!-- Transfer -->
+        <div class="transfer">
+            <h2>🔄 Transfer-Fragen</h2>
+            <div class="r-question">
+                <strong>Für dein Ticketing-System:</strong> Wenn du einen AI-gestützten Chatbot für Ticket-Erstellung einbaust — an welchen Pipeline-Stufen müsstest du Security-Controls einbauen? Denk an alle sechs Stufen.
+            </div>
+            <div class="r-question">
+                <strong>Querverweis Web-Track:</strong> SQL Injection (Web-Modul 7) und Insecure Output Handling (Vorfall #5) folgen demselben Muster: Output eines Systems wird als vertrauenswürdiger Input eines anderen Systems behandelt. Wo noch begegnet dir dieses Pattern?
+            </div>
+            <div class="r-question">
+                <strong>Training vs. Inference als Denkmodell:</strong> Der Samsung-Vorfall aus der Theorie zeigt: Die Grenze zwischen „Inference nutzen" und „Training füttern" kann verschwimmen. Gilt das auch für deine eigene Nutzung von Claude oder ChatGPT? Was gibst du ein, das du nicht als Trainingsdaten freigeben würdest?
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-links">
+            <a href="exercise.html" class="nav-link">← Zurück zum Rätsel</a>
+            <a href="../llm-architektur-datenfluesse/index.html" class="nav-link next">Nächstes Modul: LLM-Architektur & Datenflüsse →</a>
+        </div>
+
+        <div class="lesson-footer">
+            KI-Security Track · Phase 1 · Modul 1: AI/ML-Grundlagen für Security
+        </div>
+    </div>
+</body>
+</html>

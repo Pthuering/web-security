@@ -104,6 +104,7 @@ Führe diese Schritte in dieser Reihenfolge aus. Jeder Schritt ist verpflichtend
   - `theory.html`: Im Querverweise-Abschnitt am Ende
   - `index.html`: Im Querverweise-Callout
 - Besonders relevant: **Cross-Track-Verweise** (Web-Security ↔ AI-Security), wenn Konzepte überlappen (z.B. XSS ↔ Prompt Injection, Output Encoding ↔ Output Handling).
+- **`OPEN-CROSSREFS.md` prüfen**: Nach jeder neuen Lektion die Datei `/OPEN-CROSSREFS.md` durchgehen. Dort sind alle offenen Querverweise dokumentiert, die auf noch nicht existierende Lektionen zeigen. Wenn die neue Lektion ein Ziel aus dieser Liste abdeckt: Link korrigieren, Eintrag aus der Liste entfernen.
 
 ### 6. Spiral-Review-Fragen pflegen
 - Aus der neuen Lektion 2–3 potenzielle Recall-Fragen extrahieren.

@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theorie: AI/ML-Grundlagen für Security | KI-Security Track</title>
+    <link rel="stylesheet" href="../../styles/main.css">
+    <style>
+        /* Map lesson variables to main.css design system */
+        :root {
+            --accent: var(--accent-cyan);
+            --accent-dim: var(--accent-cyan-dim);
+            --accent-glow: rgba(34, 211, 238, 0.12);
+            --warning: var(--accent-orange);
+            --warning-dim: var(--accent-orange-dim);
+            --success: var(--accent-green);
+            --success-dim: var(--accent-green-dim);
+            --danger: var(--accent-red);
+            --danger-dim: var(--accent-red-dim);
+            --purple: var(--accent-purple);
+            --purple-dim: var(--accent-purple-dim);
+            --border: var(--border-subtle);
+            --radius: var(--radius-md);
+            --radius-lg: 12px;
+            --bg-code: #0d1321;
+        }
+        .container { max-width: 780px; }
+
+        /* Track Badge */
+        .track-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.9rem;
+            background: var(--purple-dim);
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            border-radius: 20px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--purple);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 1.5rem;
+        }
+        .track-badge::before { content: '🤖'; font-size: 0.85rem; }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 2.5rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Section Headers */
+        .section {
+            margin-bottom: 3rem;
+        }
+        .section h2 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .section h3 {
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 1.5rem 0 0.8rem;
+        }
+        .section p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+        .section p strong {
+            color: var(--text-primary);
+        }
+
+        /* Concept Cards */
+        .concept-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .concept-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.2rem;
+            transition: border-color 0.2s;
+        }
+        .concept-card:hover {
+            border-color: rgba(34, 211, 238, 0.3);
+        }
+        .concept-card .card-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .concept-card .card-title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.4rem;
+            color: var(--text-primary);
+        }
+        .concept-card .card-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
+            border-radius: var(--radius);
+            padding: 1.2rem 1.4rem;
+            margin: 1.5rem 0;
+        }
+        .info-box.warning {
+            border-left-color: var(--warning);
+        }
+        .info-box.purple {
+            border-left-color: var(--purple);
+        }
+        .info-box .box-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.4rem;
+        }
+        .info-box .box-label.cyan { color: var(--accent); }
+        .info-box .box-label.warn { color: var(--warning); }
+        .info-box .box-label.purp { color: var(--purple); }
+        .info-box p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            margin-bottom: 0;
+        }
+
+        /* Notebook Prompt */
+        .notebook {
+            background: var(--warning-dim);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: var(--radius);
+            padding: 1rem 1.2rem;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+        .notebook::before {
+            content: '📓 Notebook';
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--warning);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.4rem;
+        }
+        .notebook em { color: var(--warning); font-style: normal; }
+
+        /* SVG Diagram Container */
+        .diagram-wrap {
+            margin: 2rem 0;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            overflow-x: auto;
+        }
+        .diagram-wrap svg {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.8rem;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.2rem 1.4rem;
+            margin: 1.2rem 0;
+            overflow-x: auto;
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+        .code-block .comment { color: var(--text-muted); }
+        .code-block .keyword { color: var(--purple); }
+        .code-block .string { color: var(--success); }
+        .code-block .highlight { color: var(--accent); }
+        .code-block .danger { color: var(--danger); }
+
+        /* Spiral Review */
+        .spiral-review {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .spiral-review h2 {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .recall-q {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .recall-q:hover {
+            border-color: rgba(34, 211, 238, 0.3);
+        }
+        .recall-q .q-text {
+            font-size: 0.92rem;
+            color: var(--text-primary);
+            margin-bottom: 0;
+        }
+        .recall-q .q-answer {
+            display: none;
+            margin-top: 0.8rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.88rem;
+            color: var(--accent);
+        }
+        .recall-q.open .q-answer {
+            display: block;
+        }
+        .recall-q .q-toggle {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+        }
+        .recall-q.open .q-toggle { display: none; }
+
+        /* Worked Example */
+        .worked-example {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        .worked-example h3 {
+            margin-top: 0;
+        }
+        .we-dual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        @media (max-width: 600px) {
+            .we-dual { grid-template-columns: 1fr; }
+        }
+        .we-side {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem;
+        }
+        .we-side .side-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+        .we-side.offensive .side-label { color: var(--danger); }
+        .we-side.defensive .side-label { color: var(--success); }
+        .we-side p, .we-side ul {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+        }
+        .we-side ul {
+            list-style: none;
+            padding: 0;
+        }
+        .we-side ul li {
+            padding: 0.2rem 0;
+            padding-left: 1rem;
+            position: relative;
+        }
+        .we-side.offensive ul li::before {
+            content: '⚔';
+            position: absolute;
+            left: 0;
+            font-size: 0.75rem;
+        }
+        .we-side.defensive ul li::before {
+            content: '🛡';
+            position: absolute;
+            left: 0;
+            font-size: 0.75rem;
+        }
+
+        /* Movement Break */
+        .movement-break {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(34, 211, 238, 0.08));
+            border: 2px dashed rgba(168, 85, 247, 0.3);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            text-align: center;
+            margin: 3rem 0;
+        }
+        .movement-break .mb-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+        }
+        .movement-break h3 {
+            font-family: var(--font-display);
+            color: var(--purple);
+            margin-bottom: 0.8rem;
+        }
+        .movement-break p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            max-width: 500px;
+            margin: 0 auto 1rem;
+        }
+        .movement-break .mb-exercise {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem 1.5rem;
+            display: inline-block;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Summary */
+        .summary-terms {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .term-tag {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 0.3rem 0.9rem;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--accent);
+        }
+
+        /* Navigation */
+        .nav-links {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .nav-link {
+            padding: 0.7rem 1.4rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--accent);
+            text-decoration: none;
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .nav-link:hover {
+            border-color: rgba(34, 211, 238, 0.3);
+            background: var(--bg-card-hover);
+        }
+        .nav-link.next {
+            margin-left: auto;
+        }
+
+        .lesson-footer {
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+        }
+
+        /* Attack Surface Table */
+        .attack-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.88rem;
+        }
+        .attack-table th {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            text-align: left;
+            padding: 0.6rem 0.8rem;
+            border-bottom: 2px solid var(--border);
+        }
+        .attack-table td {
+            padding: 0.7rem 0.8rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+        .attack-table tr:hover td {
+            background: var(--bg-card);
+        }
+        .attack-table .stage-name {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .attack-table .attack-name {
+            color: var(--danger);
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="../../index.html" class="site-logo">~/cybersec<span>-lab</span></a>
+    <nav>
+      <ul class="site-nav">
+        <li><a href="../../web-security/index.html">Web-Security</a></li>
+        <li><a href="../index.html" class="active">AI-Security</a></li>
+        <li><a href="../../glossary.html">Glossar</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+    <div class="container">
+        <nav class="breadcrumb">
+            <a href="../../index.html">Home</a>
+            <span class="sep">/</span>
+            <a href="../index.html">AI-Security</a>
+            <span class="sep">/</span>
+            <a href="index.html">Modul 1</a>
+            <span class="sep">/</span>
+            <span>Theorie</span>
+        </nav>
+
+        <div class="track-badge">KI-Security Track</div>
+        <h1>AI/ML-Grundlagen für Security</h1>
+
+        <!-- ========== SPIRAL REVIEW ========== -->
+        <div class="spiral-review">
+            <h2>🔄 Vorwissen-Check</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+                Erste Lektion im KI-Track — kein Recall nötig. Stattdessen: Überprüfe dein Vorwissen. Klick zum Aufdecken.
+            </p>
+
+            <div class="recall-q" onclick="this.classList.toggle('open')">
+                <p class="q-text">Was ist der Unterschied zwischen "Training" und "Inference" bei einem ML-Modell?</p>
+                <p class="q-toggle">Klick zum Aufdecken</p>
+                <div class="q-answer">
+                    <strong>Training</strong> = Das Modell lernt aus Daten (Gewichte werden angepasst).
+                    <strong>Inference</strong> = Das fertige Modell wird benutzt (Gewichte sind fix, neue Eingaben werden verarbeitet).
+                    Wenn du das schon wusstest — perfekt. Wenn nicht, lernst du es gleich.
+                </div>
+            </div>
+
+            <div class="recall-q" onclick="this.classList.toggle('open')">
+                <p class="q-text">Was bedeutet "Angriffsfläche" (Attack Surface)?</p>
+                <p class="q-toggle">Klick zum Aufdecken</p>
+                <div class="q-answer">
+                    Die Summe aller Punkte, an denen ein Angreifer mit einem System interagieren kann. Je größer die Angriffsfläche, desto mehr potenzielle Schwachstellen. Genau das werden wir hier auf AI/ML-Systeme anwenden.
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== SECTION 1: ML TAXONOMY ========== -->
+        <div class="section">
+            <h2>1. Die Landkarte: ML → DL → NLP → LLMs</h2>
+
+            <p>
+                Bevor wir Angriffsflächen verstehen können, brauchen wir eine <strong>mentale Landkarte</strong>. Diese Begriffe sind keine Synonyme — sie sind verschachtelte Kategorien:
+            </p>
+
+            <!-- SVG: Nested Categories Diagram -->
+            <div class="diagram-wrap">
+                <svg viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg">
+                    <!-- ML (outermost) -->
+                    <rect x="10" y="10" width="660" height="300" rx="16" fill="none" stroke="#22d3ee" stroke-width="2" stroke-opacity="0.3"/>
+                    <text x="30" y="40" font-family="Chakra Petch, sans-serif" font-size="14" fill="#22d3ee" font-weight="600">Machine Learning (ML)</text>
+                    <text x="30" y="60" font-family="Nunito Sans, sans-serif" font-size="11" fill="#94a3b8">Lernt Muster aus Daten — ohne explizite Programmierung</text>
+
+                    <!-- DL -->
+                    <rect x="40" y="80" width="600" height="210" rx="12" fill="none" stroke="#a855f7" stroke-width="2" stroke-opacity="0.3"/>
+                    <text x="60" y="108" font-family="Chakra Petch, sans-serif" font-size="13" fill="#a855f7" font-weight="600">Deep Learning (DL)</text>
+                    <text x="60" y="126" font-family="Nunito Sans, sans-serif" font-size="11" fill="#94a3b8">ML mit neuronalen Netzen (viele Schichten)</text>
+
+                    <!-- NLP -->
+                    <rect x="70" y="145" width="380" height="125" rx="10" fill="none" stroke="#f59e0b" stroke-width="2" stroke-opacity="0.3"/>
+                    <text x="90" y="172" font-family="Chakra Petch, sans-serif" font-size="12" fill="#f59e0b" font-weight="600">Natural Language Processing (NLP)</text>
+                    <text x="90" y="190" font-family="Nunito Sans, sans-serif" font-size="11" fill="#94a3b8">DL für Sprache (Text verstehen / erzeugen)</text>
+
+                    <!-- LLMs -->
+                    <rect x="100" y="205" width="200" height="48" rx="8" fill="rgba(239, 68, 68, 0.1)" stroke="#ef4444" stroke-width="2" stroke-opacity="0.5"/>
+                    <text x="120" y="234" font-family="Chakra Petch, sans-serif" font-size="12" fill="#ef4444" font-weight="600">LLMs (GPT, Claude, …)</text>
+
+                    <!-- Other DL: Computer Vision -->
+                    <rect x="480" y="145" width="140" height="55" rx="8" fill="none" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.3"/>
+                    <text x="498" y="170" font-family="Nunito Sans, sans-serif" font-size="11" fill="#10b981" font-weight="600">Computer Vision</text>
+                    <text x="498" y="186" font-family="Nunito Sans, sans-serif" font-size="10" fill="#94a3b8">Bilder, Video</text>
+
+                    <!-- Other DL: Audio -->
+                    <rect x="480" y="210" width="140" height="55" rx="8" fill="none" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.3"/>
+                    <text x="498" y="235" font-family="Nunito Sans, sans-serif" font-size="11" fill="#10b981" font-weight="600">Audio / Speech</text>
+                    <text x="498" y="251" font-family="Nunito Sans, sans-serif" font-size="10" fill="#94a3b8">Whisper, TTS</text>
+
+                    <!-- Arrows -->
+                    <text x="328" y="232" font-family="Nunito Sans, sans-serif" font-size="20" fill="#64748b">←</text>
+                    <text x="350" y="234" font-family="JetBrains Mono, monospace" font-size="9" fill="#64748b">Unser Fokus</text>
+                </svg>
+                <div class="diagram-caption">ML-Taxonomie: LLMs sind eine Teilmenge von NLP ⊂ Deep Learning ⊂ Machine Learning</div>
+            </div>
+
+            <div class="info-box">
+                <div class="box-label cyan">Security-Relevanz</div>
+                <p>
+                    Jede Schicht hat <strong>eigene Angriffsflächen</strong>. Ein Angriff auf ML-Ebene (z.B. Data Poisoning) betrifft auch alle Unterschichten. Ein Angriff auf LLM-Ebene (z.B. Prompt Injection) ist spezifisch für Sprachmodelle. Im OWASP LLM Top 10 fokussieren wir uns auf die LLM-Schicht — aber das Verständnis der Gesamtstruktur hilft, die Grenzen dieser Perspektive zu erkennen.
+                </p>
+            </div>
+
+            <div class="notebook">
+                Schreibe in dein Notebook: <em>„ML ⊃ DL ⊃ NLP ⊃ LLMs — Angriffe auf höherer Ebene betreffen auch tiefere Schichten."</em>
+            </div>
+        </div>
+
+        <!-- ========== SECTION 2: TRANSFORMER ========== -->
+        <div class="section">
+            <h2>2. Transformer-Architektur (Security-Perspektive)</h2>
+
+            <p>
+                LLMs basieren auf der <strong>Transformer-Architektur</strong> (2017). Du musst kein Mathematiker sein, um Security zu machen — aber du musst verstehen, <strong>wo Daten fließen und wo Angreifer eingreifen können</strong>.
+            </p>
+
+            <h3>Was ein Transformer tut (vereinfacht)</h3>
+            <p>
+                Ein Transformer nimmt eine Sequenz von Tokens (Wort-Fragmenten) als Eingabe und berechnet, welches Token als nächstes am wahrscheinlichsten kommt. Das Geheimnis: der <strong>Attention-Mechanismus</strong> — jedes Token „schaut" auf alle anderen Tokens und gewichtet ihre Relevanz.
+            </p>
+
+            <div class="concept-cards">
+                <div class="concept-card">
+                    <div class="card-icon">🔤</div>
+                    <div class="card-title">Tokenization</div>
+                    <div class="card-desc">
+                        Text wird in Sub-Wort-Einheiten zerlegt. „Sicherheitslücke" → [„Sicher", „heits", „lücke"]. Der Tokenizer ist die <strong>erste Verarbeitungsstufe</strong>.
+                    </div>
+                </div>
+                <div class="concept-card">
+                    <div class="card-icon">📐</div>
+                    <div class="card-title">Embeddings</div>
+                    <div class="card-desc">
+                        Jedes Token wird zu einem Zahlenvektor (z.B. 4096 Dimensionen). Ähnliche Wörter → ähnliche Vektoren. Basis für semantische Suche und RAG.
+                    </div>
+                </div>
+                <div class="concept-card">
+                    <div class="card-icon">🔍</div>
+                    <div class="card-title">Attention</div>
+                    <div class="card-desc">
+                        „Welche anderen Tokens sind für dieses Token relevant?" Erlaubt dem Modell, Kontext über lange Distanzen zu erfassen.
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <div class="box-label warn">Angriffsfläche: Tokenizer</div>
+                <p>
+                    Der Tokenizer ist <strong>deterministisch und vorhersagbar</strong>. Angreifer können Texte so konstruieren, dass die Tokenisierung unerwartete Ergebnisse liefert — z.B. um Filter zu umgehen. Wenn ein Sicherheitsfilter nach dem Wort „Bombe" sucht, aber der Tokenizer „B" + „ombe" erzeugt, greift der Filter möglicherweise nicht.
+                </p>
+            </div>
+        </div>
+
+        <!-- ========== SECTION 3: PIPELINES ========== -->
+        <div class="section">
+            <h2>3. Training vs. Inference Pipeline</h2>
+
+            <p>
+                Die zentrale Erkenntnis: Ein AI-System hat <strong>zwei fundamental verschiedene Betriebsmodi</strong>, und jeder hat andere Angriffsflächen.
+            </p>
+
+            <!-- SVG: Training Pipeline -->
+            <div class="diagram-wrap">
+                <svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Title -->
+                    <text x="20" y="28" font-family="Chakra Petch, sans-serif" font-size="15" fill="#22d3ee" font-weight="600">Training Pipeline</text>
+                    <text x="20" y="48" font-family="Nunito Sans, sans-serif" font-size="11" fill="#94a3b8">Modell lernt aus Daten → Gewichte werden angepasst</text>
+
+                    <!-- Stage 1: Data -->
+                    <rect x="20" y="70" width="130" height="70" rx="8" fill="rgba(34, 211, 238, 0.08)" stroke="#22d3ee" stroke-width="1.5"/>
+                    <text x="85" y="100" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="12" fill="#22d3ee" font-weight="600">Trainingsdaten</text>
+                    <text x="85" y="118" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Texte, Dokumente,</text>
+                    <text x="85" y="130" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Web-Crawls</text>
+
+                    <!-- Arrow -->
+                    <line x1="155" y1="105" x2="185" y2="105" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+                    <!-- Stage 2: Preprocessing -->
+                    <rect x="190" y="70" width="130" height="70" rx="8" fill="rgba(168, 85, 247, 0.08)" stroke="#a855f7" stroke-width="1.5"/>
+                    <text x="255" y="100" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="12" fill="#a855f7" font-weight="600">Preprocessing</text>
+                    <text x="255" y="118" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Cleaning, Filtering,</text>
+                    <text x="255" y="130" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Tokenization</text>
+
+                    <!-- Arrow -->
+                    <line x1="325" y1="105" x2="355" y2="105" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+                    <!-- Stage 3: Training -->
+                    <rect x="360" y="70" width="130" height="70" rx="8" fill="rgba(245, 158, 11, 0.08)" stroke="#f59e0b" stroke-width="1.5"/>
+                    <text x="425" y="100" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="12" fill="#f59e0b" font-weight="600">Training</text>
+                    <text x="425" y="118" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Gewichte anpassen,</text>
+                    <text x="425" y="130" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Backpropagation</text>
+
+                    <!-- Arrow -->
+                    <line x1="495" y1="105" x2="525" y2="105" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+                    <!-- Stage 4: Model -->
+                    <rect x="530" y="70" width="140" height="70" rx="8" fill="rgba(16, 185, 129, 0.08)" stroke="#10b981" stroke-width="1.5"/>
+                    <text x="600" y="100" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="12" fill="#10b981" font-weight="600">Fertiges Modell</text>
+                    <text x="600" y="118" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Gewichte gespeichert,</text>
+                    <text x="600" y="130" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">bereit für Deployment</text>
+
+                    <!-- Attack annotations -->
+                    <rect x="20" y="160" width="130" height="40" rx="6" fill="rgba(239, 68, 68, 0.1)" stroke="#ef4444" stroke-width="1" stroke-dasharray="4,3"/>
+                    <text x="85" y="184" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#ef4444">⚔ Data Poisoning</text>
+                    <line x1="85" y1="140" x2="85" y2="160" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,3"/>
+
+                    <rect x="530" y="160" width="140" height="40" rx="6" fill="rgba(239, 68, 68, 0.1)" stroke="#ef4444" stroke-width="1" stroke-dasharray="4,3"/>
+                    <text x="600" y="184" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#ef4444">⚔ Model Theft</text>
+                    <line x1="600" y1="140" x2="600" y2="160" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,3"/>
+
+                    <!-- === Inference Pipeline === -->
+                    <text x="20" y="240" font-family="Chakra Petch, sans-serif" font-size="15" fill="#22d3ee" font-weight="600">Inference Pipeline</text>
+                    <text x="20" y="258" font-family="Nunito Sans, sans-serif" font-size="11" fill="#94a3b8">Modell verarbeitet neue Eingaben → Gewichte sind fix</text>
+
+                    <!-- Stage 1: User Input -->
+                    <rect x="20" y="275" width="100" height="60" rx="8" fill="rgba(34, 211, 238, 0.08)" stroke="#22d3ee" stroke-width="1.5"/>
+                    <text x="70" y="300" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#22d3ee" font-weight="600">User Prompt</text>
+                    <text x="70" y="318" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Eingabe</text>
+
+                    <line x1="125" y1="305" x2="150" y2="305" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+                    <!-- Stage 2: Tokenizer -->
+                    <rect x="155" y="275" width="100" height="60" rx="8" fill="rgba(168, 85, 247, 0.08)" stroke="#a855f7" stroke-width="1.5"/>
+                    <text x="205" y="300" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#a855f7" font-weight="600">Tokenizer</text>
+                    <text x="205" y="318" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Text → Tokens</text>
+
+                    <line x1="260" y1="305" x2="285" y2="305" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+                    <!-- Stage 3: Model -->
+                    <rect x="290" y="275" width="100" height="60" rx="8" fill="rgba(245, 158, 11, 0.08)" stroke="#f59e0b" stroke-width="1.5"/>
+                    <text x="340" y="300" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#f59e0b" font-weight="600">Modell</text>
+                    <text x="340" y="318" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Verarbeitung</text>
+
+                    <line x1="395" y1="305" x2="420" y2="305" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+                    <!-- Stage 4: Output -->
+                    <rect x="425" y="275" width="100" height="60" rx="8" fill="rgba(16, 185, 129, 0.08)" stroke="#10b981" stroke-width="1.5"/>
+                    <text x="475" y="300" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#10b981" font-weight="600">Output</text>
+                    <text x="475" y="318" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Antwort</text>
+
+                    <line x1="530" y1="305" x2="555" y2="305" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+                    <!-- Stage 5: Downstream -->
+                    <rect x="560" y="275" width="110" height="60" rx="8" fill="rgba(239, 68, 68, 0.08)" stroke="#ef4444" stroke-width="1.5" stroke-opacity="0.5"/>
+                    <text x="615" y="300" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#ef4444" font-weight="600">Downstream</text>
+                    <text x="615" y="318" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">DB, API, UI</text>
+
+                    <!-- Attack annotations for inference -->
+                    <text x="50" y="365" font-family="JetBrains Mono, monospace" font-size="9" fill="#ef4444">⚔ Prompt Injection</text>
+                    <line x1="70" y1="335" x2="70" y2="350" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,3"/>
+
+                    <text x="430" y="365" font-family="JetBrains Mono, monospace" font-size="9" fill="#ef4444">⚔ Insecure Output</text>
+                    <line x1="475" y1="335" x2="475" y2="350" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,3"/>
+
+                    <!-- Arrow marker -->
+                    <defs>
+                        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+                        </marker>
+                    </defs>
+                </svg>
+                <div class="diagram-caption">Training Pipeline (oben) vs. Inference Pipeline (unten) — mit typischen Angriffspunkten</div>
+            </div>
+
+            <div class="info-box">
+                <div class="box-label cyan">Kernunterschied für Security</div>
+                <p>
+                    <strong>Training</strong>: Angreifer manipulieren die <em>Daten</em> oder stehlen das <em>Modell</em>. Der Angriff wirkt langfristig und ist schwer zu erkennen.<br>
+                    <strong>Inference</strong>: Angreifer manipulieren die <em>Eingabe</em> (Prompt) oder nutzen die <em>Ausgabe</em> als Waffe. Der Angriff ist kurzfristig, aber sofort wirksam.
+                </p>
+            </div>
+
+            <div class="notebook">
+                Schreibe in dein Notebook: <em>„Training = Daten & Modell schützen (langsam, persistent). Inference = Input & Output kontrollieren (schnell, transient)."</em>
+            </div>
+        </div>
+
+        <!-- ========== SECTION 4: EMBEDDINGS & RAG ========== -->
+        <div class="section">
+            <h2>4. Embeddings, Vector DBs & RAG</h2>
+
+            <p>
+                Moderne LLM-Anwendungen bestehen nicht nur aus dem Modell. Die häufigste Erweiterung ist <strong>RAG (Retrieval-Augmented Generation)</strong> — und sie bringt eigene Angriffsflächen mit.
+            </p>
+
+            <h3>Wie RAG funktioniert</h3>
+            <p>
+                Statt das Modell mit allem Wissen zu trainieren, werden relevante Dokumente <strong>zur Laufzeit</strong> gefunden und dem Prompt beigefügt:
+            </p>
+
+            <div class="code-block">
+                <span class="comment">// Vereinfachter RAG-Ablauf:</span><br>
+                <br>
+                <span class="comment">// 1. User stellt Frage</span><br>
+                <span class="keyword">const</span> frage = <span class="string">"Was ist unsere Rückgabepolitik?"</span>;<br>
+                <br>
+                <span class="comment">// 2. Frage → Embedding (Zahlenvektor)</span><br>
+                <span class="keyword">const</span> frageVektor = <span class="highlight">embed</span>(frage); <span class="comment">// [0.12, -0.34, 0.87, ...]</span><br>
+                <br>
+                <span class="comment">// 3. Ähnlichste Dokumente aus Vector DB finden</span><br>
+                <span class="keyword">const</span> relevanteDocs = <span class="highlight">vectorDB.search</span>(frageVektor, topK=3);<br>
+                <br>
+                <span class="comment">// 4. Dokumente + Frage → LLM</span><br>
+                <span class="keyword">const</span> prompt = <span class="string">`Kontext: ${relevanteDocs}\n\nFrage: ${frage}`</span>;<br>
+                <span class="keyword">const</span> antwort = <span class="highlight">llm.generate</span>(prompt);<br>
+                <br>
+                <span class="comment">// ⚠ Was wenn relevanteDocs manipuliert wurde?</span><br>
+                <span class="comment">// ⚠ Was wenn der Kontext Prompt-Injection-Payload enthält?</span>
+            </div>
+
+            <div class="info-box warning">
+                <div class="box-label warn">Angriffsfläche: RAG Pipeline</div>
+                <p>
+                    RAG-Systeme sind <strong>besonders anfällig</strong>, weil sie zwei Angriffsflächen kombinieren: Die Vector-DB (wer kontrolliert die Dokumente?) und den Prompt (injizierter Kontext wird wie eine Instruktion behandelt). Das ist <strong>Indirect Prompt Injection</strong> — ein zentrales Thema in Modul 5.
+                </p>
+            </div>
+        </div>
+
+        <!-- ========== SECTION 5: ATTACK SURFACE MAP ========== -->
+        <div class="section">
+            <h2>5. Attack Surface Map: Das Gesamtbild</h2>
+
+            <p>
+                Jetzt setzen wir alles zusammen. Jede Stufe der AI/ML-Pipeline hat spezifische Angriffsflächen. Diese Tabelle ist dein <strong>Referenz-Schema</strong> für den gesamten KI-Security-Track:
+            </p>
+
+            <table class="attack-table">
+                <thead>
+                    <tr>
+                        <th>Pipeline-Stufe</th>
+                        <th>Angriff</th>
+                        <th>OWASP LLM #</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="stage-name">Trainingsdaten</td>
+                        <td class="attack-name">Data Poisoning</td>
+                        <td>LLM04</td>
+                    </tr>
+                    <tr>
+                        <td class="stage-name">Modellgewichte</td>
+                        <td class="attack-name">Model Theft / Extraction</td>
+                        <td>LLM03*</td>
+                    </tr>
+                    <tr>
+                        <td class="stage-name">User-Prompt</td>
+                        <td class="attack-name">Prompt Injection</td>
+                        <td>LLM01</td>
+                    </tr>
+                    <tr>
+                        <td class="stage-name">Tokenizer</td>
+                        <td class="attack-name">Adversarial Tokens</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="stage-name">Modell-Output</td>
+                        <td class="attack-name">Insecure Output Handling</td>
+                        <td>LLM05</td>
+                    </tr>
+                    <tr>
+                        <td class="stage-name">Vector DB / RAG</td>
+                        <td class="attack-name">RAG Poisoning</td>
+                        <td>LLM08</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="font-size: 0.82rem;">
+                *Model Theft fällt unter Supply Chain (LLM03) im OWASP-Framework, weil gestohlene Modelle oft als „legitimn" weiterverbreitet werden.
+            </p>
+
+            <div class="notebook">
+                Zeichne diese Tabelle in dein Notebook ab. <em>Du wirst sie in den nächsten 12 Modulen Zeile für Zeile vertiefen.</em>
+            </div>
+        </div>
+
+        <!-- ========== WORKED EXAMPLE ========== -->
+        <div class="worked-example">
+            <h3>📋 Worked Example: Samsung & ChatGPT (2023)</h3>
+            <p style="color: var(--text-secondary); font-size: 0.92rem; margin-top: 0.5rem;">
+                Im April 2023 nutzten Samsung-Ingenieure ChatGPT, um internen Quellcode zu debuggen und Meeting-Protokolle zusammenzufassen. Problem: Die eingegebenen Daten wurden Teil der OpenAI-Trainingsdaten.
+            </p>
+
+            <div class="we-dual">
+                <div class="we-side offensive">
+                    <div class="side-label">Angriffsvektor</div>
+                    <ul>
+                        <li>Kein aktiver Angreifer nötig — die Mitarbeiter selbst gaben vertrauliche Daten in ein externes System ein</li>
+                        <li>Pipeline-Stufe: <strong>Trainingsdaten</strong> — die Prompts wurden zu Trainingsdaten für zukünftige Modelle</li>
+                        <li>Angriffsfläche: Die Grenze zwischen „Inference nutzen" und „Training füttern" war unklar</li>
+                    </ul>
+                </div>
+                <div class="we-side defensive">
+                    <div class="side-label">Verteidigung</div>
+                    <ul>
+                        <li>Samsung verbot ChatGPT für alle Mitarbeiter</li>
+                        <li>Langfristig: Data Loss Prevention (DLP) Policies, Unternehmens-eigene LLM-Instanzen, Opt-out aus Training</li>
+                        <li>OWASP LLM02 (Sensitive Information Disclosure) adressiert genau dieses Szenario</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="info-box purple" style="margin-top: 1rem;">
+                <div class="box-label purp">Pattern-Mismatch</div>
+                <p>
+                    Hier gab es keinen „Hacker". Die Schwachstelle war ein <strong>Verständnisproblem</strong>: Mitarbeiter verstanden nicht, dass „Inference nutzen" gleichzeitig „Training füttern" bedeuten kann. Genau deswegen brauchst du die Pipeline-Diagramme oben.
+                </p>
+            </div>
+        </div>
+
+        <!-- ========== SUMMARY ========== -->
+        <div class="section">
+            <h2>📝 Zusammenfassung</h2>
+            <p>
+                Du hast jetzt die <strong>mentale Landkarte</strong> für den gesamten KI-Security-Track: Wo Daten in AI-Systemen fließen, wo sie verarbeitet werden, und wo Angreifer eingreifen können. Jedes weitere Modul vertieft eine einzelne Zeile der Attack Surface Map.
+            </p>
+            <div class="summary-terms">
+                <span class="term-tag">Machine Learning</span>
+                <span class="term-tag">Deep Learning</span>
+                <span class="term-tag">NLP</span>
+                <span class="term-tag">LLM</span>
+                <span class="term-tag">Transformer</span>
+                <span class="term-tag">Tokenization</span>
+                <span class="term-tag">Embeddings</span>
+                <span class="term-tag">Attention</span>
+                <span class="term-tag">Training Pipeline</span>
+                <span class="term-tag">Inference Pipeline</span>
+                <span class="term-tag">RAG</span>
+                <span class="term-tag">Vector Database</span>
+                <span class="term-tag">Attack Surface</span>
+                <span class="term-tag">Data Poisoning</span>
+                <span class="term-tag">Prompt Injection</span>
+            </div>
+        </div>
+
+        <!-- ========== CROSS-REFERENCES ========== -->
+        <div class="section">
+            <h2>🔗 Querverweise</h2>
+            <div class="info-box purple">
+                <div class="box-label purp">Web-Security Track</div>
+                <p>
+                    <strong>Web-Modul 3: Threat Actors & Attack Surfaces</strong> — Attack Surface Mapping ist dasselbe Konzept, angewendet auf klassische Web-Anwendungen. Wenn du es dort lernst, nutzt du hier dasselbe Schema — nur die Komponenten sind andere.
+                </p>
+            </div>
+        </div>
+
+        <!-- ========== MOVEMENT BREAK ========== -->
+        <div class="movement-break">
+            <div class="mb-icon">🏃‍♂️</div>
+            <h3>Bewegungspause</h3>
+            <p>
+                Bevor du zum Rätsel gehst — steh auf und bewege dich. Theorie muss sich setzen, bevor du sie anwendest.
+            </p>
+            <div class="mb-exercise">
+                10× Schulterkreisen (5 vorwärts, 5 rückwärts) + 30 Sekunden Arme ausschütteln
+            </div>
+        </div>
+
+        <!-- ========== NAVIGATION ========== -->
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">← Zurück zur Übersicht</a>
+            <a href="exercise.html" class="nav-link next">Zum Rätsel →</a>
+        </div>
+
+        <div class="lesson-footer">
+            KI-Security Track · Phase 1 · Modul 1: AI/ML-Grundlagen für Security
+        </div>
+    </div>
+</body>
+</html>

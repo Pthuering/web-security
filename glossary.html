@@ -104,6 +104,98 @@
 
     <!-- === Neue Glossar-Einträge bei jeder Lektion HIER einfügen (alphabetisch sortiert) === -->
 
+    <!-- === Einträge aus AI-Lesson 01: AI/ML-Grundlagen für Security === -->
+
+    <li>
+      <div class="glossary-term">Attack Surface (Angriffsfläche)</div>
+      <div class="glossary-def">Die Summe aller Punkte, an denen ein Angreifer mit einem System interagieren kann. Bei AI-Systemen umfasst sie Trainingsdaten, Modellgewichte, Tokenizer, Prompts, Outputs und angebundene Datenquellen (RAG).</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Attention-Mechanismus</div>
+      <div class="glossary-def">Kernkomponente der Transformer-Architektur. Jedes Token gewichtet die Relevanz aller anderen Tokens im Kontext — ermöglicht dem Modell, Zusammenhänge über lange Distanzen zu erfassen.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Data Poisoning</div>
+      <div class="glossary-def">Angriff auf die Trainingsdaten eines ML-Modells. Manipulierte Daten werden eingeschleust, um das Modell zu korrumpieren. OWASP LLM04. Wirkt langfristig und ist schwer zu erkennen.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Deep Learning (DL)</div>
+      <div class="glossary-def">Teilbereich von Machine Learning, der neuronale Netze mit vielen Schichten verwendet. Oberkategorie für NLP, Computer Vision und Audio-Modelle.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Embeddings</div>
+      <div class="glossary-def">Zahlenvektoren, die Tokens oder Texte in einem hochdimensionalen Raum repräsentieren. Ähnliche Bedeutungen → ähnliche Vektoren. Basis für semantische Suche und RAG-Systeme.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Inference Pipeline</div>
+      <div class="glossary-def">Der Datenfluss bei der Nutzung eines fertigen Modells: User-Prompt → Tokenizer → Modell → Output → Downstream-System. Angriffspunkte: Prompt Injection, Adversarial Tokens, Insecure Output Handling.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">LLM (Large Language Model)</div>
+      <div class="glossary-def">Große Sprachmodelle wie GPT oder Claude. Teilmenge von NLP ⊂ Deep Learning ⊂ Machine Learning. Basieren auf der Transformer-Architektur und erzeugen Text durch Token-für-Token-Vorhersage.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Machine Learning (ML)</div>
+      <div class="glossary-def">Oberbegriff für Systeme, die Muster aus Daten lernen, ohne explizit programmiert zu werden. Umfasst Deep Learning, klassische Algorithmen und mehr.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">NLP (Natural Language Processing)</div>
+      <div class="glossary-def">Teilbereich von Deep Learning für Sprachverarbeitung — Text verstehen und erzeugen. LLMs sind die derzeit wichtigste NLP-Architektur.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Prompt Injection</div>
+      <div class="glossary-def">Angriff, bei dem ein Nutzer eine manipulierte Eingabe gibt, die das System Prompt überschreibt oder das Modellverhalten ändert. OWASP LLM01. Angriffspunkt: User-Prompt in der Inference-Pipeline.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">RAG (Retrieval-Augmented Generation)</div>
+      <div class="glossary-def">Erweiterung von LLMs, bei der relevante Dokumente zur Laufzeit aus einer Vector Database abgerufen und dem Prompt beigefügt werden. Bringt eigene Angriffsfläche mit: RAG Poisoning (OWASP LLM08).</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Tokenization</div>
+      <div class="glossary-def">Zerlegung von Text in Sub-Wort-Einheiten (Tokens) als erste Verarbeitungsstufe eines LLMs. Der Tokenizer ist deterministisch und vorhersagbar — Angreifer können ihn nutzen, um Sicherheitsfilter zu umgehen.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Training Pipeline</div>
+      <div class="glossary-def">Der Datenfluss beim Trainieren eines Modells: Trainingsdaten → Preprocessing → Training → fertiges Modell. Angriffspunkte: Data Poisoning, Model Theft.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Transformer</div>
+      <div class="glossary-def">Neuronale Netzarchitektur (2017), die LLMs zugrunde liegt. Kernmechanismus: Attention — jedes Token gewichtet die Relevanz aller anderen Tokens. Security-relevant, weil sie die Basis für die Inference-Pipeline bildet.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Vector Database</div>
+      <div class="glossary-def">Datenbank, die Embedding-Vektoren speichert und Ähnlichkeitssuche ermöglicht. Kernkomponente von RAG-Systemen. Angriffsfläche: Manipulierte Dokumente können Indirect Prompt Injection transportieren.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
   </ul>
 
 </main>
