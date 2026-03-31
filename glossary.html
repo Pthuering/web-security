@@ -28,48 +28,78 @@
 
   <ul class="glossary-list">
 
-    <!-- === Einträge aus Lesson 01: Reflected XSS === -->
+    <!-- === Einträge aus Lesson 01: CIA-Triad & Security Controls === -->
 
     <li>
-      <div class="glossary-term">Cross-Site Scripting (XSS)</div>
-      <div class="glossary-def">Eine Klasse von Sicherheitslücken, bei der ein Angreifer eigenen JavaScript-Code im Browser eines anderen Nutzers ausführen lässt. Drei Varianten: Reflected, Stored, DOM-based.</div>
-      <div class="glossary-source">→ <a href="web-security/lesson-01-xss-reflected/theory.html">Web-Security Lesson 01</a></div>
+      <div class="glossary-term">Administrative Controls</div>
+      <div class="glossary-def">Sicherheitsmaßnahmen auf organisatorischer Ebene — z.B. Richtlinien, Schulungen, Prozesse. Eine der drei Security-Control-Kategorien neben technischen und physischen Controls.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
     </li>
 
     <li>
-      <div class="glossary-term">HTML Injection</div>
-      <div class="glossary-def">Das Einschleusen von HTML-Markup in eine Webseite über nicht-sanitisierte Benutzereingaben. Oft Vorstufe oder Bestandteil von XSS.</div>
-      <div class="glossary-source">→ <a href="web-security/lesson-01-xss-reflected/theory.html">Web-Security Lesson 01</a></div>
+      <div class="glossary-term">Availability (Verfügbarkeit)</div>
+      <div class="glossary-def">Die dritte Säule der CIA-Triad. Stellt sicher, dass Systeme und Daten für autorisierte Nutzer zugänglich und funktionsfähig sind, wenn sie gebraucht werden.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
     </li>
 
     <li>
-      <div class="glossary-term">Input Sanitization</div>
-      <div class="glossary-def">Das Bereinigen von Benutzereingaben, bevor sie verarbeitet oder angezeigt werden — z.B. durch Entfernen oder Escapen von HTML-Sonderzeichen.</div>
-      <div class="glossary-source">→ <a href="web-security/lesson-01-xss-reflected/theory.html">Web-Security Lesson 01</a></div>
+      <div class="glossary-term">CIA-Triad</div>
+      <div class="glossary-def">Das universelle Grundmodell der Informationssicherheit, bestehend aus Confidentiality (Vertraulichkeit), Integrity (Integrität) und Availability (Verfügbarkeit). Jedes Sicherheitsrisiko lässt sich über diese drei Dimensionen klassifizieren.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
     </li>
 
     <li>
-      <div class="glossary-term">Output Encoding</div>
-      <div class="glossary-def">Das kontextgerechte Umwandeln von Sonderzeichen (z.B. <code>&lt;</code> → <code>&amp;lt;</code>), bevor Daten in HTML, JavaScript oder andere Ausgabekontexte geschrieben werden.</div>
-      <div class="glossary-source">→ <a href="web-security/lesson-01-xss-reflected/theory.html">Web-Security Lesson 01</a></div>
+      <div class="glossary-term">Confidentiality (Vertraulichkeit)</div>
+      <div class="glossary-def">Die erste Säule der CIA-Triad. Stellt sicher, dass Informationen nur von autorisierten Personen eingesehen werden können.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
     </li>
 
     <li>
-      <div class="glossary-term">Payload</div>
-      <div class="glossary-def">Der ausführbare Teil eines Angriffs — bei XSS typischerweise ein JavaScript-Snippet wie <code>&lt;script&gt;alert(1)&lt;/script&gt;</code>.</div>
-      <div class="glossary-source">→ <a href="web-security/lesson-01-xss-reflected/theory.html">Web-Security Lesson 01</a></div>
+      <div class="glossary-term">Corrective Controls</div>
+      <div class="glossary-def">Sicherheitsmaßnahmen, die nach einem Vorfall greifen, um den Schaden zu begrenzen und den Normalzustand wiederherzustellen — z.B. Backups, Incident Response.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
     </li>
 
     <li>
-      <div class="glossary-term">Reflected (Non-Persistent)</div>
-      <div class="glossary-def">Eine XSS-Variante, bei der die bösartige Eingabe vom Server sofort in die Antwort reflektiert wird, ohne gespeichert zu werden. Der Angriff steckt typischerweise in der URL.</div>
-      <div class="glossary-source">→ <a href="web-security/lesson-01-xss-reflected/theory.html">Web-Security Lesson 01</a></div>
+      <div class="glossary-term">Defense in Depth</div>
+      <div class="glossary-def">Sicherheitsprinzip, bei dem mehrere Schutzschichten (Controls) übereinander gelegt werden, sodass der Ausfall einer Maßnahme nicht das gesamte System kompromittiert.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
     </li>
 
     <li>
-      <div class="glossary-term">URL-Parameter (Query String)</div>
-      <div class="glossary-def">Key-Value-Paare nach dem <code>?</code> in einer URL (z.B. <code>?search=hello</code>). Häufiger Eintrittspunkt für Reflected XSS, da sie vom Nutzer kontrolliert werden.</div>
-      <div class="glossary-source">→ <a href="web-security/lesson-01-xss-reflected/theory.html">Web-Security Lesson 01</a></div>
+      <div class="glossary-term">Detective Controls</div>
+      <div class="glossary-def">Sicherheitsmaßnahmen, die Angriffe oder Regelverstöße erkennen — z.B. Logging, IDS, Audits. Wirken nicht präventiv, sondern machen Vorfälle sichtbar.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Integrity (Integrität)</div>
+      <div class="glossary-def">Die zweite Säule der CIA-Triad. Stellt sicher, dass Daten nicht unbefugt oder unbemerkt verändert werden können.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Physische Controls</div>
+      <div class="glossary-def">Sicherheitsmaßnahmen auf physischer Ebene — z.B. Zutrittskontrollsysteme, Überwachungskameras, USV-Anlagen. Schützen Hardware und Infrastruktur.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Preventive Controls</div>
+      <div class="glossary-def">Sicherheitsmaßnahmen, die Angriffe im Vorfeld verhindern sollen — z.B. Firewalls, Verschlüsselung, Zugriffskontrollen.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Security Control</div>
+      <div class="glossary-def">Jede technische, administrative oder physische Maßnahme, die ein Sicherheitsrisiko reduziert. Controls lassen sich nach Kategorie (technisch/administrativ/physisch) und Funktion (preventive/detective/corrective) klassifizieren.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Technische Controls</div>
+      <div class="glossary-def">Sicherheitsmaßnahmen, die durch Software oder Hardware umgesetzt werden — z.B. Firewalls, Verschlüsselung, IDS. Eine der drei Security-Control-Kategorien.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
     </li>
 
     <!-- === Neue Glossar-Einträge bei jeder Lektion HIER einfügen (alphabetisch sortiert) === -->

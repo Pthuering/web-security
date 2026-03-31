@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lösung: CIA-Triad Incident Classifier | Web-Security Track</title>
+    <link rel="stylesheet" href="../../styles/main.css">
+    <style>
+        /* Map lesson variables to main.css design system */
+        :root {
+            --accent: var(--accent-cyan);
+            --accent-dim: var(--accent-cyan-dim);
+            --accent-glow: rgba(0, 212, 255, 0.08);
+            --warning: var(--accent-orange);
+            --warning-dim: var(--accent-orange-dim);
+            --success: var(--accent-green);
+            --success-dim: var(--accent-green-dim);
+            --danger: var(--accent-red);
+            --danger-dim: var(--accent-red-dim);
+            --purple: var(--accent-purple);
+            --purple-dim: var(--accent-purple-dim);
+            --border: var(--border-subtle);
+            --radius: var(--radius-md);
+        }
+        .container { max-width: 780px; }
+        .breadcrumb {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+        .breadcrumb a { color: var(--accent-dim); text-decoration: none; }
+        .breadcrumb a:hover { color: var(--accent); }
+        .breadcrumb .sep { margin: 0 0.5rem; opacity: 0.4; }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .page-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        h2::before {
+            content: '';
+            width: 3px;
+            height: 1.2em;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        h3 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.6rem;
+            color: var(--accent);
+        }
+
+        p { margin-bottom: 1rem; color: var(--text-secondary); }
+        strong { color: var(--text-primary); }
+        em { color: var(--accent); font-style: normal; font-weight: 600; }
+
+        .section { margin-bottom: 3rem; }
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--accent-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Solution steps */
+        .solution-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .solution-step {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.3rem;
+            display: grid;
+            grid-template-columns: 56px 1fr;
+            gap: 1rem;
+            align-items: start;
+        }
+        .step-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .step-num {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent);
+            background: var(--accent-glow);
+            border: 1px solid rgba(34, 211, 238, 0.2);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+        }
+        .step-cia {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+        .step-cia.c { color: var(--accent); background: var(--accent-glow); }
+        .step-cia.i { color: var(--success); background: var(--success-dim); }
+        .step-cia.a { color: var(--warning); background: var(--warning-dim); }
+
+        .step-letter {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--success);
+        }
+
+        .step-content .step-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+            font-size: 0.95rem;
+        }
+        .step-content .step-reason {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        .step-content .step-trap {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            background: var(--bg-secondary);
+            border-left: 2px solid var(--warning);
+            padding: 0.5rem 0.8rem;
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Password reveal */
+        .password-reveal {
+            background: var(--success-dim);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .password-reveal .pw-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--success);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+        .password-reveal .pw-word {
+            font-family: var(--font-mono);
+            font-size: 2rem;
+            font-weight: 500;
+            color: var(--success);
+            letter-spacing: 0.3em;
+        }
+        .password-reveal .pw-meaning {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+
+        /* Reflection */
+        .reflection {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        .reflection .r-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--purple);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+        .reflection-questions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .rq-item {
+            padding: 0.8rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        .rq-item strong { color: var(--text-primary); }
+        .rq-item em { color: var(--accent); font-style: italic; }
+
+        /* Transfer */
+        .transfer {
+            background: var(--bg-card);
+            border: 1px solid var(--accent-dim);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        .transfer .t-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.8rem;
+        }
+        .transfer p { font-size: 0.95rem; }
+        .transfer p:last-child { margin-bottom: 0; }
+
+        /* Navigation */
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .nav-link {
+            flex: 1;
+            min-width: 200px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-family: var(--font-display);
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-link:hover { border-color: var(--accent-dim); color: var(--text-primary); }
+        .nav-link.next {
+            background: linear-gradient(135deg, var(--accent-dim), #0891b2);
+            color: #fff;
+            border-color: transparent;
+            justify-content: flex-end;
+        }
+        .nav-link.next:hover { box-shadow: 0 6px 20px rgba(34, 211, 238, 0.2); }
+
+        .lesson-footer {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.5rem; }
+            .container { padding: 2rem 1rem; }
+            .solution-step { grid-template-columns: 48px 1fr; }
+            .nav-links { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="../../index.html" class="site-logo">~/cybersec<span>-lab</span></a>
+    <nav>
+      <ul class="site-nav">
+        <li><a href="../index.html" class="active">Web-Security</a></li>
+        <li><a href="../../ai-security/index.html">AI-Security</a></li>
+        <li><a href="../../glossary.html">Glossar</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+    <div class="container">
+        <nav class="breadcrumb">
+            <a href="../../index.html">Home</a>
+            <span class="sep">/</span>
+            <a href="../index.html">Web-Security</a>
+            <span class="sep">/</span>
+            <a href="index.html">Modul 1</a>
+            <span class="sep">/</span>
+            <span>Lösung</span>
+        </nav>
+
+        <h1>Lösung: Der Sicherheitsberater</h1>
+        <p class="page-subtitle">Schritt-für-Schritt-Auflösung aller sechs Vorfälle.</p>
+
+        <!-- ========== STEP BY STEP ========== -->
+        <div class="section">
+            <div class="section-label">Lösungsweg</div>
+            <h2>Die sechs Vorfälle im Detail</h2>
+
+            <div class="solution-steps">
+                <!-- Step 1 -->
+                <div class="solution-step">
+                    <div class="step-badge">
+                        <span class="step-num">#1</span>
+                        <span class="step-cia c">C</span>
+                        <span class="step-letter">→ S</span>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Kundendaten an Marketingfirma weitergegeben</div>
+                        <div class="step-reason">
+                            Die Daten wurden von einer <strong>nicht autorisierten Person eingesehen und weitergeleitet</strong>. Es geht nicht darum, dass die Daten verändert oder nicht verfügbar waren — sondern dass jemand Zugang hatte, der keinen haben sollte. Das ist <em>Confidentiality</em>.
+                        </div>
+                        <div class="step-trap">
+                            ⚠️ Häufiger Fehler: „Die Daten wurden ja weitergegeben, also Integrity?" — Nein. Die Daten selbst wurden nicht verändert. Sie wurden nur von Unbefugten eingesehen.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="solution-step">
+                    <div class="step-badge">
+                        <span class="step-num">#2</span>
+                        <span class="step-cia a">A</span>
+                        <span class="step-letter">→ C</span>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Kundenhotline nach Stromausfall nicht erreichbar</div>
+                        <div class="step-reason">
+                            Der Dienst war <strong>sechs Stunden nicht verfügbar</strong>. Keine Daten wurden gestohlen oder verändert — das System war schlicht nicht erreichbar. Das ist <em>Availability</em>.
+                        </div>
+                        <div class="step-trap">
+                            ⚠️ Hinweis: Eine kaputte USV ist ein Beispiel für einen fehlenden <strong>physischen, preventiven Control</strong>. Die USV soll genau solche Ausfälle verhindern.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="solution-step">
+                    <div class="step-badge">
+                        <span class="step-num">#3</span>
+                        <span class="step-cia i">I</span>
+                        <span class="step-letter">→ H</span>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Preise in Produktdatenbank manipuliert</div>
+                        <div class="step-reason">
+                            Die Daten wurden <strong>unbemerkt verändert</strong> — Preise stimmen nicht mehr mit der Realität überein. Das System lief weiter (Availability ok), und es ging nicht primär ums Einsehen (Confidentiality), sondern ums <strong>Verfälschen</strong>. Das ist <em>Integrity</em>.
+                        </div>
+                        <div class="step-trap">
+                            ⚠️ Vorgriff: SQL-Injection wird in Modul 7 ausführlich behandelt. Hier reicht: Der Angreifer konnte Daten in der Datenbank verändern, die er nicht hätte verändern dürfen.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="solution-step">
+                    <div class="step-badge">
+                        <span class="step-num">#4</span>
+                        <span class="step-cia c">C</span>
+                        <span class="step-letter">→ I</span>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Backup-Bänder mit Personalakten gestohlen</div>
+                        <div class="step-reason">
+                            Sensible Daten sind nun in den Händen Unbefugter. Obwohl der Diebstahl physisch war, ist die <strong>primäre Verletzung: Unbefugte können die Daten lesen</strong>. Das ist <em>Confidentiality</em>.
+                        </div>
+                        <div class="step-trap">
+                            ⚠️ Häufiger Fehler: „Die Bänder sind weg, also Availability?" — Die Backups fehlen zwar, aber der primäre Schaden ist der unbefugte Zugang zu Personaldaten. Außerdem: Ein verschlüsseltes Backup hätte die Confidentiality geschützt, selbst bei physischem Diebstahl.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="solution-step">
+                    <div class="step-badge">
+                        <span class="step-num">#5</span>
+                        <span class="step-cia i">I</span>
+                        <span class="step-letter">→ L</span>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Log-Einträge durch Update überschrieben</div>
+                        <div class="step-reason">
+                            Die Log-Daten wurden <strong>verfälscht/zerstört</strong> — sie entsprechen nicht mehr der Wahrheit. Das SIEM war weiterhin verfügbar, und die Logs wurden nicht von Unbefugten eingesehen, sondern <strong>korrumpiert</strong>. Das ist <em>Integrity</em>.
+                        </div>
+                        <div class="step-trap">
+                            ⚠️ Wichtig: Nicht jeder Integrity-Verstoß ist ein Angriff. Hier war es ein fehlerhaftes Update — aber der Effekt ist derselbe: Die Daten sind nicht mehr vertrauenswürdig.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 6 -->
+                <div class="solution-step">
+                    <div class="step-badge">
+                        <span class="step-num">#6</span>
+                        <span class="step-cia a">A</span>
+                        <span class="step-letter">→ D</span>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">DDoS-Attacke legt Online-Shop lahm</div>
+                        <div class="step-reason">
+                            <strong>DDoS = Distributed Denial of Service</strong> — der Name sagt es schon: Dienstverweigerung. Der Shop war für Kunden nicht erreichbar. Keine Daten gestohlen, nichts verändert — nur <strong>nicht verfügbar</strong>. Das ist <em>Availability</em>.
+                        </div>
+                        <div class="step-trap">
+                            ⚠️ Fun Fact: DDoS ist das Lehrbuchbeispiel für Availability-Verletzung. Wenn du „Availability" hörst, denk an DDoS.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Password reveal -->
+            <div class="password-reveal">
+                <div class="pw-label">Passwort</div>
+                <div class="pw-word">SCHILD</div>
+                <div class="pw-meaning">S · C · H · I · L · D — wie ein Schutzschild für deine Systeme</div>
+            </div>
+        </div>
+
+        <!-- ========== EXPLANATION ========== -->
+        <div class="section">
+            <div class="section-label">Vertiefung</div>
+            <h2>Warum ist CIA-Klassifikation schwierig?</h2>
+
+            <p>
+                Die häufigste Fehlerquelle ist, dass ein Vorfall <strong>mehrere CIA-Eigenschaften gleichzeitig betrifft</strong>. Bei Vorfall #4 (Backup-Diebstahl) könnte man argumentieren: „Die Backups fehlen jetzt → Availability!" Das stimmt <em>sekundär</em>, aber die <strong>primäre</strong> und schwerwiegendste Verletzung ist der unbefugte Datenzugang.
+            </p>
+            <p>
+                <strong>Faustregel:</strong> Frage dich immer: <em>Was ist der größte Schaden?</em> Beim Backup-Diebstahl ist es nicht, dass ein Backup fehlt (dafür gibt es hoffentlich weitere), sondern dass Gehaltsdaten in falschen Händen sind.
+            </p>
+
+            <h3>Das fehlende Stück: Welcher Control hätte geholfen?</h3>
+            <p>
+                Jeder Vorfall offenbart einen fehlenden oder versagenden Security Control. Hier die Zuordnung:
+            </p>
+
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 1rem 0;">
+                <thead>
+                    <tr>
+                        <th style="padding: 0.6rem; text-align: left; border: 1px solid var(--border); background: var(--bg-card); color: var(--accent); font-family: var(--font-display); font-size: 0.8rem;">#</th>
+                        <th style="padding: 0.6rem; text-align: left; border: 1px solid var(--border); background: var(--bg-card); color: var(--accent); font-family: var(--font-display); font-size: 0.8rem;">Fehlender Control</th>
+                        <th style="padding: 0.6rem; text-align: left; border: 1px solid var(--border); background: var(--bg-card); color: var(--accent); font-family: var(--font-display); font-size: 0.8rem;">Kategorie</th>
+                        <th style="padding: 0.6rem; text-align: left; border: 1px solid var(--border); background: var(--bg-card); color: var(--accent); font-family: var(--font-display); font-size: 0.8rem;">Funktion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">1</td>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Zugriffsrechte (Least Privilege), DLP</td>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Technisch + Administrativ</td>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Preventive</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">2</td>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Funktionierende USV, Redundanz</td>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Physisch + Technisch</td>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Preventive</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">3</td>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Input Validation, Parameterized Queries</td>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Technisch</td>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Preventive</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">4</td>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Verschlüsselung, Zutrittsschleuse</td>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Technisch + Physisch</td>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Preventive + Corrective</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">5</td>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Change Management, Test-Umgebung</td>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Administrativ + Technisch</td>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Preventive</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">6</td>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">DDoS-Mitigation (CDN, Rate Limiting)</td>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Technisch</td>
+                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Preventive + Detective</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ========== REFLEXION ========== -->
+        <div class="reflection">
+            <div class="r-label">🪞 Reflexion</div>
+            <div class="reflection-questions">
+                <div class="rq-item">
+                    <strong>Was war der schwierigste Vorfall?</strong><br>
+                    Überlege: Bei welchem Vorfall hast du am längsten gezögert? War es #4 (Backup-Diebstahl), wo Confidentiality und Availability sich überlappen? Oder #5 (Log-Überschreibung), wo kein Angreifer beteiligt war?
+                </div>
+                <div class="rq-item">
+                    <strong>Wo hast du zuerst falsch gedacht?</strong><br>
+                    Falls du bei einem Vorfall zunächst die falsche CIA-Eigenschaft gewählt hast: <em>Warum?</em> Welche Faustregel hätte dir geholfen? Notiere sie in deinem Fehlerlog.
+                </div>
+                <div class="rq-item">
+                    <strong>Der „Primär"-Trick:</strong><br>
+                    Das Schlüsselwort war <em>primär</em>. Fast jeder Sicherheitsvorfall betrifft mehrere CIA-Eigenschaften. Die Kunst liegt darin, die <strong>schwerwiegendste Verletzung</strong> zu identifizieren. Schreibe in dein Notebook: <em>„CIA-Klassifikation = größter Schaden zuerst."</em>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== TRANSFER ========== -->
+        <div class="transfer">
+            <div class="t-label">🔄 Transfer-Fragen</div>
+            <p>
+                <strong>Für dein Ticketing-System:</strong> Stell dir vor, ein Angreifer ändert den Preis eines Tickets in der Datenbank von 50 € auf 0 €. Welche CIA-Eigenschaft ist primär verletzt? Welcher Control hätte das verhindert?
+            </p>
+            <p>
+                <strong>Querverweis KI-Track:</strong> Wenn ein LLM vertrauliche Trainingsdaten in seiner Antwort preisgibt — welche CIA-Eigenschaft ist verletzt? <em>(Antwort: Confidentiality — genau das behandelt KI-Modul 6: Sensitive Information Disclosure.)</em>
+            </p>
+            <p>
+                <strong>Defense in Depth:</strong> Vorfall #4 zeigt: Wenn ein einzelner Control versagt (Türschloss), braucht es eine zweite Schicht (Verschlüsselung). Wo in deinem Arbeitsalltag verlässt du dich auf nur <em>einen</em> Control?
+            </p>
+        </div>
+
+        <!-- ========== NAVIGATION ========== -->
+        <div class="nav-links">
+            <a href="exercise.html" class="nav-link">
+                ← Zurück zum Rätsel
+            </a>
+            <a href="../kryptografie-grundlagen/index.html" class="nav-link next">
+                Nächstes Modul: Kryptografie →
+            </a>
+        </div>
+
+        <div class="lesson-footer">
+            Web-Security Track · Phase 1 · Modul 1: CIA-Triad &amp; Security Controls
+        </div>
+    </div>
+</body>
+</html>
