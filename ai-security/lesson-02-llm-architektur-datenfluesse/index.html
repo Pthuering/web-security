@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul 2: LLM-Architektur & Datenflüsse | KI-Security Track</title>
+    <link rel="stylesheet" href="../../styles/main.css">
+    <style>
+        /* Map lesson variables to main.css design system */
+        :root {
+            --accent: var(--accent-cyan);
+            --accent-dim: var(--accent-cyan-dim);
+            --accent-glow: rgba(34, 211, 238, 0.12);
+            --warning: var(--accent-orange);
+            --warning-dim: var(--accent-orange-dim);
+            --success: var(--accent-green);
+            --success-dim: var(--accent-green-dim);
+            --danger: var(--accent-red);
+            --danger-dim: var(--accent-red-dim);
+            --purple: var(--accent-purple);
+            --purple-dim: var(--accent-purple-dim);
+            --border: var(--border-subtle);
+            --radius: var(--radius-md);
+            --radius-lg: 12px;
+        }
+        .container { max-width: 760px; }
+        .track-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.9rem;
+            background: var(--purple-dim);
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            border-radius: 20px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--purple);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 1.5rem;
+        }
+        .track-badge::before { content: '🤖'; font-size: 0.85rem; }
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 5vw, 2.4rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+        }
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+        .meta-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem 1.2rem;
+        }
+        .meta-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.35rem;
+        }
+        .meta-value { font-weight: 600; font-size: 0.95rem; }
+        .difficulty-dots { display: inline-flex; gap: 0.3rem; }
+        .dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--border);
+        }
+        .dot.active {
+            background: var(--accent);
+            box-shadow: 0 0 6px var(--accent-glow);
+        }
+        .section { margin-bottom: 2.5rem; }
+        .section h2 {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .goals-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .goals-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            padding: 0.6rem 0.9rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+        .goals-list li::before {
+            content: '▸';
+            color: var(--accent);
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+        .prereq-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
+            border-radius: var(--radius);
+            padding: 1rem 1.2rem;
+        }
+        .prereq-card a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        .prereq-card a:hover { text-decoration: underline; }
+        .xref-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--purple);
+            border-radius: var(--radius);
+            padding: 1rem 1.2rem;
+            margin-top: 0.8rem;
+        }
+        .xref-card .xref-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--purple);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.4rem;
+        }
+        .xref-card a { color: var(--accent); text-decoration: none; }
+        .xref-card a:hover { text-decoration: underline; }
+        .cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.85rem 2rem;
+            background: linear-gradient(135deg, var(--accent-dim), rgba(34, 211, 238, 0.3));
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            border-radius: var(--radius);
+            color: var(--accent);
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1.05rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            margin-bottom: 3rem;
+        }
+        .cta:hover {
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.25), rgba(34, 211, 238, 0.4));
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.15);
+            transform: translateY(-1px);
+        }
+        .arrow { transition: transform 0.2s ease; }
+        .cta:hover .arrow { transform: translateX(4px); }
+        .lesson-footer {
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="../../index.html" class="site-logo">~/cybersec<span>-lab</span></a>
+    <nav>
+      <ul class="site-nav">
+        <li><a href="../../web-security/index.html">Web-Security</a></li>
+        <li><a href="../index.html" class="active">AI-Security</a></li>
+        <li><a href="../../glossary.html">Glossar</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+    <div class="container">
+        <nav class="breadcrumb">
+            <a href="../../index.html">Home</a>
+            <span class="sep">/</span>
+            <a href="../index.html">AI-Security</a>
+            <span class="sep">/</span>
+            <span>Modul 2</span>
+        </nav>
+
+        <div class="track-badge">KI-Security Track</div>
+
+        <h1>Modul 2: LLM-Architektur & Datenflüsse</h1>
+        <p class="subtitle">
+            Prompt → Model → Output, RAG, Tool Use, Agent Loops — wo fließen Daten, wo entstehen Risiken?
+        </p>
+
+        <div class="meta-grid">
+            <div class="meta-card">
+                <div class="meta-label">Schwierigkeitsgrad</div>
+                <div class="meta-value">
+                    <span class="difficulty-dots">
+                        <span class="dot active"></span>
+                        <span class="dot active"></span>
+                        <span class="dot"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="meta-card">
+                <div class="meta-label">Zeitschätzung</div>
+                <div class="meta-value">~35 Minuten</div>
+            </div>
+            <div class="meta-card">
+                <div class="meta-label">Cert-Mapping</div>
+                <div class="meta-value">SecAI+ Domain 1 (17%)</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📋 Voraussetzungen</h2>
+            <div class="prereq-card">
+                <a href="../lesson-01-ai-ml-grundlagen/index.html">Modul 1: AI/ML-Grundlagen für Security</a> —
+                Du brauchst die ML-Taxonomie, Training vs. Inference Pipeline, und die Attack Surface Map als Basis.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Lernziele</h2>
+            <ul class="goals-list">
+                <li>Die fünf LLM-Architekturmuster (Direct Chat, RAG, Tool Use, Agent Loop, Multi-Model) unterscheiden können</li>
+                <li>Datenflüsse durch jede Architektur nachzeichnen und Trust Boundaries identifizieren</li>
+                <li>Tool Use / Function Calling als Security-relevantes Konzept verstehen</li>
+                <li>Agent Loops und deren Eskalationspotenzial erklären können</li>
+                <li>Für eine gegebene LLM-Anwendung das Architekturmuster und den primären Risikovektor benennen können</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🔗 Querverweise</h2>
+            <div class="xref-card">
+                <div class="xref-label">Web-Security Track</div>
+                <p>
+                    <a href="../../web-security/netzwerk-sicherheit/index.html">Web-Modul 4: Netzwerk-Sicherheit Basics</a> —
+                    Trust Boundaries und Segmentierung sind in Netzwerken dasselbe Konzept wie hier in LLM-Architekturen.
+                </p>
+            </div>
+            <div class="xref-card">
+                <div class="xref-label">KI-Security Track (voraus)</div>
+                <p>
+                    <a href="../excessive-agency/index.html">Modul 10: Excessive Agency</a> —
+                    Tool Use und Agent Loops sind die architektonische Grundlage für Excessive Agency. Dieses Modul baut das Verständnis auf, Modul 10 vertieft die Angriffe.
+                </p>
+            </div>
+        </div>
+
+        <a href="theory.html" class="cta">
+            Zur Theorie <span class="arrow">→</span>
+        </a>
+
+        <div class="lesson-footer">
+            KI-Security Track · Phase 1: Fundamente · Modul 2 von 21
+        </div>
+    </div>
+</body>
+</html>

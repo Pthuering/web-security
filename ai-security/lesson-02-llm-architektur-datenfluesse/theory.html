@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theorie: LLM-Architektur & Datenflüsse | KI-Security Track</title>
+    <link rel="stylesheet" href="../../styles/main.css">
+    <style>
+        /* Map lesson variables to main.css design system */
+        :root {
+            --accent: var(--accent-cyan);
+            --accent-dim: var(--accent-cyan-dim);
+            --accent-glow: rgba(34, 211, 238, 0.12);
+            --warning: var(--accent-orange);
+            --warning-dim: var(--accent-orange-dim);
+            --success: var(--accent-green);
+            --success-dim: var(--accent-green-dim);
+            --danger: var(--accent-red);
+            --danger-dim: var(--accent-red-dim);
+            --purple: var(--accent-purple);
+            --purple-dim: var(--accent-purple-dim);
+            --border: var(--border-subtle);
+            --radius: var(--radius-md);
+            --radius-lg: 12px;
+            --bg-code: #0d1321;
+        }
+        .container { max-width: 760px; }
+        .track-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.35rem 0.9rem;
+            background: var(--purple-dim);
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            border-radius: 20px;
+            font-family: var(--font-mono); font-size: 0.75rem;
+            color: var(--purple); text-transform: uppercase;
+            letter-spacing: 0.08em; margin-bottom: 1.5rem;
+        }
+        .track-badge::before { content: '🤖'; font-size: 0.85rem; }
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+            font-weight: 700; line-height: 1.2; margin-bottom: 2.5rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .section { margin-bottom: 3rem; }
+        .section h2 {
+            font-family: var(--font-display); font-size: 1.3rem; font-weight: 600;
+            color: var(--accent); margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);
+        }
+        .section h3 {
+            font-family: var(--font-display); font-size: 1.05rem; font-weight: 600;
+            color: var(--text-primary); margin: 1.5rem 0 0.8rem;
+        }
+        .section p { margin-bottom: 1rem; color: var(--text-secondary); }
+        .section p strong { color: var(--text-primary); }
+
+        /* Spiral Review */
+        .spiral-review {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 3rem;
+        }
+        .spiral-review h2 { border-bottom: none; padding-bottom: 0; }
+        .recall-q {
+            background: var(--bg-secondary); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 1rem 1.2rem;
+            margin-bottom: 0.8rem; cursor: pointer; transition: border-color 0.2s;
+        }
+        .recall-q:hover { border-color: rgba(34, 211, 238, 0.3); }
+        .recall-q .q-text { font-size: 0.92rem; color: var(--text-primary); margin-bottom: 0; }
+        .recall-q .q-answer {
+            display: none; margin-top: 0.8rem; padding-top: 0.8rem;
+            border-top: 1px solid var(--border); font-size: 0.88rem; color: var(--accent);
+        }
+        .recall-q.open .q-answer { display: block; }
+        .recall-q .q-toggle { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); margin-top: 0.3rem; }
+        .recall-q.open .q-toggle { display: none; }
+
+        /* Info Box */
+        .info-box {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-left: 3px solid var(--accent); border-radius: var(--radius);
+            padding: 1.2rem 1.4rem; margin: 1.5rem 0;
+        }
+        .info-box.warning { border-left-color: var(--warning); }
+        .info-box.danger { border-left-color: var(--danger); }
+        .info-box.purple { border-left-color: var(--purple); }
+        .info-box .box-label {
+            font-family: var(--font-mono); font-size: 0.7rem;
+            text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem;
+        }
+        .info-box .box-label.cyan { color: var(--accent); }
+        .info-box .box-label.warn { color: var(--warning); }
+        .info-box .box-label.dang { color: var(--danger); }
+        .info-box .box-label.purp { color: var(--purple); }
+        .info-box p { color: var(--text-secondary); font-size: 0.92rem; margin-bottom: 0; }
+
+        /* Notebook */
+        .notebook {
+            background: var(--warning-dim); border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: var(--radius); padding: 1rem 1.2rem; margin: 1.5rem 0; font-size: 0.9rem;
+        }
+        .notebook::before {
+            content: '📓 Notebook'; display: block;
+            font-family: var(--font-mono); font-size: 0.7rem; color: var(--warning);
+            text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem;
+        }
+        .notebook em { color: var(--warning); font-style: normal; }
+
+        /* Diagram */
+        .diagram-wrap {
+            margin: 2rem 0; background: var(--bg-secondary);
+            border: 1px solid var(--border); border-radius: var(--radius-lg);
+            padding: 1.5rem; overflow-x: auto;
+        }
+        .diagram-wrap svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+        .diagram-caption {
+            text-align: center; font-family: var(--font-mono);
+            font-size: 0.75rem; color: var(--text-muted); margin-top: 0.8rem;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: var(--bg-code); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 1.2rem 1.4rem; margin: 1.2rem 0;
+            overflow-x: auto; font-family: var(--font-mono); font-size: 0.82rem;
+            line-height: 1.6; color: var(--text-secondary);
+        }
+        .code-block .comment { color: var(--text-muted); }
+        .code-block .keyword { color: var(--purple); }
+        .code-block .string { color: var(--success); }
+        .code-block .highlight { color: var(--accent); }
+        .code-block .danger { color: var(--danger); }
+
+        /* Architecture Pattern Cards */
+        .arch-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); padding: 1.5rem; margin: 2rem 0;
+        }
+        .arch-card .arch-header {
+            display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem;
+        }
+        .arch-card .arch-num {
+            background: var(--accent-glow); border: 1px solid rgba(34, 211, 238, 0.2);
+            border-radius: 50%; width: 36px; height: 36px; display: flex;
+            align-items: center; justify-content: center;
+            font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; color: var(--accent);
+            flex-shrink: 0;
+        }
+        .arch-card .arch-title {
+            font-family: var(--font-display); font-size: 1.1rem; font-weight: 600;
+        }
+        .arch-card .arch-subtitle {
+            font-size: 0.82rem; color: var(--text-muted);
+        }
+        .risk-badge {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            padding: 0.2rem 0.7rem; border-radius: 20px;
+            font-family: var(--font-mono); font-size: 0.72rem;
+            background: var(--danger-dim); color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            margin-top: 0.8rem;
+        }
+
+        /* Trust Boundary Highlight */
+        .trust-boundary {
+            background: rgba(239, 68, 68, 0.06);
+            border: 1px dashed rgba(239, 68, 68, 0.3);
+            border-radius: var(--radius);
+            padding: 1rem 1.2rem;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        .trust-boundary::before {
+            content: '⚠ Trust Boundary'; display: block;
+            font-family: var(--font-mono); font-size: 0.7rem; color: var(--danger);
+            text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.3rem;
+        }
+        .trust-boundary p { color: var(--text-secondary); margin: 0; }
+
+        /* Worked Example */
+        .worked-example {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); padding: 1.5rem; margin: 2rem 0;
+        }
+        .worked-example h3 { margin-top: 0; }
+        .we-dual {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;
+        }
+        @media (max-width: 600px) { .we-dual { grid-template-columns: 1fr; } }
+        .we-side {
+            background: var(--bg-secondary); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 1rem;
+        }
+        .we-side .side-label {
+            font-family: var(--font-mono); font-size: 0.7rem;
+            text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;
+        }
+        .we-side.offensive .side-label { color: var(--danger); }
+        .we-side.defensive .side-label { color: var(--success); }
+        .we-side p, .we-side ul { font-size: 0.88rem; color: var(--text-secondary); }
+        .we-side ul { list-style: none; padding: 0; }
+        .we-side ul li { padding: 0.2rem 0 0.2rem 1rem; position: relative; }
+        .we-side.offensive ul li::before { content: '⚔'; position: absolute; left: 0; font-size: 0.75rem; }
+        .we-side.defensive ul li::before { content: '🛡'; position: absolute; left: 0; font-size: 0.75rem; }
+
+        /* Summary */
+        .summary-terms { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+        .term-tag {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 20px; padding: 0.3rem 0.9rem;
+            font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent);
+        }
+
+        /* Movement Break */
+        .movement-break {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(34, 211, 238, 0.08));
+            border: 2px dashed rgba(168, 85, 247, 0.3);
+            border-radius: var(--radius-lg); padding: 2rem; text-align: center; margin: 3rem 0;
+        }
+        .movement-break .mb-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+        .movement-break h3 { font-family: var(--font-display); color: var(--purple); margin-bottom: 0.8rem; }
+        .movement-break p { color: var(--text-secondary); font-size: 0.95rem; max-width: 500px; margin: 0 auto 1rem; }
+        .movement-break .mb-exercise {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 1rem 1.5rem;
+            display: inline-block; font-size: 1.05rem; font-weight: 600; color: var(--text-primary);
+        }
+
+        /* Navigation */
+        .nav-links { display: flex; justify-content: space-between; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+        .nav-link {
+            padding: 0.7rem 1.4rem; background: var(--bg-card);
+            border: 1px solid var(--border); border-radius: var(--radius);
+            color: var(--accent); text-decoration: none;
+            font-family: var(--font-display); font-size: 0.9rem; transition: all 0.2s;
+        }
+        .nav-link:hover { border-color: rgba(34, 211, 238, 0.3); background: var(--bg-card-hover); }
+        .nav-link.next { margin-left: auto; }
+        .lesson-footer {
+            text-align: center; font-family: var(--font-mono); font-size: 0.7rem;
+            color: var(--text-muted); padding-top: 2rem; border-top: 1px solid var(--border); margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="../../index.html" class="site-logo">~/cybersec<span>-lab</span></a>
+    <nav>
+      <ul class="site-nav">
+        <li><a href="../../web-security/index.html">Web-Security</a></li>
+        <li><a href="../index.html" class="active">AI-Security</a></li>
+        <li><a href="../../glossary.html">Glossar</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+    <div class="container">
+        <nav class="breadcrumb">
+            <a href="../../index.html">Home</a>
+            <span class="sep">/</span>
+            <a href="../index.html">AI-Security</a>
+            <span class="sep">/</span>
+            <a href="index.html">Modul 2</a>
+            <span class="sep">/</span>
+            <span>Theorie</span>
+        </nav>
+
+        <div class="track-badge">KI-Security Track</div>
+        <h1>LLM-Architektur & Datenflüsse</h1>
+
+        <!-- ========== SPIRAL REVIEW ========== -->
+        <div class="spiral-review">
+            <h2>🔄 Spiral-Review: Modul 1</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+                Drei Fragen aus der letzten Lektion. Beantworte sie im Kopf, bevor du aufdeckst.
+            </p>
+
+            <div class="recall-q" onclick="this.classList.toggle('open')">
+                <p class="q-text">Nenne die zwei grundlegenden Pipelines eines AI-Systems und ihren Hauptunterschied für Security.</p>
+                <p class="q-toggle">Klick zum Aufdecken</p>
+                <div class="q-answer">
+                    <strong>Training Pipeline</strong> (Daten & Modell schützen — langsam, persistent) und <strong>Inference Pipeline</strong> (Input & Output kontrollieren — schnell, transient). Training verändert das Modell, Inference nutzt es.
+                </div>
+            </div>
+
+            <div class="recall-q" onclick="this.classList.toggle('open')">
+                <p class="q-text">Was ist der Unterschied zwischen Data Poisoning und RAG Poisoning?</p>
+                <p class="q-toggle">Klick zum Aufdecken</p>
+                <div class="q-answer">
+                    <strong>Data Poisoning</strong> manipuliert Trainingsdaten → das Modell selbst wird korrumpiert (Training-Phase). <strong>RAG Poisoning</strong> manipuliert abrufbare Dokumente → das Modell bleibt intakt, aber sein Kontext wird zur Laufzeit manipuliert (Inference-Phase).
+                </div>
+            </div>
+
+            <div class="recall-q" onclick="this.classList.toggle('open')">
+                <p class="q-text">Was macht der Tokenizer, und warum ist er security-relevant?</p>
+                <p class="q-toggle">Klick zum Aufdecken</p>
+                <div class="q-answer">
+                    Der Tokenizer zerlegt Text in Sub-Wort-Einheiten (Tokens). Er ist security-relevant, weil er <strong>deterministisch und vorhersagbar</strong> ist — Angreifer können Unicode-Tricks nutzen, um Keyword-Filter zu umgehen, indem sie die Tokenisierung manipulieren.
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== SECTION 1: THE BIG PICTURE ========== -->
+        <div class="section">
+            <h2>1. Von der Pipeline zur Architektur</h2>
+
+            <p>
+                In Modul 1 hast du die <strong>Pipeline</strong> kennengelernt: der lineare Datenfluss von Input zu Output. Aber echte LLM-Anwendungen sind selten linear — sie haben <strong>Schleifen, externe Datenquellen und Tool-Aufrufe</strong>.
+            </p>
+
+            <p>
+                Diese Lektion stellt dir fünf <strong>Architekturmuster</strong> vor — von einfach bis komplex. Jedes Muster erweitert die Angriffsfläche um neue Komponenten und Trust Boundaries.
+            </p>
+
+            <div class="info-box">
+                <div class="box-label cyan">Zentrales Konzept: Trust Boundary</div>
+                <p>
+                    Eine <strong>Trust Boundary</strong> ist die Grenze zwischen Komponenten mit unterschiedlichem Vertrauensniveau. Jedes Mal, wenn Daten eine Trust Boundary überschreiten, entsteht ein potenzieller Angriffspunkt. Faustregel: <strong>Je mehr Trust Boundaries eine Architektur hat, desto größer die Angriffsfläche.</strong>
+                </p>
+            </div>
+        </div>
+
+        <!-- ========== PATTERN 1: DIRECT CHAT ========== -->
+        <div class="arch-card">
+            <div class="arch-header">
+                <div class="arch-num">1</div>
+                <div>
+                    <div class="arch-title">Direct Chat</div>
+                    <div class="arch-subtitle">Das einfachste Muster — und die kleinste Angriffsfläche</div>
+                </div>
+            </div>
+
+            <div class="diagram-wrap" style="margin-top: 0;">
+                <svg viewBox="0 0 600 120" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+                        </marker>
+                    </defs>
+                    <!-- System Prompt -->
+                    <rect x="10" y="15" width="110" height="50" rx="8" fill="rgba(168, 85, 247, 0.08)" stroke="#a855f7" stroke-width="1.5"/>
+                    <text x="65" y="38" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#a855f7" font-weight="600">System Prompt</text>
+                    <text x="65" y="54" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Entwickler</text>
+
+                    <!-- User Prompt -->
+                    <rect x="10" y="75" width="110" height="35" rx="8" fill="rgba(34, 211, 238, 0.08)" stroke="#22d3ee" stroke-width="1.5"/>
+                    <text x="65" y="97" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#22d3ee" font-weight="600">User Prompt</text>
+
+                    <!-- Trust boundary line -->
+                    <line x1="140" y1="5" x2="140" y2="115" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="6,4"/>
+                    <text x="145" y="112" font-family="JetBrains Mono, monospace" font-size="8" fill="#ef4444">TB</text>
+
+                    <!-- Arrow -->
+                    <line x1="155" y1="55" x2="210" y2="55" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+
+                    <!-- LLM -->
+                    <rect x="220" y="25" width="140" height="60" rx="10" fill="rgba(245, 158, 11, 0.08)" stroke="#f59e0b" stroke-width="1.5"/>
+                    <text x="290" y="52" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="13" fill="#f59e0b" font-weight="600">LLM</text>
+                    <text x="290" y="70" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Verarbeitung</text>
+
+                    <!-- Arrow -->
+                    <line x1="365" y1="55" x2="420" y2="55" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+
+                    <!-- Output -->
+                    <rect x="430" y="30" width="130" height="50" rx="8" fill="rgba(16, 185, 129, 0.08)" stroke="#10b981" stroke-width="1.5"/>
+                    <text x="495" y="52" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#10b981" font-weight="600">Response</text>
+                    <text x="495" y="68" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">an User</text>
+                </svg>
+                <div class="diagram-caption">Pattern 1: Direct Chat — eine Trust Boundary (User → LLM)</div>
+            </div>
+
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                System Prompt (vom Entwickler) + User Prompt → LLM → Response. Eine einzelne Trust Boundary: der User-Input. Risiken: <strong>Direct Prompt Injection</strong> und <strong>System Prompt Leakage</strong>.
+            </p>
+            <div class="risk-badge">⚡ 1 Trust Boundary · Risiko: Prompt Injection, Prompt Leakage</div>
+        </div>
+
+        <!-- ========== PATTERN 2: RAG ========== -->
+        <div class="arch-card">
+            <div class="arch-header">
+                <div class="arch-num">2</div>
+                <div>
+                    <div class="arch-title">RAG (Retrieval-Augmented Generation)</div>
+                    <div class="arch-subtitle">Externe Dokumente als Kontext — eine zweite Datenquelle, eine zweite Trust Boundary</div>
+                </div>
+            </div>
+
+            <div class="diagram-wrap" style="margin-top: 0;">
+                <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+                        </marker>
+                    </defs>
+
+                    <!-- User Query -->
+                    <rect x="10" y="70" width="100" height="45" rx="8" fill="rgba(34, 211, 238, 0.08)" stroke="#22d3ee" stroke-width="1.5"/>
+                    <text x="60" y="92" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#22d3ee" font-weight="600">User Query</text>
+
+                    <!-- Arrow to embedder -->
+                    <line x1="115" y1="92" x2="155" y2="92" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+                    <!-- Embedding -->
+                    <rect x="160" y="70" width="100" height="45" rx="8" fill="rgba(168, 85, 247, 0.08)" stroke="#a855f7" stroke-width="1.5"/>
+                    <text x="210" y="88" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="10" fill="#a855f7" font-weight="600">Embedding</text>
+                    <text x="210" y="103" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Query → Vektor</text>
+
+                    <!-- Arrow to Vector DB -->
+                    <line x1="210" y1="70" x2="210" y2="45" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+                    <!-- Vector DB -->
+                    <rect x="160" y="5" width="100" height="38" rx="8" fill="rgba(239, 68, 68, 0.06)" stroke="#ef4444" stroke-width="1.5" stroke-opacity="0.5"/>
+                    <text x="210" y="28" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="10" fill="#ef4444" font-weight="600">Vector DB</text>
+
+                    <!-- Trust Boundary around Vector DB -->
+                    <line x1="150" y1="0" x2="150" y2="50" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="6,4"/>
+                    <line x1="270" y1="0" x2="270" y2="50" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="6,4"/>
+                    <text x="275" y="12" font-family="JetBrains Mono, monospace" font-size="8" fill="#ef4444">TB2</text>
+
+                    <!-- Arrow: docs back -->
+                    <line x1="265" y1="24" x2="320" y2="50" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr2)"/>
+                    <text x="305" y="30" font-family="Nunito Sans, sans-serif" font-size="8" fill="#94a3b8">relevante Docs</text>
+
+                    <!-- Context Assembly -->
+                    <rect x="300" y="55" width="120" height="75" rx="8" fill="rgba(34, 211, 238, 0.04)" stroke="#22d3ee" stroke-width="1" stroke-dasharray="4,3"/>
+                    <text x="360" y="75" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="10" fill="#22d3ee" font-weight="600">Prompt Assembly</text>
+                    <text x="360" y="91" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="8" fill="#94a3b8">System + Docs</text>
+                    <text x="360" y="103" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="8" fill="#94a3b8">+ User Query</text>
+
+                    <!-- Arrow from query to assembly -->
+                    <line x1="265" y1="92" x2="298" y2="92" stroke="#64748b" stroke-width="1.2" marker-end="url(#arr2)"/>
+
+                    <!-- TB1 -->
+                    <line x1="130" y1="60" x2="130" y2="125" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="6,4"/>
+                    <text x="122" y="130" font-family="JetBrains Mono, monospace" font-size="8" fill="#ef4444">TB1</text>
+
+                    <!-- Arrow to LLM -->
+                    <line x1="425" y1="92" x2="460" y2="92" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+                    <!-- LLM -->
+                    <rect x="465" y="65" width="100" height="55" rx="10" fill="rgba(245, 158, 11, 0.08)" stroke="#f59e0b" stroke-width="1.5"/>
+                    <text x="515" y="90" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="12" fill="#f59e0b" font-weight="600">LLM</text>
+
+                    <!-- Arrow to Output -->
+                    <line x1="570" y1="92" x2="605" y2="92" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+                    <!-- Output -->
+                    <rect x="610" y="72" width="60" height="40" rx="8" fill="rgba(16, 185, 129, 0.08)" stroke="#10b981" stroke-width="1.5"/>
+                    <text x="640" y="96" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="10" fill="#10b981" font-weight="600">Output</text>
+
+                    <!-- Legend -->
+                    <text x="10" y="175" font-family="JetBrains Mono, monospace" font-size="9" fill="#ef4444">TB1 = User-Input → System</text>
+                    <text x="10" y="190" font-family="JetBrains Mono, monospace" font-size="9" fill="#ef4444">TB2 = Externe Dokumente → Prompt-Kontext</text>
+                </svg>
+                <div class="diagram-caption">Pattern 2: RAG — zwei Trust Boundaries (User-Input + externe Dokumente)</div>
+            </div>
+
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                Der User-Query wird zu einem Vektor, findet ähnliche Dokumente in der Vector DB, und diese werden als Kontext in den Prompt eingefügt. <strong>Neue Trust Boundary:</strong> Die Dokumente in der Vector DB. Wer kontrolliert, was dort reinkommt?
+            </p>
+            <div class="trust-boundary">
+                <p>Dokumente aus der Vector DB werden dem LLM als <strong>Kontext</strong> präsentiert — das Modell unterscheidet nicht zwischen System Prompt und injiziertem Dokument-Content. Ein manipuliertes Dokument kann eine Indirect Prompt Injection enthalten.</p>
+            </div>
+            <div class="risk-badge">⚡ 2 Trust Boundaries · Risiko: Indirect Prompt Injection, RAG Poisoning</div>
+        </div>
+
+        <!-- ========== PATTERN 3: TOOL USE ========== -->
+        <div class="arch-card">
+            <div class="arch-header">
+                <div class="arch-num">3</div>
+                <div>
+                    <div class="arch-title">Tool Use / Function Calling</div>
+                    <div class="arch-subtitle">Das LLM kann handeln — Code ausführen, APIs aufrufen, Daten verändern</div>
+                </div>
+            </div>
+
+            <div class="diagram-wrap" style="margin-top: 0;">
+                <svg viewBox="0 0 680 170" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+                        </marker>
+                    </defs>
+
+                    <!-- User -->
+                    <rect x="10" y="50" width="80" height="40" rx="8" fill="rgba(34, 211, 238, 0.08)" stroke="#22d3ee" stroke-width="1.5"/>
+                    <text x="50" y="74" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#22d3ee" font-weight="600">User</text>
+
+                    <line x1="95" y1="70" x2="130" y2="70" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+                    <!-- LLM -->
+                    <rect x="140" y="40" width="120" height="60" rx="10" fill="rgba(245, 158, 11, 0.08)" stroke="#f59e0b" stroke-width="1.5"/>
+                    <text x="200" y="65" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="12" fill="#f59e0b" font-weight="600">LLM</text>
+                    <text x="200" y="82" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">„Ich brauche Tool X"</text>
+
+                    <!-- Arrow to Tool Router -->
+                    <line x1="265" y1="70" x2="310" y2="70" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+                    <!-- TB -->
+                    <line x1="295" y1="15" x2="295" y2="155" stroke="#ef4444" stroke-width="2" stroke-dasharray="6,4"/>
+                    <text x="300" y="12" font-family="JetBrains Mono, monospace" font-size="9" fill="#ef4444" font-weight="600">Trust Boundary</text>
+
+                    <!-- Tool Router -->
+                    <rect x="315" y="45" width="90" height="50" rx="8" fill="rgba(168, 85, 247, 0.08)" stroke="#a855f7" stroke-width="1.5"/>
+                    <text x="360" y="67" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="10" fill="#a855f7" font-weight="600">Tool Router</text>
+                    <text x="360" y="83" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="8" fill="#94a3b8">Function Call</text>
+
+                    <!-- Tools -->
+                    <line x1="410" y1="55" x2="445" y2="30" stroke="#64748b" stroke-width="1.2" marker-end="url(#arr3)"/>
+                    <line x1="410" y1="70" x2="445" y2="70" stroke="#64748b" stroke-width="1.2" marker-end="url(#arr3)"/>
+                    <line x1="410" y1="85" x2="445" y2="110" stroke="#64748b" stroke-width="1.2" marker-end="url(#arr3)"/>
+
+                    <rect x="450" y="15" width="95" height="32" rx="6" fill="rgba(239, 68, 68, 0.06)" stroke="#ef4444" stroke-width="1" stroke-opacity="0.4"/>
+                    <text x="497" y="35" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#ef4444">send_email()</text>
+
+                    <rect x="450" y="55" width="95" height="32" rx="6" fill="rgba(239, 68, 68, 0.06)" stroke="#ef4444" stroke-width="1" stroke-opacity="0.4"/>
+                    <text x="497" y="75" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#ef4444">query_db()</text>
+
+                    <rect x="450" y="95" width="95" height="32" rx="6" fill="rgba(239, 68, 68, 0.06)" stroke="#ef4444" stroke-width="1" stroke-opacity="0.4"/>
+                    <text x="497" y="115" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#ef4444">run_code()</text>
+
+                    <!-- Result arrow back -->
+                    <path d="M 545 70 Q 600 70 600 140 Q 600 155 200 155 Q 200 155 200 105" stroke="#64748b" stroke-width="1.2" fill="none" marker-end="url(#arr3)" stroke-dasharray="4,3"/>
+                    <text x="420" y="152" font-family="Nunito Sans, sans-serif" font-size="8" fill="#94a3b8">Tool-Ergebnis zurück an LLM</text>
+                </svg>
+                <div class="diagram-caption">Pattern 3: Tool Use — das LLM entscheidet, welches Tool aufgerufen wird</div>
+            </div>
+
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                Der qualitative Sprung: Das LLM <strong>liest nicht nur</strong>, es <strong>handelt</strong>. Es entscheidet, welches Tool mit welchen Parametern aufgerufen wird. Das Ergebnis fließt zurück ins LLM.
+            </p>
+
+            <div class="code-block">
+                <span class="comment">// Beispiel: Tool-Definition für ein LLM</span><br>
+                <span class="keyword">const</span> tools = [{<br>
+                &nbsp;&nbsp;name: <span class="string">"send_email"</span>,<br>
+                &nbsp;&nbsp;description: <span class="string">"Sendet eine E-Mail an die angegebene Adresse"</span>,<br>
+                &nbsp;&nbsp;parameters: {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;to: { type: <span class="string">"string"</span> },<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;subject: { type: <span class="string">"string"</span> },<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;body: { type: <span class="string">"string"</span> }<br>
+                &nbsp;&nbsp;}<br>
+                }];<br>
+                <br>
+                <span class="comment">// ⚠ Was wenn der User das LLM überzeugt,</span><br>
+                <span class="comment">// eine E-Mail an einen Angreifer zu senden?</span><br>
+                <span class="comment">// ⚠ Was wenn das Tool-Ergebnis manipulierten Text enthält?</span>
+            </div>
+
+            <div class="info-box danger">
+                <div class="box-label dang">Kritische Erkenntnis</div>
+                <p>
+                    Tool Use verwandelt Prompt Injection von einem <strong>Informationsproblem</strong> (LLM sagt etwas Falsches) in ein <strong>Aktionsproblem</strong> (LLM <em>tut</em> etwas Schädliches). Ein Chatbot, der lügt, ist ärgerlich. Ein Agent, der deine Datenbank löscht, ist katastrophal.
+                </p>
+            </div>
+            <div class="risk-badge">⚡ Kritisch · Risiko: Excessive Agency, Tool Misuse, Privilege Escalation</div>
+        </div>
+
+        <!-- ========== PATTERN 4: AGENT LOOP ========== -->
+        <div class="arch-card">
+            <div class="arch-header">
+                <div class="arch-num">4</div>
+                <div>
+                    <div class="arch-title">Agent Loop (ReAct-Pattern)</div>
+                    <div class="arch-subtitle">Das LLM plant, handelt, beobachtet, plant erneut — in einer Schleife</div>
+                </div>
+            </div>
+
+            <div class="diagram-wrap" style="margin-top: 0;">
+                <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arr4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+                        </marker>
+                    </defs>
+
+                    <!-- User -->
+                    <rect x="10" y="80" width="80" height="40" rx="8" fill="rgba(34, 211, 238, 0.08)" stroke="#22d3ee" stroke-width="1.5"/>
+                    <text x="50" y="104" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#22d3ee" font-weight="600">User</text>
+
+                    <line x1="95" y1="100" x2="140" y2="100" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr4)"/>
+
+                    <!-- The Loop -->
+                    <rect x="130" y="25" width="430" height="175" rx="12" fill="none" stroke="#f59e0b" stroke-width="1" stroke-dasharray="8,4" stroke-opacity="0.3"/>
+                    <text x="350" y="18" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f59e0b" opacity="0.6">AGENT LOOP (iteriert bis Ziel erreicht)</text>
+
+                    <!-- Think -->
+                    <rect x="150" y="75" width="100" height="50" rx="8" fill="rgba(245, 158, 11, 0.08)" stroke="#f59e0b" stroke-width="1.5"/>
+                    <text x="200" y="97" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#f59e0b" font-weight="600">Think</text>
+                    <text x="200" y="113" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="8" fill="#94a3b8">LLM plant</text>
+
+                    <line x1="255" y1="100" x2="290" y2="100" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr4)"/>
+
+                    <!-- Act -->
+                    <rect x="295" y="75" width="100" height="50" rx="8" fill="rgba(239, 68, 68, 0.08)" stroke="#ef4444" stroke-width="1.5"/>
+                    <text x="345" y="97" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#ef4444" font-weight="600">Act</text>
+                    <text x="345" y="113" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="8" fill="#94a3b8">Tool-Aufruf</text>
+
+                    <line x1="400" y1="100" x2="435" y2="100" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr4)"/>
+
+                    <!-- Observe -->
+                    <rect x="440" y="75" width="100" height="50" rx="8" fill="rgba(16, 185, 129, 0.08)" stroke="#10b981" stroke-width="1.5"/>
+                    <text x="490" y="97" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#10b981" font-weight="600">Observe</text>
+                    <text x="490" y="113" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="8" fill="#94a3b8">Ergebnis lesen</text>
+
+                    <!-- Loop back arrow -->
+                    <path d="M 490 130 Q 490 165 345 165 Q 200 165 200 130" stroke="#f59e0b" stroke-width="1.5" fill="none" marker-end="url(#arr4)" stroke-opacity="0.6"/>
+                    <text x="345" y="182" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#f59e0b" opacity="0.7">Iteration N+1</text>
+
+                    <!-- Danger zone annotation -->
+                    <text x="345" y="50" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#ef4444">⚠ Jede Iteration = neue Entscheidung ohne menschliche Kontrolle</text>
+                </svg>
+                <div class="diagram-caption">Pattern 4: Agent Loop — Think → Act → Observe → Repeat</div>
+            </div>
+
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                Das ReAct-Pattern (Reason + Act): Das LLM <strong>denkt nach</strong>, führt ein Tool aus, <strong>beobachtet</strong> das Ergebnis, und entscheidet dann, ob es weitergeht oder fertig ist. Der kritische Unterschied zu Tool Use: Die Schleife. Jede Iteration kann auf dem Ergebnis der vorherigen aufbauen — <strong>ohne menschliche Kontrolle dazwischen</strong>.
+            </p>
+
+            <div class="info-box danger">
+                <div class="box-label dang">Eskalationspotenzial</div>
+                <p>
+                    Agent Loops können <strong>eskalieren</strong>: In Iteration 1 liest der Agent eine Datei. In Iteration 2 extrahiert er daraus eine URL. In Iteration 3 ruft er die URL auf. Kein einzelner Schritt ist gefährlich — aber die <strong>Kette</strong> kann es sein. Das ist <strong>Excessive Agency (OWASP LLM06)</strong>: zu viel Autonomie, zu viele Berechtigungen, zu wenig Kontrolle.
+                </p>
+            </div>
+            <div class="risk-badge">⚡ Höchstes Risiko · Eskalation, Autonomie ohne Kontrolle, Compound Actions</div>
+        </div>
+
+        <!-- ========== PATTERN 5: MULTI-MODEL ========== -->
+        <div class="arch-card">
+            <div class="arch-header">
+                <div class="arch-num">5</div>
+                <div>
+                    <div class="arch-title">Multi-Model Pipeline</div>
+                    <div class="arch-subtitle">Mehrere Modelle in Reihe — Output von Modell A ist Input für Modell B</div>
+                </div>
+            </div>
+
+            <div class="diagram-wrap" style="margin-top: 0;">
+                <svg viewBox="0 0 650 120" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arr5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+                        </marker>
+                    </defs>
+
+                    <rect x="10" y="35" width="80" height="40" rx="8" fill="rgba(34, 211, 238, 0.08)" stroke="#22d3ee" stroke-width="1.5"/>
+                    <text x="50" y="59" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#22d3ee" font-weight="600">Input</text>
+
+                    <line x1="95" y1="55" x2="130" y2="55" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr5)"/>
+
+                    <!-- Model A: Classifier -->
+                    <rect x="135" y="25" width="120" height="60" rx="10" fill="rgba(168, 85, 247, 0.08)" stroke="#a855f7" stroke-width="1.5"/>
+                    <text x="195" y="50" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#a855f7" font-weight="600">Modell A</text>
+                    <text x="195" y="68" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">z.B. Classifier</text>
+
+                    <line x1="260" y1="55" x2="295" y2="55" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr5)"/>
+
+                    <!-- TB -->
+                    <line x1="280" y1="10" x2="280" y2="105" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+                    <!-- Model B: LLM -->
+                    <rect x="300" y="25" width="120" height="60" rx="10" fill="rgba(245, 158, 11, 0.08)" stroke="#f59e0b" stroke-width="1.5"/>
+                    <text x="360" y="50" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#f59e0b" font-weight="600">Modell B</text>
+                    <text x="360" y="68" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">z.B. LLM</text>
+
+                    <line x1="425" y1="55" x2="460" y2="55" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr5)"/>
+
+                    <!-- TB2 -->
+                    <line x1="445" y1="10" x2="445" y2="105" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+                    <!-- Model C: Safety -->
+                    <rect x="465" y="25" width="120" height="60" rx="10" fill="rgba(16, 185, 129, 0.08)" stroke="#10b981" stroke-width="1.5"/>
+                    <text x="525" y="50" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#10b981" font-weight="600">Modell C</text>
+                    <text x="525" y="68" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">z.B. Safety Filter</text>
+
+                    <line x1="590" y1="55" x2="615" y2="55" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr5)"/>
+
+                    <text x="630" y="59" font-family="Chakra Petch, sans-serif" font-size="11" fill="#10b981" font-weight="600">✓</text>
+
+                    <text x="280" y="115" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#ef4444">Output A = Input B</text>
+                    <text x="445" y="115" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#ef4444">Output B = Input C</text>
+                </svg>
+                <div class="diagram-caption">Pattern 5: Multi-Model — jede Modellgrenze ist eine Trust Boundary</div>
+            </div>
+
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                Beispiel: Ein Klassifikator entscheidet, ob eine Anfrage erlaubt ist → ein LLM generiert die Antwort → ein Safety-Filter prüft die Ausgabe. Jede Modellgrenze ist eine Trust Boundary, weil <strong>der Output von Modell A der Input von Modell B ist</strong> — genau das Muster von Insecure Output Handling.
+            </p>
+            <div class="risk-badge">⚡ Kaskadierend · Risiko: Output eines Modells injiziert das nächste</div>
+        </div>
+
+        <!-- ========== SECTION: ZUSAMMENFASSUNG TRUST BOUNDARIES ========== -->
+        <div class="section">
+            <h2>6. Trust Boundaries — das vereinheitlichende Prinzip</h2>
+
+            <p>
+                Alle fünf Muster folgen demselben Grundprinzip: <strong>Wo Daten eine Vertrauensgrenze überschreiten, entsteht ein Risiko.</strong> Die Muster unterscheiden sich nur in der Anzahl und Art der Grenzen:
+            </p>
+
+            <div class="diagram-wrap">
+                <svg viewBox="0 0 600 190" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Headers -->
+                    <text x="20" y="20" font-family="Chakra Petch, sans-serif" font-size="11" fill="#94a3b8" font-weight="600">Architektur</text>
+                    <text x="270" y="20" font-family="Chakra Petch, sans-serif" font-size="11" fill="#94a3b8" font-weight="600">Trust Boundaries</text>
+                    <text x="480" y="20" font-family="Chakra Petch, sans-serif" font-size="11" fill="#94a3b8" font-weight="600">Risiko</text>
+                    <line x1="10" y1="28" x2="590" y2="28" stroke="#1e293b" stroke-width="1"/>
+
+                    <!-- Row 1 -->
+                    <text x="20" y="52" font-family="Nunito Sans, sans-serif" font-size="11" fill="#e2e8f0">Direct Chat</text>
+                    <rect x="270" y="38" width="16" height="16" rx="3" fill="#ef4444" opacity="0.3"/><text x="278" y="50" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#ef4444">1</text>
+                    <text x="480" y="52" font-family="Nunito Sans, sans-serif" font-size="10" fill="#10b981">Niedrig</text>
+
+                    <!-- Row 2 -->
+                    <text x="20" y="82" font-family="Nunito Sans, sans-serif" font-size="11" fill="#e2e8f0">RAG</text>
+                    <rect x="270" y="68" width="16" height="16" rx="3" fill="#ef4444" opacity="0.4"/><rect x="292" y="68" width="16" height="16" rx="3" fill="#ef4444" opacity="0.4"/>
+                    <text x="278" y="80" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#ef4444">1</text>
+                    <text x="300" y="80" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#ef4444">2</text>
+                    <text x="480" y="82" font-family="Nunito Sans, sans-serif" font-size="10" fill="#f59e0b">Mittel</text>
+
+                    <!-- Row 3 -->
+                    <text x="20" y="112" font-family="Nunito Sans, sans-serif" font-size="11" fill="#e2e8f0">Tool Use</text>
+                    <rect x="270" y="98" width="16" height="16" rx="3" fill="#ef4444" opacity="0.5"/><rect x="292" y="98" width="16" height="16" rx="3" fill="#ef4444" opacity="0.5"/><rect x="314" y="98" width="16" height="16" rx="3" fill="#ef4444" opacity="0.5"/>
+                    <text x="278" y="110" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#ef4444">1</text>
+                    <text x="300" y="110" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#ef4444">2</text>
+                    <text x="322" y="110" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#ef4444">3</text>
+                    <text x="480" y="112" font-family="Nunito Sans, sans-serif" font-size="10" fill="#f59e0b">Hoch</text>
+
+                    <!-- Row 4 -->
+                    <text x="20" y="142" font-family="Nunito Sans, sans-serif" font-size="11" fill="#e2e8f0">Agent Loop</text>
+                    <rect x="270" y="128" width="16" height="16" rx="3" fill="#ef4444" opacity="0.7"/><rect x="292" y="128" width="16" height="16" rx="3" fill="#ef4444" opacity="0.7"/><rect x="314" y="128" width="16" height="16" rx="3" fill="#ef4444" opacity="0.7"/><rect x="336" y="128" width="16" height="16" rx="3" fill="#ef4444" opacity="0.7"/>
+                    <text x="380" y="141" font-family="JetBrains Mono, monospace" font-size="9" fill="#ef4444">× N Iterationen</text>
+                    <text x="480" y="142" font-family="Nunito Sans, sans-serif" font-size="10" fill="#ef4444" font-weight="600">Kritisch</text>
+
+                    <!-- Row 5 -->
+                    <text x="20" y="172" font-family="Nunito Sans, sans-serif" font-size="11" fill="#e2e8f0">Multi-Model</text>
+                    <rect x="270" y="158" width="16" height="16" rx="3" fill="#ef4444" opacity="0.6"/><rect x="292" y="158" width="16" height="16" rx="3" fill="#ef4444" opacity="0.6"/>
+                    <text x="318" y="171" font-family="JetBrains Mono, monospace" font-size="9" fill="#ef4444">× N Modelle</text>
+                    <text x="480" y="172" font-family="Nunito Sans, sans-serif" font-size="10" fill="#f59e0b">Variabel</text>
+                </svg>
+                <div class="diagram-caption">Trust Boundaries pro Architekturmuster — mehr Grenzen = größere Angriffsfläche</div>
+            </div>
+
+            <div class="notebook">
+                Zeichne diese Übersicht in dein Notebook. <em>„Architekturkomplexität = Anzahl Trust Boundaries × Autonomiegrad. Agent Loops maximieren beides."</em>
+            </div>
+        </div>
+
+        <!-- ========== WORKED EXAMPLE ========== -->
+        <div class="worked-example">
+            <h3>📋 Worked Example: Microsoft Copilot & Tool Misuse (2024)</h3>
+            <p style="color: var(--text-secondary); font-size: 0.92rem; margin-top: 0.5rem;">
+                Security-Researcher Bargury demonstrierte 2024, wie Microsoft 365 Copilot — ein Tool-Use-Agent mit Zugang zu E-Mail, Kalender und Dateien — durch Indirect Prompt Injection manipuliert werden kann.
+            </p>
+
+            <div class="we-dual">
+                <div class="we-side offensive">
+                    <div class="side-label">Angriffsvektor</div>
+                    <ul>
+                        <li>Versteckte Anweisungen in einer E-Mail (Indirect Prompt Injection via RAG)</li>
+                        <li>Copilot liest die E-Mail als Kontext → führt eingebettete Anweisung aus</li>
+                        <li>Tool Use erlaubt: E-Mails senden, Dateien lesen, Kalender bearbeiten</li>
+                        <li>Architektur-Pattern: RAG + Tool Use + Agent Loop — maximale Angriffsfläche</li>
+                    </ul>
+                </div>
+                <div class="we-side defensive">
+                    <div class="side-label">Verteidigung</div>
+                    <ul>
+                        <li>Least Privilege: Tools nur die minimal nötigen Berechtigungen geben</li>
+                        <li>Human-in-the-Loop: Bestätigung vor destruktiven Aktionen</li>
+                        <li>Input-Sanitization: Dokument-Content als Daten behandeln, nicht als Instruktion</li>
+                        <li>Monitoring: Tool-Aufrufe loggen und auf Anomalien prüfen</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="info-box purple" style="margin-top: 1rem;">
+                <div class="box-label purp">Pattern-Erkennung</div>
+                <p>
+                    Drei Patterns kombiniert: <strong>RAG</strong> (E-Mails als Kontext) + <strong>Tool Use</strong> (E-Mail senden) + <strong>Agent Loop</strong> (mehrere Schritte autonom). Genau so entstehen die gefährlichsten Szenarien — nicht durch eine einzelne Schwachstelle, sondern durch die <strong>Kombination von Architekturmustern</strong>.
+                </p>
+            </div>
+        </div>
+
+        <!-- ========== SUMMARY ========== -->
+        <div class="section">
+            <h2>📝 Zusammenfassung</h2>
+            <p>
+                Du kennst jetzt die fünf Architekturmuster moderner LLM-Anwendungen und kannst sie anhand ihrer Trust Boundaries unterscheiden. Das Schlüsselkonzept: <strong>Jede Trust Boundary ist ein potenzieller Angriffspunkt.</strong> In den folgenden Modulen wirst du für jede Boundary lernen, wie Angriffe konkret funktionieren und wie man sie verteidigt.
+            </p>
+            <div class="summary-terms">
+                <span class="term-tag">Direct Chat</span>
+                <span class="term-tag">RAG</span>
+                <span class="term-tag">Tool Use</span>
+                <span class="term-tag">Function Calling</span>
+                <span class="term-tag">Agent Loop</span>
+                <span class="term-tag">ReAct Pattern</span>
+                <span class="term-tag">Multi-Model Pipeline</span>
+                <span class="term-tag">Trust Boundary</span>
+                <span class="term-tag">Indirect Prompt Injection</span>
+                <span class="term-tag">Excessive Agency</span>
+                <span class="term-tag">Least Privilege</span>
+                <span class="term-tag">Human-in-the-Loop</span>
+            </div>
+        </div>
+
+        <!-- ========== MOVEMENT BREAK ========== -->
+        <div class="movement-break">
+            <div class="mb-icon">🏃‍♂️</div>
+            <h3>Bewegungspause</h3>
+            <p>
+                Du hast gerade fünf Architekturmuster durchgearbeitet. Lass es sich setzen.
+            </p>
+            <div class="mb-exercise">
+                Steh auf, geh 2 Minuten durch den Raum, und erkläre einem imaginären Kollegen den Unterschied zwischen Tool Use und Agent Loop.
+            </div>
+        </div>
+
+        <!-- ========== NAVIGATION ========== -->
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">← Zurück zur Übersicht</a>
+            <a href="exercise.html" class="nav-link next">Zum Rätsel →</a>
+        </div>
+
+        <div class="lesson-footer">
+            KI-Security Track · Phase 1 · Modul 2: LLM-Architektur & Datenflüsse
+        </div>
+    </div>
+</body>
+</html>

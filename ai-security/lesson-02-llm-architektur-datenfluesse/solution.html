@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lösung: LLM-Architektur & Datenflüsse | KI-Security Track</title>
+    <link rel="stylesheet" href="../../styles/main.css">
+    <style>
+        /* Map lesson variables to main.css design system */
+        :root {
+            --accent: var(--accent-cyan);
+            --accent-dim: var(--accent-cyan-dim);
+            --accent-glow: rgba(34, 211, 238, 0.12);
+            --warning: var(--accent-orange);
+            --warning-dim: var(--accent-orange-dim);
+            --success: var(--accent-green);
+            --success-dim: var(--accent-green-dim);
+            --danger: var(--accent-red);
+            --danger-dim: var(--accent-red-dim);
+            --purple: var(--accent-purple);
+            --purple-dim: var(--accent-purple-dim);
+            --border: var(--border-subtle);
+            --radius: var(--radius-md);
+            --radius-lg: 12px;
+        }
+        .container { max-width: 760px; }
+        .track-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.35rem 0.9rem; background: var(--purple-dim);
+            border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 20px;
+            font-family: var(--font-mono); font-size: 0.75rem;
+            color: var(--purple); text-transform: uppercase;
+            letter-spacing: 0.08em; margin-bottom: 1.5rem;
+        }
+        .track-badge::before { content: '🤖'; font-size: 0.85rem; }
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+            font-weight: 700; line-height: 1.2; margin-bottom: 2.5rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+
+        .solution-step {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem;
+        }
+        .step-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 0.5rem; }
+        .step-title { font-family: var(--font-display); font-size: 1rem; font-weight: 600; }
+        .step-answer {
+            font-family: var(--font-mono); font-size: 0.75rem; padding: 0.25rem 0.7rem;
+            border-radius: 20px; white-space: nowrap;
+            background: var(--accent-glow); color: var(--accent);
+            border: 1px solid rgba(34, 211, 238, 0.2);
+        }
+        .step-desc { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.8rem; }
+        .step-why {
+            background: var(--bg-secondary); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 1rem; font-size: 0.88rem;
+        }
+        .step-why .why-label {
+            font-family: var(--font-mono); font-size: 0.7rem;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--accent); margin-bottom: 0.3rem;
+        }
+        .step-why p { color: var(--text-secondary); margin: 0; }
+
+        .mistake-box {
+            background: var(--danger-dim); border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: var(--radius); padding: 1rem 1.2rem;
+            margin-top: 0.8rem; font-size: 0.88rem;
+        }
+        .mistake-box::before {
+            content: '⚠ Häufiger Denkfehler'; display: block;
+            font-family: var(--font-mono); font-size: 0.7rem; color: var(--danger);
+            text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.3rem;
+        }
+        .mistake-box p { color: var(--text-secondary); margin: 0; }
+
+        .mapping-section { margin: 3rem 0; }
+        .mapping-section h2 {
+            font-family: var(--font-display); font-size: 1.2rem;
+            color: var(--accent); margin-bottom: 1rem;
+            padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);
+        }
+        .mapping-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+        .mapping-table th {
+            font-family: var(--font-mono); font-size: 0.68rem;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            color: var(--text-muted); text-align: left;
+            padding: 0.6rem 0.6rem; border-bottom: 2px solid var(--border);
+        }
+        .mapping-table td { padding: 0.6rem; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+        .mapping-table .letter { font-family: var(--font-mono); font-weight: 700; color: var(--accent); text-align: center; }
+        .mapping-table .boundary { color: var(--danger); font-family: var(--font-mono); font-size: 0.78rem; }
+        .mapping-table .arch { color: var(--accent); font-weight: 600; }
+
+        .reflection, .transfer { margin: 3rem 0; }
+        .reflection h2, .transfer h2 {
+            font-family: var(--font-display); font-size: 1.2rem;
+            margin-bottom: 1rem; padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .reflection h2 { color: var(--warning); }
+        .transfer h2 { color: var(--purple); }
+        .r-question {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 1rem 1.2rem;
+            margin-bottom: 0.8rem; color: var(--text-secondary); font-size: 0.92rem;
+        }
+        .r-question strong { color: var(--text-primary); }
+
+        .nav-links { display: flex; justify-content: space-between; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+        .nav-link {
+            padding: 0.7rem 1.4rem; background: var(--bg-card);
+            border: 1px solid var(--border); border-radius: var(--radius);
+            color: var(--accent); text-decoration: none;
+            font-family: var(--font-display); font-size: 0.9rem; transition: all 0.2s;
+        }
+        .nav-link:hover { border-color: rgba(34, 211, 238, 0.3); background: var(--bg-card-hover); }
+        .nav-link.next { margin-left: auto; }
+        .lesson-footer {
+            text-align: center; font-family: var(--font-mono); font-size: 0.7rem;
+            color: var(--text-muted); padding-top: 2rem;
+            border-top: 1px solid var(--border); margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="../../index.html" class="site-logo">~/cybersec<span>-lab</span></a>
+    <nav>
+      <ul class="site-nav">
+        <li><a href="../../web-security/index.html">Web-Security</a></li>
+        <li><a href="../index.html" class="active">AI-Security</a></li>
+        <li><a href="../../glossary.html">Glossar</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+    <div class="container">
+        <nav class="breadcrumb">
+            <a href="../../index.html">Home</a>
+            <span class="sep">/</span>
+            <a href="../index.html">AI-Security</a>
+            <span class="sep">/</span>
+            <a href="index.html">Modul 2</a>
+            <span class="sep">/</span>
+            <span>Lösung</span>
+        </nav>
+
+        <div class="track-badge">KI-Security Track</div>
+        <h1>Lösung: Trust Boundary Audit</h1>
+
+        <!-- STEP 1 -->
+        <div class="solution-step">
+            <div class="step-header">
+                <span class="step-title">Vorfall #1 — System Prompt Leakage</span>
+                <span class="step-answer">User → System · S</span>
+            </div>
+            <div class="step-desc">Nutzer überzeugt Direct-Chat-Bot, den vollständigen System Prompt preiszugeben.</div>
+            <div class="step-why">
+                <div class="why-label">Warum User → System?</div>
+                <p>
+                    Klassischer <strong>Direct Prompt Injection</strong>. Die einzige Trust Boundary in einem Direct-Chat-System ist zwischen User-Input und System. Der Nutzer injiziert eine Anweisung, die das System Prompt überschreibt. Architektur: Direct Chat — keine externen Datenquellen, keine Tools. Die Angriffsfläche ist minimal, aber diese eine Boundary ist trotzdem verwundbar.
+                </p>
+            </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="solution-step">
+            <div class="step-header">
+                <span class="step-title">Vorfall #2 — Unsichtbare PDF-Anweisungen</span>
+                <span class="step-answer">Externe Docs → Prompt · C</span>
+            </div>
+            <div class="step-desc">Manipuliertes PDF mit verstecktem weißem Text wird in die Vector DB aufgenommen.</div>
+            <div class="step-why">
+                <div class="why-label">Warum Externe Docs → Prompt-Kontext?</div>
+                <p>
+                    Das ist <strong>RAG Poisoning</strong> via Indirect Prompt Injection. Das Dokument wird als Kontext in den Prompt eingefügt, und der versteckte Text wird vom LLM als Instruktion interpretiert. Die Trust Boundary: Externe Dokumente (unkontrolliert) werden als Prompt-Kontext (vertrauenswürdig) behandelt. Die unsichtbare Tinte ist nur das Transportmittel — die Schwachstelle ist die fehlende Trennung zwischen Daten und Instruktionen.
+                </p>
+            </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="solution-step">
+            <div class="step-header">
+                <span class="step-title">Vorfall #3 — Autonomer Dateiexport</span>
+                <span class="step-answer">LLM → Tool-Aufruf · H</span>
+            </div>
+            <div class="step-desc">Agent liest eine E-Mail mit versteckter Anweisung und leitet eigenständig vertrauliche Dateien weiter.</div>
+            <div class="step-why">
+                <div class="why-label">Warum LLM → Tool-Aufruf?</div>
+                <p>
+                    Ja, der Auslöser ist eine Indirect Prompt Injection via E-Mail (Docs → Prompt). Aber die <strong>primäre Schwachstelle</strong> ist die Architektur: Der Agent <em>darf</em> Dateien senden, ohne Bestätigung. Das ist <strong>Excessive Agency (OWASP LLM06)</strong> — zu viele Berechtigungen, zu wenig Human-in-the-Loop. Die Injection allein wäre harmlos, wenn der Agent nicht eigenständig destruktive Aktionen ausführen könnte.
+                </p>
+            </div>
+            <div class="mistake-box">
+                <p>
+                    <strong>„Ist das nicht RAG Poisoning (Docs → Prompt)?"</strong> Die E-Mail-Injection ist der <em>Trigger</em>, aber nicht die <em>Schwachstelle</em>. Denk so: Wenn der Agent für E-Mail-Versand eine Bestätigung bräuchte, wäre die Injection wirkungslos. Die primäre Trust Boundary ist LLM → Tool, weil dort die Aktion ohne Kontrolle passiert. Die Unterscheidung „was hat den Angriff ausgelöst?" vs. „was hat den Schaden ermöglicht?" ist zentral.
+                </p>
+            </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="solution-step">
+            <div class="step-header">
+                <span class="step-title">Vorfall #4 — Kompromittierte API-Antwort</span>
+                <span class="step-answer">Tool-Ergebnis → LLM · E</span>
+            </div>
+            <div class="step-desc">API-Endpunkt liefert Prompt-Injection-Payload in der Antwort zurück.</div>
+            <div class="step-why">
+                <div class="why-label">Warum Tool-Ergebnis → LLM?</div>
+                <p>
+                    Die umgekehrte Richtung von #3: Nicht das LLM ruft ein Tool auf, sondern ein <strong>Tool-Ergebnis fließt zurück ins LLM</strong> und wird ungeprüft als Kontext behandelt. Das LLM unterscheidet nicht zwischen seiner eigenen Planung und dem injizierten Text aus der API-Antwort. <strong>Untrusted Return Data</strong> — alles, was von außen zurückkommt, muss als potenziell feindlich behandelt werden.
+                </p>
+            </div>
+            <div class="mistake-box">
+                <p>
+                    <strong>Verwechslung mit Vorfall #3:</strong> Beide involvieren Tools. Die Richtung entscheidet: #3 = LLM <em>ruft</em> Tool (Excessive Agency). #4 = Tool <em>antwortet</em> an LLM (Untrusted Return). #3 ist ein Autorisierungsproblem (darf das LLM das tun?). #4 ist ein Vertrauensproblem (darf das LLM dieser Antwort glauben?).
+                </p>
+            </div>
+        </div>
+
+        <!-- STEP 5 -->
+        <div class="solution-step">
+            <div class="step-header">
+                <span class="step-title">Vorfall #5 — Fehlklassifikation in der Pipeline</span>
+                <span class="step-answer">Modell A → Modell B · M</span>
+            </div>
+            <div class="step-desc">Klassifikator-Fehler kaskadiert durch die gesamte Multi-Model-Pipeline.</div>
+            <div class="step-why">
+                <div class="why-label">Warum Modell A → Modell B?</div>
+                <p>
+                    In einer Multi-Model-Pipeline vertraut jedes nachfolgende Modell dem Output des vorherigen. Der Klassifikator labelt die Anfrage falsch → das LLM arbeitet mit dem falschen Kontext → das Safety-Modell prüft gegen den falschen Kontext. <strong>Ein Fehler in Modell A kaskadiert durch die gesamte Pipeline.</strong> Die primäre Trust Boundary ist dort, wo der fehlerhafte Output als vertrauenswürdiger Input behandelt wird: Modell A → Modell B.
+                </p>
+            </div>
+        </div>
+
+        <!-- STEP 6 -->
+        <div class="solution-step">
+            <div class="step-header">
+                <span class="step-title">Vorfall #6 — Halluziniertes SQL-UPDATE</span>
+                <span class="step-answer">LLM-Output → Downstream · A</span>
+            </div>
+            <div class="step-desc">LLM generiert SQL mit unbeabsichtigtem UPDATE-Befehl, der direkt ausgeführt wird.</div>
+            <div class="step-why">
+                <div class="why-label">Warum LLM-Output → Downstream-System?</div>
+                <p>
+                    Der Schlüssel: Es gibt keinen Angreifer. Das LLM halluziniert einen <code>UPDATE</code>-Befehl, und der wird direkt an die Datenbank weitergegeben. Die Schwachstelle ist <strong>Insecure Output Handling</strong> — der LLM-Output wird als vertrauenswürdiger Code behandelt. Verteidigung: SQL-Output validieren (nur SELECT erlauben), Datenbank-User mit Read-Only-Rechten, oder einen SQL-Parser vorschalten.
+                </p>
+            </div>
+            <div class="mistake-box">
+                <p>
+                    <strong>„Das ist doch ein Tool-Problem (LLM → Tool)?"</strong> Nein — der Unterschied ist subtil aber wichtig. Excessive Agency (LLM → Tool) wäre: Das LLM <em>entscheidet sich</em>, die Datenbank zu modifizieren. Insecure Output wäre: Das LLM generiert Output, der <em>ohne Intent</em> schädlich ist (Halluzination), und ein Downstream-System führt ihn blind aus. Hier ist es Insecure Output, weil die Halluzination der Auslöser ist, nicht eine bewusste Agentur.
+                </p>
+            </div>
+        </div>
+
+        <!-- Mapping Overview -->
+        <div class="mapping-section">
+            <h2>📊 Gesamtübersicht</h2>
+            <table class="mapping-table">
+                <thead>
+                    <tr>
+                        <th>Vorfall</th>
+                        <th>Trust Boundary</th>
+                        <th>Architektur</th>
+                        <th>OWASP LLM</th>
+                        <th>#</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#1 Prompt Leakage</td>
+                        <td class="boundary">User → System</td>
+                        <td class="arch">Direct Chat</td>
+                        <td>LLM01 / LLM07</td>
+                        <td class="letter">S</td>
+                    </tr>
+                    <tr>
+                        <td>#2 Unsichtbare PDF-Anweisungen</td>
+                        <td class="boundary">Docs → Prompt</td>
+                        <td class="arch">RAG</td>
+                        <td>LLM01 / LLM08</td>
+                        <td class="letter">C</td>
+                    </tr>
+                    <tr>
+                        <td>#3 Autonomer Dateiexport</td>
+                        <td class="boundary">LLM → Tool</td>
+                        <td class="arch">Agent Loop</td>
+                        <td>LLM06</td>
+                        <td class="letter">H</td>
+                    </tr>
+                    <tr>
+                        <td>#4 Kompromittierte API</td>
+                        <td class="boundary">Tool → LLM</td>
+                        <td class="arch">Tool Use</td>
+                        <td>LLM01</td>
+                        <td class="letter">E</td>
+                    </tr>
+                    <tr>
+                        <td>#5 Fehlklassifikation</td>
+                        <td class="boundary">Modell A → B</td>
+                        <td class="arch">Multi-Model</td>
+                        <td>—</td>
+                        <td class="letter">M</td>
+                    </tr>
+                    <tr>
+                        <td>#6 Halluziniertes SQL</td>
+                        <td class="boundary">Output → Downstream</td>
+                        <td class="arch">Tool Use</td>
+                        <td>LLM05</td>
+                        <td class="letter">A</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="text-align: center; font-family: var(--font-mono); color: var(--accent); margin-top: 1rem; font-size: 1.1rem; letter-spacing: 0.3em;">
+                Passwort: SCHEMA
+            </p>
+            <p style="text-align: center; color: var(--text-muted); font-size: 0.82rem; margin-top: 0.3rem;">
+                (Passend — du baust gerade dein mentales Schema für LLM-Architekturen auf.)
+            </p>
+        </div>
+
+        <!-- Reflection -->
+        <div class="reflection">
+            <h2>🤔 Reflexion</h2>
+            <div class="r-question">
+                <strong>Trigger vs. Schwachstelle:</strong> Vorfall #3 ist die beste Übung für diese Unterscheidung. Die E-Mail-Injection ist der Trigger, Excessive Agency ist die Schwachstelle. In Security denkt man immer in zwei Fragen: <em>Wie kommt der Angreifer rein?</em> (Attack Vector) und <em>Warum richtet er Schaden an?</em> (Vulnerability). Die Verteidigung adressiert die Schwachstelle, nicht den Trigger.
+            </div>
+            <div class="r-question">
+                <strong>Die Richtung zählt:</strong> Wenn du #3 und #4 verwechselt hast — das ist ein häufiger Fehler. Zeichne dir die Tool-Use-Pipeline als Pfeil-Diagramm: LLM → Tool (Aktion) vs. Tool → LLM (Daten zurück). Jede Richtung hat ein eigenes Risikoprofil und andere Verteidigungsstrategien.
+            </div>
+            <div class="r-question">
+                <strong>Halluzination als Security-Problem:</strong> Vorfall #6 zeigt: Man braucht keinen Angreifer für einen Sicherheitsvorfall. LLMs halluzinieren — und wenn ihr Output direkt ausgeführt wird, ist eine Halluzination ein Exploit ohne Angreifer. Das ist der Grund, warum Insecure Output Handling im OWASP Top 10 steht.
+            </div>
+        </div>
+
+        <!-- Transfer -->
+        <div class="transfer">
+            <h2>🔄 Transfer-Fragen</h2>
+            <div class="r-question">
+                <strong>Für dein Ticketing-System:</strong> Wenn du einen AI-Assistenten baust, der Tickets erstellen kann — welches Architekturmuster ist das? Welche Trust Boundaries hast du, und welche sind die kritischsten? Zeichne das Datenfluss-Diagramm.
+            </div>
+            <div class="r-question">
+                <strong>Querverweis Web-Track:</strong> Die Trust-Boundary-Analyse hier ist das Äquivalent von <strong>Netzwerk-Segmentierung</strong> im Web-Track (Modul 4). In beiden Fällen geht es um die Frage: Welche Komponente darf mit welcher kommunizieren, und in welche Richtung? Same principle, different domain.
+            </div>
+            <div class="r-question">
+                <strong>Vorfall #3 in deinem Alltag:</strong> Du nutzt Claude mit Tool-Zugriff (z.B. Google Drive, Code Execution). Welche der sechs Trust Boundaries sind in deiner Nutzung relevant? Wo vertraust du dem System implizit? Ist dieses Vertrauen gerechtfertigt?
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-links">
+            <a href="exercise.html" class="nav-link">← Zurück zum Rätsel</a>
+            <a href="../ai-threat-landscape/index.html" class="nav-link next">Nächstes Modul: AI Threat Landscape & Frameworks →</a>
+        </div>
+
+        <div class="lesson-footer">
+            KI-Security Track · Phase 1 · Modul 2: LLM-Architektur & Datenflüsse
+        </div>
+    </div>
+</body>
+</html>

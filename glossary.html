@@ -196,6 +196,74 @@
       <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
     </li>
 
+    <!-- === Einträge aus AI-Lesson 02: LLM-Architektur & Datenflüsse === -->
+
+    <li>
+      <div class="glossary-term">Agent Loop (ReAct Pattern)</div>
+      <div class="glossary-def">Architekturmuster, bei dem ein LLM in einer Schleife plant (Think), ein Tool ausführt (Act) und das Ergebnis beobachtet (Observe) — iterativ und ohne menschliche Kontrolle zwischen den Schritten. Maximiert Autonomie und Angriffsfläche.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-02-llm-architektur-datenfluesse/theory.html">AI-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Direct Chat</div>
+      <div class="glossary-def">Das einfachste LLM-Architekturmuster: System Prompt + User Prompt → LLM → Response. Nur eine Trust Boundary (User → System). Risiken: Direct Prompt Injection und System Prompt Leakage.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-02-llm-architektur-datenfluesse/theory.html">AI-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Excessive Agency</div>
+      <div class="glossary-def">OWASP LLM06. Sicherheitsrisiko, bei dem ein LLM-Agent zu viele Berechtigungen, zu viel Autonomie und zu wenig menschliche Kontrolle hat. Besonders kritisch bei Tool Use und Agent Loops.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-02-llm-architektur-datenfluesse/theory.html">AI-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Function Calling</div>
+      <div class="glossary-def">Mechanismus, bei dem ein LLM strukturierte Tool-Aufrufe generiert (z.B. send_email(), query_db()). Verwandelt Prompt Injection von einem Informationsproblem in ein Aktionsproblem.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-02-llm-architektur-datenfluesse/theory.html">AI-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Human-in-the-Loop</div>
+      <div class="glossary-def">Sicherheitsprinzip, bei dem ein Mensch destruktive oder kritische Aktionen eines LLM-Agents bestätigen muss, bevor sie ausgeführt werden. Zentrale Verteidigung gegen Excessive Agency.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-02-llm-architektur-datenfluesse/theory.html">AI-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Indirect Prompt Injection</div>
+      <div class="glossary-def">Angriff, bei dem manipulierte Inhalte aus externen Datenquellen (Dokumente, APIs, E-Mails) als Kontext in den LLM-Prompt eingefügt werden und dort als Instruktion interpretiert werden. Tritt bei RAG, Tool Use und Agent-Architekturen auf.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-02-llm-architektur-datenfluesse/theory.html">AI-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Insecure Output Handling</div>
+      <div class="glossary-def">OWASP LLM05. Sicherheitsrisiko, bei dem LLM-Output ohne Validierung an ein Downstream-System weitergegeben wird (z.B. generiertes SQL direkt ausgeführt). Auch Halluzinationen können so zu Sicherheitsvorfällen führen.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-02-llm-architektur-datenfluesse/theory.html">AI-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Least Privilege</div>
+      <div class="glossary-def">Sicherheitsprinzip: Jede Komponente (auch ein LLM-Agent) erhält nur die minimal notwendigen Berechtigungen. Zentrale Verteidigung gegen Tool Misuse und Excessive Agency.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-02-llm-architektur-datenfluesse/theory.html">AI-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Multi-Model Pipeline</div>
+      <div class="glossary-def">Architekturmuster, bei dem mehrere Modelle in Reihe geschaltet sind (z.B. Klassifikator → LLM → Safety Filter). Jede Modellgrenze ist eine Trust Boundary — ein Fehler in Modell A kann durch die gesamte Pipeline kaskadieren.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-02-llm-architektur-datenfluesse/theory.html">AI-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Tool Use</div>
+      <div class="glossary-def">LLM-Architekturmuster, bei dem das Modell externe Tools aufrufen kann (APIs, Datenbanken, Code-Execution). Das LLM entscheidet, welches Tool mit welchen Parametern aufgerufen wird — ein qualitativer Sprung in der Angriffsfläche.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-02-llm-architektur-datenfluesse/theory.html">AI-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Trust Boundary</div>
+      <div class="glossary-def">Grenze zwischen Komponenten mit unterschiedlichem Vertrauensniveau. Jedes Mal, wenn Daten eine Trust Boundary überschreiten, entsteht ein potenzieller Angriffspunkt. Faustregel: Je mehr Trust Boundaries, desto größer die Angriffsfläche.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-02-llm-architektur-datenfluesse/theory.html">AI-Security Lesson 02</a></div>
+    </li>
+
   </ul>
 
 </main>

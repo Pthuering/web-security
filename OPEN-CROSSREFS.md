@@ -27,10 +27,18 @@ Dieses Dokument listet alle Querverweise (Links und Texterwähnungen), die auf n
 | `index.html` | `../../web-security/lesson-03-threat-actors-attack-surfaces/index.html` | Web-Modul 3: Threat Actors & Attack Surfaces |
 | `theory.html` | Texterwähnung: „Web-Modul 3: Threat Actors & Attack Surfaces" | Web-Modul 3 |
 | `solution.html` | Texterwähnung: „SQL Injection (Web-Modul 7)" | Web-Modul 7: SQL Injection |
-| `solution.html` | `../llm-architektur-datenfluesse/index.html` (Nav-Link „Nächstes Modul") | AI-Modul 2: LLM-Architektur & Datenflüsse |
+
+### Lesson 02: LLM-Architektur & Datenflüsse
+
+| Datei | Verweis | Ziel (fehlt) |
+|-------|---------|---------------|
+| `index.html` | `../../web-security/netzwerk-sicherheit/index.html` | Web-Modul 4: Netzwerk-Sicherheit Basics |
+| `index.html` | `../excessive-agency/index.html` | AI-Modul 10: Excessive Agency |
+| `solution.html` | `../ai-threat-landscape/index.html` (Nav-Link „Nächstes Modul") | AI-Modul 3: AI Threat Landscape & Frameworks |
 
 ---
 
 ## Changelog
 
+- **2026-03-31** — AI-Lesson 02 integriert. Querverweis aus AI-Lesson 01 solution.html auf Modul 2 aufgelöst. Neue offene Querverweise aus AI-Lesson 02 dokumentiert.
 - **2026-03-31** — Erstellt nach Integration von Web-Lesson 01 + AI-Lesson 01.
