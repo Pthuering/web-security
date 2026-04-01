@@ -28,12 +28,46 @@
 
   <ul class="glossary-list">
 
-    <!-- === Einträge aus Lesson 01: CIA-Triad & Security Controls === -->
-
     <li>
       <div class="glossary-term">Administrative Controls</div>
       <div class="glossary-def">Sicherheitsmaßnahmen auf organisatorischer Ebene — z.B. Richtlinien, Schulungen, Prozesse. Eine der drei Security-Control-Kategorien neben technischen und physischen Controls.</div>
       <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">AES</div>
+      <div class="glossary-def">Advanced Encryption Standard. Der am weitesten verbreitete symmetrische Verschlüsselungsalgorithmus. Verwendet denselben Schlüssel zum Ver- und Entschlüsseln und ist besonders effizient für große Datenmengen.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-02-crypto-basics/theory.html">Web-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Agent Loop (ReAct Pattern)</div>
+      <div class="glossary-def">Architekturmuster, bei dem ein LLM in einer Schleife plant (Think), ein Tool ausführt (Act) und das Ergebnis beobachtet (Observe) — iterativ und ohne menschliche Kontrolle zwischen den Schritten. Maximiert Autonomie und Angriffsfläche.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-02-llm-architektur-datenfluesse/theory.html">AI-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Argon2</div>
+      <div class="glossary-def">Moderner Passwort-Hashing-Algorithmus und Gewinner des Password Hashing Competition (2015). Bietet resistenz gegen GPU- und ASIC-Angriffe durch speicherhartes Hashing mit Salt und Key Stretching.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-02-crypto-basics/theory.html">Web-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Asymmetrische Verschlüsselung</div>
+      <div class="glossary-def">Kryptografisches Verfahren mit einem Schlüsselpaar aus öffentlichem (Public) und privatem (Private) Schlüssel. Der Public Key verschlüsselt, der Private Key entschlüsselt — oder umgekehrt für digitale Signaturen.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-02-crypto-basics/theory.html">Web-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Attack Surface (Angriffsfläche)</div>
+      <div class="glossary-def">Die Summe aller Punkte, an denen ein Angreifer mit einem System interagieren kann. Bei AI-Systemen umfasst sie Trainingsdaten, Modellgewichte, Tokenizer, Prompts, Outputs und angebundene Datenquellen (RAG).</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Attention-Mechanismus</div>
+      <div class="glossary-def">Kernkomponente der Transformer-Architektur. Jedes Token gewichtet die Relevanz aller anderen Tokens im Kontext — ermöglicht dem Modell, Zusammenhänge über lange Distanzen zu erfassen.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
     </li>
 
     <li>
@@ -43,9 +77,21 @@
     </li>
 
     <li>
+      <div class="glossary-term">Certificate Authority (CA)</div>
+      <div class="glossary-def">Vertrauenswürdige Organisation, die digitale Zertifikate ausstellt und signiert. Sie bildet den Anker der Public Key Infrastructure (PKI) und ermöglicht es Browsern, Server-Zertifikate zu verifizieren.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-02-crypto-basics/theory.html">Web-Security Lesson 02</a></div>
+    </li>
+
+    <li>
       <div class="glossary-term">CIA-Triad</div>
       <div class="glossary-def">Das universelle Grundmodell der Informationssicherheit, bestehend aus Confidentiality (Vertraulichkeit), Integrity (Integrität) und Availability (Verfügbarkeit). Jedes Sicherheitsrisiko lässt sich über diese drei Dimensionen klassifizieren.</div>
       <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Collision Resistance</div>
+      <div class="glossary-def">Eigenschaft einer Hash-Funktion, bei der es rechnerisch unmöglich sein sollte, zwei unterschiedliche Eingaben zu finden, die denselben Hash-Wert erzeugen. Wichtig für die Sicherheit von Integritätsprüfungen.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-02-crypto-basics/theory.html">Web-Security Lesson 02</a></div>
     </li>
 
     <li>
@@ -61,64 +107,6 @@
     </li>
 
     <li>
-      <div class="glossary-term">Defense in Depth</div>
-      <div class="glossary-def">Sicherheitsprinzip, bei dem mehrere Schutzschichten (Controls) übereinander gelegt werden, sodass der Ausfall einer Maßnahme nicht das gesamte System kompromittiert.</div>
-      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
-    </li>
-
-    <li>
-      <div class="glossary-term">Detective Controls</div>
-      <div class="glossary-def">Sicherheitsmaßnahmen, die Angriffe oder Regelverstöße erkennen — z.B. Logging, IDS, Audits. Wirken nicht präventiv, sondern machen Vorfälle sichtbar.</div>
-      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
-    </li>
-
-    <li>
-      <div class="glossary-term">Integrity (Integrität)</div>
-      <div class="glossary-def">Die zweite Säule der CIA-Triad. Stellt sicher, dass Daten nicht unbefugt oder unbemerkt verändert werden können.</div>
-      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
-    </li>
-
-    <li>
-      <div class="glossary-term">Physische Controls</div>
-      <div class="glossary-def">Sicherheitsmaßnahmen auf physischer Ebene — z.B. Zutrittskontrollsysteme, Überwachungskameras, USV-Anlagen. Schützen Hardware und Infrastruktur.</div>
-      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
-    </li>
-
-    <li>
-      <div class="glossary-term">Preventive Controls</div>
-      <div class="glossary-def">Sicherheitsmaßnahmen, die Angriffe im Vorfeld verhindern sollen — z.B. Firewalls, Verschlüsselung, Zugriffskontrollen.</div>
-      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
-    </li>
-
-    <li>
-      <div class="glossary-term">Security Control</div>
-      <div class="glossary-def">Jede technische, administrative oder physische Maßnahme, die ein Sicherheitsrisiko reduziert. Controls lassen sich nach Kategorie (technisch/administrativ/physisch) und Funktion (preventive/detective/corrective) klassifizieren.</div>
-      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
-    </li>
-
-    <li>
-      <div class="glossary-term">Technische Controls</div>
-      <div class="glossary-def">Sicherheitsmaßnahmen, die durch Software oder Hardware umgesetzt werden — z.B. Firewalls, Verschlüsselung, IDS. Eine der drei Security-Control-Kategorien.</div>
-      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
-    </li>
-
-    <!-- === Neue Glossar-Einträge bei jeder Lektion HIER einfügen (alphabetisch sortiert) === -->
-
-    <!-- === Einträge aus AI-Lesson 01: AI/ML-Grundlagen für Security === -->
-
-    <li>
-      <div class="glossary-term">Attack Surface (Angriffsfläche)</div>
-      <div class="glossary-def">Die Summe aller Punkte, an denen ein Angreifer mit einem System interagieren kann. Bei AI-Systemen umfasst sie Trainingsdaten, Modellgewichte, Tokenizer, Prompts, Outputs und angebundene Datenquellen (RAG).</div>
-      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
-    </li>
-
-    <li>
-      <div class="glossary-term">Attention-Mechanismus</div>
-      <div class="glossary-def">Kernkomponente der Transformer-Architektur. Jedes Token gewichtet die Relevanz aller anderen Tokens im Kontext — ermöglicht dem Modell, Zusammenhänge über lange Distanzen zu erfassen.</div>
-      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
-    </li>
-
-    <li>
       <div class="glossary-term">Data Poisoning</div>
       <div class="glossary-def">Angriff auf die Trainingsdaten eines ML-Modells. Manipulierte Daten werden eingeschleust, um das Modell zu korrumpieren. OWASP LLM04. Wirkt langfristig und ist schwer zu erkennen.</div>
       <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
@@ -131,83 +119,33 @@
     </li>
 
     <li>
-      <div class="glossary-term">Embeddings</div>
-      <div class="glossary-def">Zahlenvektoren, die Tokens oder Texte in einem hochdimensionalen Raum repräsentieren. Ähnliche Bedeutungen → ähnliche Vektoren. Basis für semantische Suche und RAG-Systeme.</div>
-      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+      <div class="glossary-term">Defense in Depth</div>
+      <div class="glossary-def">Sicherheitsprinzip, bei dem mehrere Schutzschichten (Controls) übereinander gelegt werden, sodass der Ausfall einer Maßnahme nicht das gesamte System kompromittiert.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
     </li>
 
     <li>
-      <div class="glossary-term">Inference Pipeline</div>
-      <div class="glossary-def">Der Datenfluss bei der Nutzung eines fertigen Modells: User-Prompt → Tokenizer → Modell → Output → Downstream-System. Angriffspunkte: Prompt Injection, Adversarial Tokens, Insecure Output Handling.</div>
-      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+      <div class="glossary-term">Detective Controls</div>
+      <div class="glossary-def">Sicherheitsmaßnahmen, die Angriffe oder Regelverstöße erkennen — z.B. Logging, IDS, Audits. Wirken nicht präventiv, sondern machen Vorfälle sichtbar.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
     </li>
 
     <li>
-      <div class="glossary-term">LLM (Large Language Model)</div>
-      <div class="glossary-def">Große Sprachmodelle wie GPT oder Claude. Teilmenge von NLP ⊂ Deep Learning ⊂ Machine Learning. Basieren auf der Transformer-Architektur und erzeugen Text durch Token-für-Token-Vorhersage.</div>
-      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
-    </li>
-
-    <li>
-      <div class="glossary-term">Machine Learning (ML)</div>
-      <div class="glossary-def">Oberbegriff für Systeme, die Muster aus Daten lernen, ohne explizit programmiert zu werden. Umfasst Deep Learning, klassische Algorithmen und mehr.</div>
-      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
-    </li>
-
-    <li>
-      <div class="glossary-term">NLP (Natural Language Processing)</div>
-      <div class="glossary-def">Teilbereich von Deep Learning für Sprachverarbeitung — Text verstehen und erzeugen. LLMs sind die derzeit wichtigste NLP-Architektur.</div>
-      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
-    </li>
-
-    <li>
-      <div class="glossary-term">Prompt Injection</div>
-      <div class="glossary-def">Angriff, bei dem ein Nutzer eine manipulierte Eingabe gibt, die das System Prompt überschreibt oder das Modellverhalten ändert. OWASP LLM01. Angriffspunkt: User-Prompt in der Inference-Pipeline.</div>
-      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
-    </li>
-
-    <li>
-      <div class="glossary-term">RAG (Retrieval-Augmented Generation)</div>
-      <div class="glossary-def">Erweiterung von LLMs, bei der relevante Dokumente zur Laufzeit aus einer Vector Database abgerufen und dem Prompt beigefügt werden. Bringt eigene Angriffsfläche mit: RAG Poisoning (OWASP LLM08).</div>
-      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
-    </li>
-
-    <li>
-      <div class="glossary-term">Tokenization</div>
-      <div class="glossary-def">Zerlegung von Text in Sub-Wort-Einheiten (Tokens) als erste Verarbeitungsstufe eines LLMs. Der Tokenizer ist deterministisch und vorhersagbar — Angreifer können ihn nutzen, um Sicherheitsfilter zu umgehen.</div>
-      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
-    </li>
-
-    <li>
-      <div class="glossary-term">Training Pipeline</div>
-      <div class="glossary-def">Der Datenfluss beim Trainieren eines Modells: Trainingsdaten → Preprocessing → Training → fertiges Modell. Angriffspunkte: Data Poisoning, Model Theft.</div>
-      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
-    </li>
-
-    <li>
-      <div class="glossary-term">Transformer</div>
-      <div class="glossary-def">Neuronale Netzarchitektur (2017), die LLMs zugrunde liegt. Kernmechanismus: Attention — jedes Token gewichtet die Relevanz aller anderen Tokens. Security-relevant, weil sie die Basis für die Inference-Pipeline bildet.</div>
-      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
-    </li>
-
-    <li>
-      <div class="glossary-term">Vector Database</div>
-      <div class="glossary-def">Datenbank, die Embedding-Vektoren speichert und Ähnlichkeitssuche ermöglicht. Kernkomponente von RAG-Systemen. Angriffsfläche: Manipulierte Dokumente können Indirect Prompt Injection transportieren.</div>
-      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
-    </li>
-
-    <!-- === Einträge aus AI-Lesson 02: LLM-Architektur & Datenflüsse === -->
-
-    <li>
-      <div class="glossary-term">Agent Loop (ReAct Pattern)</div>
-      <div class="glossary-def">Architekturmuster, bei dem ein LLM in einer Schleife plant (Think), ein Tool ausführt (Act) und das Ergebnis beobachtet (Observe) — iterativ und ohne menschliche Kontrolle zwischen den Schritten. Maximiert Autonomie und Angriffsfläche.</div>
-      <div class="glossary-source">→ <a href="ai-security/lesson-02-llm-architektur-datenfluesse/theory.html">AI-Security Lesson 02</a></div>
+      <div class="glossary-term">Digitale Signatur</div>
+      <div class="glossary-def">Kryptografisches Verfahren, das Integrität und Non-Repudiation garantiert. Ein Hash des Dokuments wird mit dem Private Key des Signierers verschlüsselt und kann mit dem zugehörigen Public Key verifiziert werden.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-02-crypto-basics/theory.html">Web-Security Lesson 02</a></div>
     </li>
 
     <li>
       <div class="glossary-term">Direct Chat</div>
       <div class="glossary-def">Das einfachste LLM-Architekturmuster: System Prompt + User Prompt → LLM → Response. Nur eine Trust Boundary (User → System). Risiken: Direct Prompt Injection und System Prompt Leakage.</div>
       <div class="glossary-source">→ <a href="ai-security/lesson-02-llm-architektur-datenfluesse/theory.html">AI-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Embeddings</div>
+      <div class="glossary-def">Zahlenvektoren, die Tokens oder Texte in einem hochdimensionalen Raum repräsentieren. Ähnliche Bedeutungen → ähnliche Vektoren. Basis für semantische Suche und RAG-Systeme.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
     </li>
 
     <li>
@@ -223,6 +161,18 @@
     </li>
 
     <li>
+      <div class="glossary-term">Hashing</div>
+      <div class="glossary-def">Einwegfunktion, die beliebige Eingaben in einen fixen Hash-Wert fester Länge überführt. Wird für Integritätsprüfungen und sicheres Passwort-Storage verwendet. Hashing ist keine Verschlüsselung — es ist nicht umkehrbar.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-02-crypto-basics/theory.html">Web-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">HTTPS</div>
+      <div class="glossary-def">Hypertext Transfer Protocol Secure. Erweitert HTTP durch TLS-Verschlüsselung, um Vertraulichkeit und Integrität der übertragenen Daten zwischen Browser und Webserver zu schützen.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-02-crypto-basics/theory.html">Web-Security Lesson 02</a></div>
+    </li>
+
+    <li>
       <div class="glossary-term">Human-in-the-Loop</div>
       <div class="glossary-def">Sicherheitsprinzip, bei dem ein Mensch destruktive oder kritische Aktionen eines LLM-Agents bestätigen muss, bevor sie ausgeführt werden. Zentrale Verteidigung gegen Excessive Agency.</div>
       <div class="glossary-source">→ <a href="ai-security/lesson-02-llm-architektur-datenfluesse/theory.html">AI-Security Lesson 02</a></div>
@@ -235,9 +185,21 @@
     </li>
 
     <li>
+      <div class="glossary-term">Inference Pipeline</div>
+      <div class="glossary-def">Der Datenfluss bei der Nutzung eines fertigen Modells: User-Prompt → Tokenizer → Modell → Output → Downstream-System. Angriffspunkte: Prompt Injection, Adversarial Tokens, Insecure Output Handling.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
       <div class="glossary-term">Insecure Output Handling</div>
       <div class="glossary-def">OWASP LLM05. Sicherheitsrisiko, bei dem LLM-Output ohne Validierung an ein Downstream-System weitergegeben wird (z.B. generiertes SQL direkt ausgeführt). Auch Halluzinationen können so zu Sicherheitsvorfällen führen.</div>
       <div class="glossary-source">→ <a href="ai-security/lesson-02-llm-architektur-datenfluesse/theory.html">AI-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Integrity (Integrität)</div>
+      <div class="glossary-def">Die zweite Säule der CIA-Triad. Stellt sicher, dass Daten nicht unbefugt oder unbemerkt verändert werden können.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
     </li>
 
     <li>
@@ -247,9 +209,111 @@
     </li>
 
     <li>
+      <div class="glossary-term">LLM (Large Language Model)</div>
+      <div class="glossary-def">Große Sprachmodelle wie GPT oder Claude. Teilmenge von NLP ⊂ Deep Learning ⊂ Machine Learning. Basieren auf der Transformer-Architektur und erzeugen Text durch Token-für-Token-Vorhersage.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Machine Learning (ML)</div>
+      <div class="glossary-def">Oberbegriff für Systeme, die Muster aus Daten lernen, ohne explizit programmiert zu werden. Umfasst Deep Learning, klassische Algorithmen und mehr.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
       <div class="glossary-term">Multi-Model Pipeline</div>
       <div class="glossary-def">Architekturmuster, bei dem mehrere Modelle in Reihe geschaltet sind (z.B. Klassifikator → LLM → Safety Filter). Jede Modellgrenze ist eine Trust Boundary — ein Fehler in Modell A kann durch die gesamte Pipeline kaskadieren.</div>
       <div class="glossary-source">→ <a href="ai-security/lesson-02-llm-architektur-datenfluesse/theory.html">AI-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">NLP (Natural Language Processing)</div>
+      <div class="glossary-def">Teilbereich von Deep Learning für Sprachverarbeitung — Text verstehen und erzeugen. LLMs sind die derzeit wichtigste NLP-Architektur.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Non-Repudiation</div>
+      <div class="glossary-def">Nichtabstreitbarkeit. Eigenschaft einer digitalen Signatur, die sicherstellt, dass der Unterzeichner die Urheberschaft einer Nachricht oder eines Dokuments später nicht leugnen kann.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-02-crypto-basics/theory.html">Web-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Physische Controls</div>
+      <div class="glossary-def">Sicherheitsmaßnahmen auf physischer Ebene — z.B. Zutrittskontrollsysteme, Überwachungskameras, USV-Anlagen. Schützen Hardware und Infrastruktur.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Preventive Controls</div>
+      <div class="glossary-def">Sicherheitsmaßnahmen, die Angriffe im Vorfeld verhindern sollen — z.B. Firewalls, Verschlüsselung, Zugriffskontrollen.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Prompt Injection</div>
+      <div class="glossary-def">Angriff, bei dem ein Nutzer eine manipulierte Eingabe gibt, die das System Prompt überschreibt oder das Modellverhalten ändert. OWASP LLM01. Angriffspunkt: User-Prompt in der Inference-Pipeline.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Public Key Infrastructure (PKI)</div>
+      <div class="glossary-def">Infrastruktur zur Erstellung, Verwaltung und Überprüfung digitaler Zertifikate. Bestehend aus Certificate Authorities (CAs), Registrierungsstellen und Verzeichnisdiensten. Ermöglicht vertrauenswürdige Kommunikation im Internet.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-02-crypto-basics/theory.html">Web-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">RAG (Retrieval-Augmented Generation)</div>
+      <div class="glossary-def">Erweiterung von LLMs, bei der relevante Dokumente zur Laufzeit aus einer Vector Database abgerufen und dem Prompt beigefügt werden. Bringt eigene Angriffsfläche mit: RAG Poisoning (OWASP LLM08).</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">RSA</div>
+      <div class="glossary-def">Asymmetrisches Verschlüsselungs- und Signaturverfahren. Basierend auf der mathematischen Schwierigkeit der Primfaktorzerlegung großer Zahlen. Wird häufig für Schlüsselaustausch und digitale Signaturen eingesetzt.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-02-crypto-basics/theory.html">Web-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Salt</div>
+      <div class="glossary-def">Zufälliger Wert, der einem Passwort vor dem Hashing hinzugefügt wird. Verhindert Angriffe mit Rainbow Tables und sorgt dafür, dass identische Passwörter unterschiedliche Hash-Werte erzeugen.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-02-crypto-basics/theory.html">Web-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Security Control</div>
+      <div class="glossary-def">Jede technische, administrative oder physische Maßnahme, die ein Sicherheitsrisiko reduziert. Controls lassen sich nach Kategorie (technisch/administrativ/physisch) und Funktion (preventive/detective/corrective) klassifizieren.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">SHA-256</div>
+      <div class="glossary-def">Secure Hash Algorithm 256-Bit. Weit verbreitete kryptografische Hash-Funktion, die Eingaben in einen 64-stelligen Hex-Hash fester Länge überführt. Wird für Integritätsprüfungen und digitale Signaturen genutzt.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-02-crypto-basics/theory.html">Web-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Symmetrische Verschlüsselung</div>
+      <div class="glossary-def">Kryptografisches Verfahren, bei dem zum Ver- und Entschlüsseln derselbe Schlüssel verwendet wird. Sehr schnell und daher ideal für die Verschlüsselung großer Datenmengen (z. B. AES).</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-02-crypto-basics/theory.html">Web-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Technische Controls</div>
+      <div class="glossary-def">Sicherheitsmaßnahmen, die durch Software oder Hardware umgesetzt werden — z.B. Firewalls, Verschlüsselung, IDS. Eine der drei Security-Control-Kategorien.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-01-cia-triad/theory.html">Web-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">TLS-Handshake</div>
+      <div class="glossary-def">Protokollablauf zum Aufbau einer verschlüsselten TLS-Verbindung. Der Client und Server handeln Cipher Suites aus, tauschen Zertifikate aus und vereinbaren einen symmetrischen Session-Key für die anschließende verschlüsselte Kommunikation.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-02-crypto-basics/theory.html">Web-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Tokenization</div>
+      <div class="glossary-def">Zerlegung von Text in Sub-Wort-Einheiten (Tokens) als erste Verarbeitungsstufe eines LLMs. Der Tokenizer ist deterministisch und vorhersagbar — Angreifer können ihn nutzen, um Sicherheitsfilter zu umgehen.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
     </li>
 
     <li>
@@ -259,9 +323,33 @@
     </li>
 
     <li>
+      <div class="glossary-term">Training Pipeline</div>
+      <div class="glossary-def">Der Datenfluss beim Trainieren eines Modells: Trainingsdaten → Preprocessing → Training → fertiges Modell. Angriffspunkte: Data Poisoning, Model Theft.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Transformer</div>
+      <div class="glossary-def">Neuronale Netzarchitektur (2017), die LLMs zugrunde liegt. Kernmechanismus: Attention — jedes Token gewichtet die Relevanz aller anderen Tokens. Security-relevant, weil sie die Basis für die Inference-Pipeline bildet.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
       <div class="glossary-term">Trust Boundary</div>
       <div class="glossary-def">Grenze zwischen Komponenten mit unterschiedlichem Vertrauensniveau. Jedes Mal, wenn Daten eine Trust Boundary überschreiten, entsteht ein potenzieller Angriffspunkt. Faustregel: Je mehr Trust Boundaries, desto größer die Angriffsfläche.</div>
       <div class="glossary-source">→ <a href="ai-security/lesson-02-llm-architektur-datenfluesse/theory.html">AI-Security Lesson 02</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Vector Database</div>
+      <div class="glossary-def">Datenbank, die Embedding-Vektoren speichert und Ähnlichkeitssuche ermöglicht. Kernkomponente von RAG-Systemen. Angriffsfläche: Manipulierte Dokumente können Indirect Prompt Injection transportieren.</div>
+      <div class="glossary-source">→ <a href="ai-security/lesson-01-ai-ml-grundlagen/theory.html">AI-Security Lesson 01</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">X.509-Zertifikat</div>
+      <div class="glossary-def">Standardformat für digitale Zertifikate in einer Public Key Infrastructure (PKI). Enthält den öffentlichen Schlüssel, Identitätsinformationen des Inhabers, Gültigkeitszeitraum und die digitale Signatur der ausstellenden CA.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-02-crypto-basics/theory.html">Web-Security Lesson 02</a></div>
     </li>
 
   </ul>
@@ -270,3 +358,99 @@
 
 </body>
 </html>
+    <li>
+      <div class="glossary-term">APT (Advanced Persistent Threat)</div>
+      <div class="glossary-def">Hochspezialisierte, gut finanzierte Angreifergruppe, typischerweise mit staatlichem Hintergrund. Charakterisiert durch Langfristigkeit, Stealth und maßgeschneiderte Angriffe.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-03-threat-actors/theory.html">Web-Security Lesson 03</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Attack Surface</div>
+      <div class="glossary-def">Die Summe aller Punkte, an denen ein Angreifer mit einem System interagieren kann. Umfasst Physical, Social, Network und Application Layers.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-03-threat-actors/theory.html">Web-Security Lesson 03</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Cyber Kill Chain</div>
+      <div class="glossary-def">Modell zur Beschreibung der Phasen eines gezielten Cyber-Angriffs: Reconnaissance → Weaponization → Delivery → Exploitation → Installation → C2 → Actions on Objectives.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-03-threat-actors/theory.html">Web-Security Lesson 03</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Hacktivist</div>
+      <div class="glossary-def">Angreifer mit politischer oder ideologischer Motivation. Nutzt Cyber-Angriffe (z. B. DDoS, Defacements) zur Verbreitung einer Botschaft oder zum Schaden eines Ziels.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-03-threat-actors/theory.html">Web-Security Lesson 03</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">IOC (Indicator of Compromise)</div>
+      <div class="glossary-def">Observable Beweisstück für einen Sicherheitsvorfall, z. B. IP-Adresse, Domain, Datei-Hash oder URL. Taktische Ebene der Threat Intelligence.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-03-threat-actors/theory.html">Web-Security Lesson 03</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Insider Threat</div>
+      <div class="glossary-def">Sicherheitsrisiko durch Personen mit legitimen Zugriffsrechten auf ein System oder eine Organisation. Kann absichtlich (bösartig) oder unabsichtlich (fahrlässig) sein.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-03-threat-actors/theory.html">Web-Security Lesson 03</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">MITRE ATT&CK</div>
+      <div class="glossary-def">Globally accessible knowledge base of adversary Tactics, Techniques, and Procedures (TTPs). Wird von Sicherheitsanalysten genutzt, um Angriffsmuster zu klassifizieren und Verteidigungen zu planen.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-03-threat-actors/theory.html">Web-Security Lesson 03</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Nation-State Actor</div>
+      <div class="glossary-def">Staatlich finanzierte oder unterstützte Angreifergruppe. Betreibt Cyber-Espionage, Sabotage oder Einflussoperationen mit hohen Ressourcen und langem Atem.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-03-threat-actors/theory.html">Web-Security Lesson 03</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Organized Crime (Cyber)</div>
+      <div class="glossary-def">Professionell strukturierte kriminelle Gruppen im Cyberspace. Primäre Motivation: finanzieller Gewinn durch Ransomware, Credential Theft, Fraud oder Datenverkauf.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-03-threat-actors/theory.html">Web-Security Lesson 03</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Script Kiddie</div>
+      <div class="glossary-def">Angreifer mit geringem technischen Verständnis, der fertige Tools oder Skripte nutzt. Oft motiviert durch Ego, Spaß oder den Wunsch nach Anerkennung.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-03-threat-actors/theory.html">Web-Security Lesson 03</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Social Engineering</div>
+      <div class="glossary-def">Manipulation von Menschen, um sie zur Preisgabe vertraulicher Informationen oder zum Ausführen schädlicher Handlungen zu bewegen. Beispiele: Phishing, Vishing, Pretexting.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-03-threat-actors/theory.html">Web-Security Lesson 03</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Threat Actor</div>
+      <div class="glossary-def">Jede Entität, die eine potenzielle Bedrohung für die Sicherheit eines Systems darstellt. Umfasst interne und externe Akteure mit unterschiedlichen Fähigkeiten und Motivationen.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-03-threat-actors/theory.html">Web-Security Lesson 03</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Threat Intelligence</div>
+      <div class="glossary-def">Wissen über Bedrohungen, das gesammelt, analysiert und operationalisiert wird, um Sicherheitsentscheidungen zu treffen. Ebenen: Strategisch, Taktisch (IOCs), Operativ (TTPs).</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-03-threat-actors/theory.html">Web-Security Lesson 03</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">TTP (Tactics, Techniques, and Procedures)</div>
+      <div class="glossary-def">Taktiken, Techniken und Prozeduren eines Angreifers. Beschreiben, WIE ein Threat Actor vorgeht. Werden im MITRE ATT&CK Framework katalogisiert.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-03-threat-actors/theory.html">Web-Security Lesson 03</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Vishing</div>
+      <div class="glossary-def">Voice Phishing — Social Engineering per Telefonanruf. Angreifer täuschen eine vertrauenswürdige Identität vor, um sensible Informationen oder Aktionen zu erlangen.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-03-threat-actors/theory.html">Web-Security Lesson 03</a></div>
+    </li>
+
+    <li>
+      <div class="glossary-term">Vulnerability</div>
+      <div class="glossary-def">Eine Schwachstelle in einem System, die von einem Threat Actor ausgenutzt werden kann. Unterschied zur Bedrohung: Eine Vulnerability ist ein Zustand, keine aktive Entität.</div>
+      <div class="glossary-source">→ <a href="web-security/lesson-03-threat-actors/theory.html">Web-Security Lesson 03</a></div>
+    </li>
+

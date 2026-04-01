@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lösung: CIA-Triad Incident Classifier | Web-Security Track</title>
+    <title>Lösung: Das Threat-Lab | Web-Security Track</title>
     <link rel="stylesheet" href="../../styles/main.css">
     <style>
         /* Map lesson variables to main.css design system */
@@ -118,17 +118,17 @@
             padding: 0.15rem 0.5rem;
             border-radius: 4px;
         }
-        .step-cia {
+        .step-ans {
             font-family: var(--font-display);
             font-weight: 700;
-            font-size: 0.9rem;
-            padding: 0.2rem 0.5rem;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.4rem;
             border-radius: 4px;
+            color: var(--accent);
+            background: var(--accent-glow);
+            text-align: center;
+            line-height: 1.2;
         }
-        .step-cia.c { color: var(--accent); background: var(--accent-glow); }
-        .step-cia.i { color: var(--success); background: var(--success-dim); }
-        .step-cia.a { color: var(--warning); background: var(--warning-dim); }
-
         .step-letter {
             font-family: var(--font-mono);
             font-size: 0.75rem;
@@ -306,34 +306,34 @@
             <span class="sep">/</span>
             <a href="../index.html">Web-Security</a>
             <span class="sep">/</span>
-            <a href="index.html">Modul 1</a>
+            <a href="index.html">Modul 3</a>
             <span class="sep">/</span>
             <span>Lösung</span>
         </nav>
 
-        <h1>Lösung: Der Sicherheitsberater</h1>
-        <p class="page-subtitle">Schritt-für-Schritt-Auflösung aller sechs Vorfälle.</p>
+        <h1>Lösung: Das Threat-Lab</h1>
+        <p class="page-subtitle">Schritt-für-Schritt-Auflösung aller sechs Threat-Intelligence-Szenarien.</p>
 
         <!-- ========== STEP BY STEP ========== -->
         <div class="section">
             <div class="section-label">Lösungsweg</div>
-            <h2>Die sechs Vorfälle im Detail</h2>
+            <h2>Die sechs Szenarien im Detail</h2>
 
             <div class="solution-steps">
                 <!-- Step 1 -->
                 <div class="solution-step">
                     <div class="step-badge">
                         <span class="step-num">#1</span>
-                        <span class="step-cia c">C</span>
-                        <span class="step-letter">→ S</span>
+                        <span class="step-ans">APT</span>
+                        <span class="step-letter">→ R</span>
                     </div>
                     <div class="step-content">
-                        <div class="step-title">Kundendaten an Marketingfirma weitergegeben</div>
+                        <div class="step-title">Langfristige, hochspezialisierte Kampagne</div>
                         <div class="step-reason">
-                            Die Daten wurden von einer <strong>nicht autorisierten Person eingesehen und weitergeleitet</strong>. Es geht nicht darum, dass die Daten verändert oder nicht verfügbar waren — sondern dass jemand Zugang hatte, der keinen haben sollte. Das ist <em>Confidentiality</em>.
+                            18 Monate unentdeckt, maßgeschneiderte Malware, hohe Ressourcen — das sind die klassischen Merkmale eines <strong>Nation-State Actors</strong> oder einer <strong>APT</strong> (Advanced Persistent Threat).
                         </div>
                         <div class="step-trap">
-                            ⚠️ Häufiger Fehler: „Die Daten wurden ja weitergegeben, also Integrity?" — Nein. Die Daten selbst wurden nicht verändert. Sie wurden nur von Unbefugten eingesehen.
+                            ⚠️ Trap: Ein Hacktivist hat zwar auch Motivation, aber meist nicht die Geduld und Ressourcen für 18 Monate.
                         </div>
                     </div>
                 </div>
@@ -342,16 +342,16 @@
                 <div class="solution-step">
                     <div class="step-badge">
                         <span class="step-num">#2</span>
-                        <span class="step-cia a">A</span>
-                        <span class="step-letter">→ C</span>
+                        <span class="step-ans">INS</span>
+                        <span class="step-letter">→ I</span>
                     </div>
                     <div class="step-content">
-                        <div class="step-title">Kundenhotline nach Stromausfall nicht erreichbar</div>
+                        <div class="step-title">Frustrierter Mitarbeiter löscht Daten</div>
                         <div class="step-reason">
-                            Der Dienst war <strong>sechs Stunden nicht verfügbar</strong>. Keine Daten wurden gestohlen oder verändert — das System war schlicht nicht erreichbar. Das ist <em>Availability</em>.
+                            Der Angreifer hat legitime Zugriffsrechte und nutzt sie absichtlich schädlich. Das ist ein absichtlicher <strong>Insider Threat</strong>.
                         </div>
                         <div class="step-trap">
-                            ⚠️ Hinweis: Eine kaputte USV ist ein Beispiel für einen fehlenden <strong>physischen, preventiven Control</strong>. Die USV soll genau solche Ausfälle verhindern.
+                            ⚠️ Trap: Auch wenn Schaden entsteht, ist es kein externer Angriff — der Threat kommt von innen.
                         </div>
                     </div>
                 </div>
@@ -360,16 +360,16 @@
                 <div class="solution-step">
                     <div class="step-badge">
                         <span class="step-num">#3</span>
-                        <span class="step-cia i">I</span>
-                        <span class="step-letter">→ H</span>
+                        <span class="step-ans">SOC</span>
+                        <span class="step-letter">→ S</span>
                     </div>
                     <div class="step-content">
-                        <div class="step-title">Preise in Produktdatenbank manipuliert</div>
+                        <div class="step-title">Vishing-Angriff auf den Helpdesk</div>
                         <div class="step-reason">
-                            Die Daten wurden <strong>unbemerkt verändert</strong> — Preise stimmen nicht mehr mit der Realität überein. Das System lief weiter (Availability ok), und es ging nicht primär ums Einsehen (Confidentiality), sondern ums <strong>Verfälschen</strong>. Das ist <em>Integrity</em>.
+                            Der Angriff zielt nicht auf Technik, sondern auf den Menschen — <strong>Social Engineering</strong>. Die Angriffsfläche ist daher die <strong>Social / Human Attack Surface</strong>.
                         </div>
                         <div class="step-trap">
-                            ⚠️ Vorgriff: SQL-Injection wird in Modul 7 ausführlich behandelt. Hier reicht: Der Angreifer konnte Daten in der Datenbank verändern, die er nicht hätte verändern dürfen.
+                            ⚠️ Trap: Auch wenn das Ergebnis Netzwerkzugang ist, ist der Einstiegspunkt der Mensch.
                         </div>
                     </div>
                 </div>
@@ -378,16 +378,16 @@
                 <div class="solution-step">
                     <div class="step-badge">
                         <span class="step-num">#4</span>
-                        <span class="step-cia c">C</span>
+                        <span class="step-ans">IOC</span>
                         <span class="step-letter">→ I</span>
                     </div>
                     <div class="step-content">
-                        <div class="step-title">Backup-Bänder mit Personalakten gestohlen</div>
+                        <div class="step-title">Bekannte bösartige IP-Adresse</div>
                         <div class="step-reason">
-                            Sensible Daten sind nun in den Händen Unbefugter. Obwohl der Diebstahl physisch war, ist die <strong>primäre Verletzung: Unbefugte können die Daten lesen</strong>. Das ist <em>Confidentiality</em>.
+                            Eine konkrete, beobachtbare Spur wie eine IP-Adresse, ein Domain-Name oder ein Datei-Hash ist ein <strong>Indicator of Compromise (IOC)</strong>.
                         </div>
                         <div class="step-trap">
-                            ⚠️ Häufiger Fehler: „Die Bänder sind weg, also Availability?" — Die Backups fehlen zwar, aber der primäre Schaden ist der unbefugte Zugang zu Personaldaten. Außerdem: Ein verschlüsseltes Backup hätte die Confidentiality geschützt, selbst bei physischem Diebstahl.
+                            ⚠️ Trap: TTPs beschreiben das Vorgehen, nicht den konkreten Beweis. CVEs sind Schwachstellenkataloge.
                         </div>
                     </div>
                 </div>
@@ -396,16 +396,16 @@
                 <div class="solution-step">
                     <div class="step-badge">
                         <span class="step-num">#5</span>
-                        <span class="step-cia i">I</span>
-                        <span class="step-letter">→ L</span>
+                        <span class="step-ans">CKC</span>
+                        <span class="step-letter">→ K</span>
                     </div>
                     <div class="step-content">
-                        <div class="step-title">Log-Einträge durch Update überschrieben</div>
+                        <div class="step-title">Phasen eines gezielten Angriffs</div>
                         <div class="step-reason">
-                            Die Log-Daten wurden <strong>verfälscht/zerstört</strong> — sie entsprechen nicht mehr der Wahrheit. Das SIEM war weiterhin verfügbar, und die Logs wurden nicht von Unbefugten eingesehen, sondern <strong>korrumpiert</strong>. Das ist <em>Integrity</em>.
+                            Die <strong>Cyber Kill Chain</strong> beschreibt den Lebenszyklus eines Angriffs von Reconnaissance bis Actions on Objectives.
                         </div>
                         <div class="step-trap">
-                            ⚠️ Wichtig: Nicht jeder Integrity-Verstoß ist ein Angriff. Hier war es ein fehlerhaftes Update — aber der Effekt ist derselbe: Die Daten sind nicht mehr vertrauenswürdig.
+                            ⚠️ Trap: MITRE ATT&amp;CK katalogisiert TTPs, aber nicht unbedingt als sequenzielle Kette. OWASP Top 10 behandelt Web-Schwachstellen.
                         </div>
                     </div>
                 </div>
@@ -414,16 +414,16 @@
                 <div class="solution-step">
                     <div class="step-badge">
                         <span class="step-num">#6</span>
-                        <span class="step-cia a">A</span>
-                        <span class="step-letter">→ D</span>
+                        <span class="step-ans">ORG</span>
+                        <span class="step-letter">→ O</span>
                     </div>
                     <div class="step-content">
-                        <div class="step-title">DDoS-Attacke legt Online-Shop lahm</div>
+                        <div class="step-title">Ransomware mit Lösegeldforderung</div>
                         <div class="step-reason">
-                            <strong>DDoS = Distributed Denial of Service</strong> — der Name sagt es schon: Dienstverweigerung. Der Shop war für Kunden nicht erreichbar. Keine Daten gestohlen, nichts verändert — nur <strong>nicht verfügbar</strong>. Das ist <em>Availability</em>.
+                            Professionelle Struktur, finanzielle Motivation und skalierbare Kriminalität sind typisch für <strong>Organized Crime</strong> im Cyber-Bereich.
                         </div>
                         <div class="step-trap">
-                            ⚠️ Fun Fact: DDoS ist das Lehrbuchbeispiel für Availability-Verletzung. Wenn du „Availability" hörst, denk an DDoS.
+                            ⚠️ Trap: Nation-State APTs nutzen Ransomware manchmal als Tarnung, aber die primäre Motivation ist hier eindeutig Geld.
                         </div>
                     </div>
                 </div>
@@ -432,76 +432,25 @@
             <!-- Password reveal -->
             <div class="password-reveal">
                 <div class="pw-label">Passwort</div>
-                <div class="pw-word">SCHILD</div>
-                <div class="pw-meaning">S · C · H · I · L · D — wie ein Schutzschild für deine Systeme</div>
+                <div class="pw-word">RISIKO</div>
+                <div class="pw-meaning">R · I · S · I · K · O — Bedrohungen erkennen, bevor sie eintreten.</div>
             </div>
         </div>
 
         <!-- ========== EXPLANATION ========== -->
         <div class="section">
             <div class="section-label">Vertiefung</div>
-            <h2>Warum ist CIA-Klassifikation schwierig?</h2>
+            <h2>Attack Surface Mapping</h2>
 
             <p>
-                Die häufigste Fehlerquelle ist, dass ein Vorfall <strong>mehrere CIA-Eigenschaften gleichzeitig betrifft</strong>. Bei Vorfall #4 (Backup-Diebstahl) könnte man argumentieren: „Die Backups fehlen jetzt → Availability!" Das stimmt <em>sekundär</em>, aber die <strong>primäre</strong> und schwerwiegendste Verletzung ist der unbefugte Datenzugang.
+                <strong>You can't defend what you don't know exists.</strong> Attack Surface Mapping ist der erste Schritt jedes ernsthaften Sicherheitskonzepts. Erst wenn du alle Eintrittspunkte kennst, kannst du sie priorisieren und absichern.
             </p>
             <p>
-                <strong>Faustregel:</strong> Frage dich immer: <em>Was ist der größte Schaden?</em> Beim Backup-Diebstahl ist es nicht, dass ein Backup fehlt (dafür gibt es hoffentlich weitere), sondern dass Gehaltsdaten in falschen Händen sind.
+                Ein typisches Beispiel: Ein Unternehmen glaubt, seine einzige Angriffsfläche sei die Web-Applikation. Bei genauerer Betrachtung findet man aber <em>exposed S3-Buckets</em> (Network/Application), <em>unverschlossene Serverräume</em> (Physical) und <em>ungeschulte Mitarbeiter</em> (Social). Jede dieser Flächen braucht eine eigene Verteidigungsstrategie.
             </p>
-
-            <h3>Das fehlende Stück: Welcher Control hätte geholfen?</h3>
             <p>
-                Jeder Vorfall offenbart einen fehlenden oder versagenden Security Control. Hier die Zuordnung:
+                <strong>Die vier klassischen Attack Surfaces:</strong> <em>Physical</em> (Gebäude, Hardware), <em>Social</em> (Menschen, Social Engineering), <em>Network</em> (Firewall, WLAN, Cloud-Ressourcen) und <em>Application</em> (Code, APIs, Datenbanken).
             </p>
-
-            <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 1rem 0;">
-                <thead>
-                    <tr>
-                        <th style="padding: 0.6rem; text-align: left; border: 1px solid var(--border); background: var(--bg-card); color: var(--accent); font-family: var(--font-display); font-size: 0.8rem;">#</th>
-                        <th style="padding: 0.6rem; text-align: left; border: 1px solid var(--border); background: var(--bg-card); color: var(--accent); font-family: var(--font-display); font-size: 0.8rem;">Fehlender Control</th>
-                        <th style="padding: 0.6rem; text-align: left; border: 1px solid var(--border); background: var(--bg-card); color: var(--accent); font-family: var(--font-display); font-size: 0.8rem;">Kategorie</th>
-                        <th style="padding: 0.6rem; text-align: left; border: 1px solid var(--border); background: var(--bg-card); color: var(--accent); font-family: var(--font-display); font-size: 0.8rem;">Funktion</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">1</td>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Zugriffsrechte (Least Privilege), DLP</td>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Technisch + Administrativ</td>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Preventive</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">2</td>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Funktionierende USV, Redundanz</td>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Physisch + Technisch</td>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Preventive</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">3</td>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Input Validation, Parameterized Queries</td>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Technisch</td>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Preventive</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">4</td>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Verschlüsselung, Zutrittsschleuse</td>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Technisch + Physisch</td>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Preventive + Corrective</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">5</td>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Change Management, Test-Umgebung</td>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Administrativ + Technisch</td>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Preventive</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">6</td>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">DDoS-Mitigation (CDN, Rate Limiting)</td>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Technisch</td>
-                        <td style="padding: 0.6rem; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary);">Preventive + Detective</td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
 
         <!-- ========== REFLEXION ========== -->
@@ -509,16 +458,16 @@
             <div class="r-label">🪞 Reflexion</div>
             <div class="reflection-questions">
                 <div class="rq-item">
-                    <strong>Was war der schwierigste Vorfall?</strong><br>
-                    Überlege: Bei welchem Vorfall hast du am längsten gezögert? War es #4 (Backup-Diebstahl), wo Confidentiality und Availability sich überlappen? Oder #5 (Log-Überschreibung), wo kein Angreifer beteiligt war?
+                    <strong>Welcher Threat-Actor-Typ erschien dir am gefährlichsten? Warum?</strong><br>
+                    APTs, Insider oder doch die breite Masse der Script Kiddies?
                 </div>
                 <div class="rq-item">
-                    <strong>Wo hast du zuerst falsch gedacht?</strong><br>
-                    Falls du bei einem Vorfall zunächst die falsche CIA-Eigenschaft gewählt hast: <em>Warum?</em> Welche Faustregel hätte dir geholfen? Notiere sie in deinem Fehlerlog.
+                    <strong>Hast du bei einem der Szenarien zuerst an die falsche Attack Surface gedacht? Welche?</strong><br>
+                    Notiere deine Fehleinschätzung und die daraus resultierende Erkenntnis.
                 </div>
                 <div class="rq-item">
-                    <strong>Der „Primär"-Trick:</strong><br>
-                    Das Schlüsselwort war <em>primär</em>. Fast jeder Sicherheitsvorfall betrifft mehrere CIA-Eigenschaften. Die Kunst liegt darin, die <strong>schwerwiegendste Verletzung</strong> zu identifizieren. Schreibe in dein Notebook: <em>„CIA-Klassifikation = größter Schaden zuerst."</em>
+                    <strong>Das MICE-Modell hilft, Motivationen zu verstehen.</strong><br>
+                    Welche Motivation (<em>Money, Ideology, Coercion, Ego</em>) ist in deinem beruflichen Umfeld am wahrscheinlichsten?
                 </div>
             </div>
         </div>
@@ -527,13 +476,13 @@
         <div class="transfer">
             <div class="t-label">🔄 Transfer-Fragen</div>
             <p>
-                <strong>Für dein Ticketing-System:</strong> Stell dir vor, ein Angreifer ändert den Preis eines Tickets in der Datenbank von 50 € auf 0 €. Welche CIA-Eigenschaft ist primär verletzt? Welcher Control hätte das verhindert?
+                <strong>Für dein nächstes Projekt:</strong> Liste die vier Attack Surfaces deiner aktuellen Anwendung auf. Wo liegt die größte Schwachstelle?
             </p>
             <p>
-                <strong>Querverweis KI-Track:</strong> Wenn ein LLM vertrauliche Trainingsdaten in seiner Antwort preisgibt — welche CIA-Eigenschaft ist verletzt? <em>(Antwort: Confidentiality — genau das behandelt KI-Modul 6: Sensitive Information Disclosure.)</em>
+                <strong>KI-Track Querverweis:</strong> Ein LLM-System hat zusätzliche Attack Surfaces (Prompts, Training Data, Vector DB). Welche Parallelen siehst du zum klassischen Web?
             </p>
             <p>
-                <strong>Defense in Depth:</strong> Vorfall #4 zeigt: Wenn ein einzelner Control versagt (Türschloss), braucht es eine zweite Schicht (Verschlüsselung). Wo in deinem Arbeitsalltag verlässt du dich auf nur <em>einen</em> Control?
+                <strong>Threat Intelligence im Alltag:</strong> Wenn du von einer neuen Ransomware-Kampagne hörst, was wäre dein erster Schritt für dein eigenes System?
             </p>
         </div>
 
@@ -542,13 +491,13 @@
             <a href="exercise.html" class="nav-link">
                 ← Zurück zum Rätsel
             </a>
-            <a href="../lesson-02-crypto-basics/index.html" class="nav-link next">
-                Nächstes Modul: Kryptografie →
+            <a href="#" class="nav-link next">
+                Nächstes Modul: Netzwerk-Sicherheit Basics →
             </a>
         </div>
 
         <div class="lesson-footer">
-            Web-Security Track · Phase 1 · Modul 1: CIA-Triad &amp; Security Controls
+            Web-Security Track · Phase 1 · Modul 3: Threat Actors &amp; Attack Surfaces
         </div>
     </div>
 </body>

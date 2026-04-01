@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theorie: Kryptografie-Grundlagen | Web-Security Track</title>
+    <link rel="stylesheet" href="../../styles/main.css">
+    <style>
+        /* Map lesson variables to main.css design system */
+        :root {
+            --accent: var(--accent-cyan);
+            --accent-dim: var(--accent-cyan-dim);
+            --accent-glow: rgba(0, 212, 255, 0.08);
+            --warning: var(--accent-orange);
+            --warning-dim: var(--accent-orange-dim);
+            --success: var(--accent-green);
+            --success-dim: var(--accent-green-dim);
+            --danger: var(--accent-red);
+            --danger-dim: var(--accent-red-dim);
+            --purple: var(--accent-purple);
+            --purple-dim: var(--accent-purple-dim);
+            --border: var(--border-subtle);
+            --radius: var(--radius-md);
+        }
+        .container { max-width: 780px; }
+        .breadcrumb {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+        .breadcrumb a { color: var(--accent-dim); text-decoration: none; }
+        .breadcrumb a:hover { color: var(--accent); }
+        .breadcrumb .sep { margin: 0 0.5rem; opacity: 0.4; }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Section headers */
+        .section { margin-bottom: 3rem; }
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--accent-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 0.5rem;
+        }
+        h2 {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            color: var(--text-primary);
+        }
+        h3 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.8rem;
+            color: var(--accent);
+        }
+
+        p { margin-bottom: 1rem; color: var(--text-secondary); }
+        strong { color: var(--text-primary); }
+        em { color: var(--accent); font-style: normal; font-weight: 600; }
+
+        /* Spiral review */
+        .spiral-review {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .spiral-review .spiral-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--purple);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+        .spiral-review .welcome {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        .spiral-review .welcome strong { color: var(--success); }
+
+        /* Notebook callout */
+        .notebook {
+            background: var(--warning-dim);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+            border-left: 3px solid var(--warning);
+            border-radius: var(--radius);
+            padding: 1rem 1.2rem;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+        .notebook .nb-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--warning);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.3rem;
+        }
+        .notebook p { color: var(--text-secondary); margin-bottom: 0; font-size: 0.9rem; }
+
+        /* Callout warning */
+        .callout {
+            border-radius: var(--radius);
+            padding: 1rem 1.2rem;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+        .callout.warning {
+            background: var(--danger-dim);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            border-left: 3px solid var(--danger);
+        }
+        .callout .callout-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+        }
+        .callout.warning .callout-label { color: var(--danger); }
+        .callout p { color: var(--text-secondary); margin-bottom: 0; font-size: 0.9rem; }
+
+        /* SVG diagram container */
+        .diagram-wrap {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin: 2rem 0;
+            display: flex;
+            justify-content: center;
+        }
+        .diagram-wrap svg { max-width: 100%; height: auto; }
+
+        /* Concept cards */
+        .concept-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .concept-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.3rem;
+            border-top: 3px solid var(--accent);
+        }
+        .concept-card.integrity { border-top-color: var(--success); }
+        .concept-card.availability { border-top-color: var(--warning); }
+        .concept-card .cc-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .concept-card .cc-title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+        .concept-card .cc-german {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.6rem;
+        }
+        .concept-card .cc-question {
+            font-style: italic;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+        .concept-card p { font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .concept-card .examples {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Control type table */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .control-row {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.2rem;
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 1rem;
+            align-items: start;
+        }
+        .control-row .cr-type {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 0.3rem 0;
+        }
+        .control-row .cr-desc { color: var(--text-secondary); font-size: 0.9rem; }
+        .control-row .cr-examples {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+        }
+
+        /* Worked example */
+        .worked-example {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .we-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--danger);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+        .we-title {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .perspective-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .perspective {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem;
+        }
+        .perspective .p-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.5rem;
+        }
+        .perspective.offensive .p-label { color: var(--danger); }
+        .perspective.defensive .p-label { color: var(--success); }
+        .perspective p, .perspective li { font-size: 0.85rem; color: var(--text-secondary); }
+        .perspective ul { list-style: none; padding: 0; }
+        .perspective li { padding: 0.2rem 0; padding-left: 1rem; position: relative; }
+        .perspective li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* Summary box */
+        .summary-box {
+            background: var(--bg-card);
+            border: 1px solid var(--accent-dim);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        .summary-box .sb-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+        .term-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .term-list .term {
+            background: var(--accent-glow);
+            border: 1px solid rgba(34, 211, 238, 0.2);
+            color: var(--accent);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            padding: 0.3rem 0.7rem;
+            border-radius: 4px;
+        }
+
+        /* Click-to-reveal */
+        .reveal-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 0.5rem;
+        }
+        .reveal-btn:hover { border-color: var(--accent-dim); color: var(--accent); }
+        .reveal-content { display: none; margin-top: 0.5rem; }
+        .reveal-content.visible { display: block; }
+
+        /* Movement break */
+        .movement-gate {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(34, 211, 238, 0.08));
+            border: 2px solid var(--success);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin: 3rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .movement-gate::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 20px,
+                rgba(16, 185, 129, 0.03) 20px,
+                rgba(16, 185, 129, 0.03) 40px
+            );
+        }
+        .movement-gate > * { position: relative; }
+        .mg-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+        .mg-title {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--success);
+            margin-bottom: 0.5rem;
+        }
+        .mg-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1.2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .mg-exercise {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.2rem 1.5rem;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+        .mg-exercise .exercise-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .mg-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--success);
+            color: var(--bg-primary);
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 0.8rem 2rem;
+            border-radius: var(--radius);
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .mg-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Control function matrix */
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.85rem;
+        }
+        .matrix-table th, .matrix-table td {
+            padding: 0.8rem;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+        .matrix-table th {
+            background: var(--bg-card);
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--accent);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .matrix-table td {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+        }
+        .matrix-table td strong { color: var(--text-primary); font-size: 0.9rem; }
+
+        /* Cross-ref */
+        .xref {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            margin: 1rem 0;
+        }
+        .xref a {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        .xref a:hover { border-color: var(--accent-dim); background: var(--bg-card-hover); }
+        .xref-badge {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            flex-shrink: 0;
+        }
+        .xref-badge.ai {
+            background: var(--purple-dim);
+            color: var(--purple);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+        .xref-badge.web {
+            background: var(--accent-glow);
+            color: var(--accent);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+        }
+
+        .lesson-footer {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.5rem; }
+            .container { padding: 2rem 1rem; }
+            .concept-cards { grid-template-columns: 1fr; }
+            .perspective-grid { grid-template-columns: 1fr; }
+            .control-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="../../index.html" class="site-logo">~/cybersec<span>-lab</span></a>
+    <nav>
+      <ul class="site-nav">
+        <li><a href="../index.html" class="active">Web-Security</a></li>
+        <li><a href="../../ai-security/index.html">AI-Security</a></li>
+        <li><a href="../../glossary.html">Glossar</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+    <div class="container">
+        <nav class="breadcrumb">
+            <a href="../../index.html">Home</a>
+            <span class="sep">/</span>
+            <a href="../index.html">Web-Security</a>
+            <span class="sep">/</span>
+            <a href="index.html">Modul 2</a>
+            <span class="sep">/</span>
+            <span>Theorie</span>
+        </nav>
+
+        <h1>Kryptografie-Grundlagen</h1>
+
+        <!-- ========== SPIRAL REVIEW ========== -->
+        <div class="spiral-review">
+            <div class="spiral-label">🔁 Spiral-Review</div>
+            <p class="welcome">
+                <strong>Recall aus Modul 1</strong> — Bevor wir neuen Stoff behandeln, teste dein Gedächtnis aus der CIA-Triad-Lektion.
+            </p>
+
+            <div style="margin-top: 1.2rem;">
+                <p style="color: var(--text-secondary); margin-bottom: 0.3rem;"><strong>1.</strong> Was bedeutet die C in CIA-Triad und nenne ein technisches Control, das sie schützt?</p>
+                <button class="reveal-btn" onclick="toggle('sr1')">
+                    ▶ Klick zum Aufdecken — erst selbst überlegen!
+                </button>
+                <div id="sr1" class="reveal-content">
+                    <p style="color: var(--text-secondary);">
+                        <strong style="color: var(--accent);">Confidentiality</strong> (Vertraulichkeit). Beispiel: Verschlüsselung oder Zugriffskontrolle.
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <p style="color: var(--text-secondary); margin-bottom: 0.3rem;"><strong>2.</strong> Nenne die drei Kategorien von Security Controls.</p>
+                <button class="reveal-btn" onclick="toggle('sr2')">
+                    ▶ Klick zum Aufdecken — erst selbst überlegen!
+                </button>
+                <div id="sr2" class="reveal-content">
+                    <p style="color: var(--text-secondary);">
+                        <strong style="color: var(--accent);">Technisch, Administrativ, Physisch.</strong>
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <p style="color: var(--text-secondary); margin-bottom: 0.3rem;"><strong>3.</strong> Was ist der Unterschied zwischen Preventive und Detective Controls?</p>
+                <button class="reveal-btn" onclick="toggle('sr3')">
+                    ▶ Klick zum Aufdecken — erst selbst überlegen!
+                </button>
+                <div id="sr3" class="reveal-content">
+                    <p style="color: var(--text-secondary);">
+                        <strong style="color: var(--accent);">Preventive</strong> verhindert den Vorfall (z. B. Firewall). <strong style="color: var(--accent);">Detective</strong> erkennt ihn (z. B. IDS).
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== SECTION 1: SYMMETRISCH VS ASYMMETRISCH ========== -->
+        <div class="section">
+            <div class="section-label">Konzept-Einführung</div>
+            <h2>Symmetrisch vs. Asymmetrisch</h2>
+
+            <p>
+                Verschlüsselung ist das Herzstück von <em>Confidentiality</em>. Grundsätzlich gibt es zwei Familien: <strong>symmetrisch</strong> (ein Schlüssel für beide Seiten) und <strong>asymmetrisch</strong> (ein Schlüsselpaar aus öffentlichem und privatem Schlüssel).
+            </p>
+
+            <div class="diagram-wrap">
+                <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" width="640">
+                    <!-- Background panels -->
+                    <rect x="10" y="10" width="300" height="240" rx="12" fill="rgba(34,211,238,0.05)" stroke="rgba(34,211,238,0.2)" stroke-width="1"/>
+                    <rect x="330" y="10" width="300" height="240" rx="12" fill="rgba(16,185,129,0.05)" stroke="rgba(16,185,129,0.2)" stroke-width="1"/>
+
+                    <!-- Labels -->
+                    <text x="160" y="40" text-anchor="middle" fill="#22d3ee" font-family="Chakra Petch, sans-serif" font-size="16" font-weight="700">Symmetrisch</text>
+                    <text x="480" y="40" text-anchor="middle" fill="#10b981" font-family="Chakra Petch, sans-serif" font-size="16" font-weight="700">Asymmetrisch</text>
+
+                    <!-- Symmetric: Two person icons -->
+                    <g transform="translate(60,80)">
+                        <circle cx="25" cy="15" r="12" fill="none" stroke="#94a3b8" stroke-width="2"/>
+                        <path d="M5,55 Q25,35 45,55" fill="none" stroke="#94a3b8" stroke-width="2"/>
+                    </g>
+                    <g transform="translate(190,80)">
+                        <circle cx="25" cy="15" r="12" fill="none" stroke="#94a3b8" stroke-width="2"/>
+                        <path d="M5,55 Q25,35 45,55" fill="none" stroke="#94a3b8" stroke-width="2"/>
+                    </g>
+
+                    <!-- Single key between them -->
+                    <g transform="translate(135,105)">
+                        <circle cx="8" cy="8" r="7" fill="none" stroke="#f59e0b" stroke-width="2"/>
+                        <rect x="13" y="5" width="22" height="6" rx="1" fill="#f59e0b"/>
+                        <rect x="28" y="5" width="3" height="6" fill="#0a0e17"/>
+                        <rect x="34" y="5" width="3" height="6" fill="#0a0e17"/>
+                    </g>
+
+                    <!-- Asymmetric: Person + keys -->
+                    <g transform="translate(380,80)">
+                        <circle cx="25" cy="15" r="12" fill="none" stroke="#94a3b8" stroke-width="2"/>
+                        <path d="M5,55 Q25,35 45,55" fill="none" stroke="#94a3b8" stroke-width="2"/>
+                    </g>
+
+                    <!-- Public Key (open padlock) -->
+                    <g transform="translate(460,90)">
+                        <rect x="4" y="14" width="20" height="18" rx="2" fill="none" stroke="#10b981" stroke-width="2"/>
+                        <path d="M8,14 V8 A6,6 0 0 1 20,8 V14" fill="none" stroke="#10b981" stroke-width="2"/>
+                        <text x="14" y="50" text-anchor="middle" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="10">Public Key</text>
+                    </g>
+
+                    <!-- Private Key (closed padlock) -->
+                    <g transform="translate(540,90)">
+                        <rect x="4" y="14" width="20" height="18" rx="2" fill="none" stroke="#ef4444" stroke-width="2"/>
+                        <path d="M8,14 V10 A6,6 0 0 1 20,10 V14" fill="none" stroke="#ef4444" stroke-width="2"/>
+                        <circle cx="14" cy="23" r="2" fill="#ef4444"/>
+                        <text x="14" y="50" text-anchor="middle" fill="#ef4444" font-family="JetBrains Mono, monospace" font-size="10">Private Key</text>
+                    </g>
+
+                    <!-- Descriptions -->
+                    <text x="160" y="210" text-anchor="middle" fill="#94a3b8" font-family="Nunito Sans, sans-serif" font-size="11">Ein Schlüssel für Sender und Empfänger</text>
+                    <text x="480" y="210" text-anchor="middle" fill="#94a3b8" font-family="Nunito Sans, sans-serif" font-size="11">Öffentlich teilen · Privat geheim halten</text>
+                </svg>
+            </div>
+
+            <table class="matrix-table">
+                <thead>
+                    <tr>
+                        <th style="width: 22%;">Eigenschaft</th>
+                        <th style="width: 39%;">Symmetrisch (AES)</th>
+                        <th style="width: 39%;">Asymmetrisch (RSA)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Schlüssel</strong></td>
+                        <td>Ein gemeinsamer Schlüssel</td>
+                        <td>Schlüsselpaar: Public + Private</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Geschwindigkeit</strong></td>
+                        <td>Sehr schnell</td>
+                        <td>Langsamer (Mathematik intensiv)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Use-Case</strong></td>
+                        <td>Festplattenverschlüsselung, VPN-Datenstrom</td>
+                        <td>TLS-Handshake, E-Mail-Verschlüsselung, Signaturen</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Key-Distribution</strong></td>
+                        <td>Aufwändig — Schlüssel muss sicher ausgetauscht werden</td>
+                        <td>Public Key darf öffentlich geteilt werden</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="notebook">
+                <div class="nb-label">📝 Notebook-Notiz</div>
+                <p>Zeichne in dein Notebook: Einen symmetrischen Use-Case (z. B. Festplattenverschlüsselung) und einen asymmetrischen Use-Case (z. B. E-Mail-Signatur).</p>
+            </div>
+        </div>
+
+        <!-- ========== SECTION 2: HASHING ========== -->
+        <div class="section">
+            <div class="section-label">Konzept-Vertiefung</div>
+            <h2>Hashing</h2>
+
+            <p>
+                Ein <em>Hash</em> ist wie ein digitaler Fingerabdruck: Er nimmt beliebig große Daten und erzeugt daraus eine Zeichenkette fester Länge. Das Besondere: Der Prozess ist <strong>eine Einbahnstraße</strong>.
+            </p>
+
+            <div class="diagram-wrap">
+                <svg viewBox="0 0 600 140" xmlns="http://www.w3.org/2000/svg" width="600">
+                    <!-- Input box -->
+                    <rect x="20" y="45" width="140" height="50" rx="8" fill="#0f172a" stroke="#22d3ee" stroke-width="1"/>
+                    <text x="90" y="75" text-anchor="middle" fill="#e2e8f0" font-family="JetBrains Mono, monospace" font-size="14">Passwort123</text>
+
+                    <!-- Arrow forward -->
+                    <path d="M170,70 L230,70" stroke="#22d3ee" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+                    <!-- Hash box -->
+                    <rect x="250" y="35" width="330" height="70" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="1"/>
+                    <text x="415" y="60" text-anchor="middle" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="13" font-weight="600">SHA-256</text>
+                    <text x="415" y="85" text-anchor="middle" fill="#94a3b8" font-family="JetBrains Mono, monospace" font-size="11">ef92b768b... (64 Zeichen Hex)</text>
+
+                    <!-- No reverse arrow (crossed out) -->
+                    <path d="M250,105 C210,130 170,130 160,95" stroke="#64748b" stroke-width="1" stroke-dasharray="4,4" fill="none"/>
+                    <line x1="185" y1="115" x2="215" y2="95" stroke="#ef4444" stroke-width="2"/>
+                    <text x="200" y="135" text-anchor="middle" fill="#ef4444" font-family="Nunito Sans, sans-serif" font-size="10">Kein Rückweg</text>
+
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#22d3ee"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <p>
+                <strong>Collision Resistance</strong> bedeutet: Zwei unterschiedliche Inputs sollten praktisch nie denselben Hash produzieren. <em>SHA-256</em> gilt derzeit als kollisionsresistent.
+            </p>
+
+            <p>
+                Typische Anwendungen sind <strong>Password Storage</strong> (Server speichert den Hash, nicht das Passwort) und <strong>File Integrity Checks</strong> (Download-Seiten listen Hashes, damit du Manipulationen erkennst).
+            </p>
+
+            <div class="callout warning">
+                <div class="callout-label">⚠️ Wichtiger Unterschied</div>
+                <p><strong>Hashing ist NICHT Verschlüsselung.</strong> Bei Verschlüsselung gibt es eine Rückwandlung (Entschlüsseln). Bei Hashing gibt es keinen Schlüssel und kein Zurück — der ursprüngliche Input lässt sich mathematisch nicht rekonstruieren.</p>
+            </div>
+
+            <div class="notebook">
+                <div class="nb-label">📝 Notebook-Notiz</div>
+                <p>Notiere: Hashing = Integrität prüfen. Verschlüsselung = Vertraulichkeit schaffen.</p>
+            </div>
+        </div>
+
+        <!-- ========== SECTION 3: DIGITALE SIGNATUREN ========== -->
+        <div class="section">
+            <div class="section-label">Konzept-Vertiefung</div>
+            <h2>Digitale Signaturen</h2>
+
+            <p>
+                Eine digitale Signatur beweist zwei Dinge auf einmal: <strong>Integrität</strong> (das Dokument wurde nicht verändert) und <strong>Non-Repudiation</strong> (nur der Besitzer des privaten Schlüssels konnte signieren).
+            </p>
+
+            <div class="diagram-wrap">
+                <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" width="600">
+                    <!-- Row 1: Signing -->
+                    <text x="20" y="25" fill="#22d3ee" font-family="Chakra Petch, sans-serif" font-size="13" font-weight="600">Signieren</text>
+
+                    <rect x="20" y="40" width="90" height="40" rx="6" fill="#0f172a" stroke="#94a3b8" stroke-width="1"/>
+                    <text x="65" y="65" text-anchor="middle" fill="#e2e8f0" font-family="Nunito Sans, sans-serif" font-size="11">Dokument</text>
+
+                    <path d="M115,60 L155,60" stroke="#94a3b8" stroke-width="1" fill="none" marker-end="url(#arrowhead2)"/>
+
+                    <rect x="165" y="40" width="70" height="40" rx="6" fill="#0f172a" stroke="#94a3b8" stroke-width="1"/>
+                    <text x="200" y="65" text-anchor="middle" fill="#e2e8f0" font-family="Nunito Sans, sans-serif" font-size="11">Hash</text>
+
+                    <text x="245" y="65" fill="#e2e8f0" font-family="Nunito Sans, sans-serif" font-size="14">+</text>
+
+                    <rect x="265" y="40" width="90" height="40" rx="6" fill="#0f172a" stroke="#ef4444" stroke-width="1"/>
+                    <text x="310" y="65" text-anchor="middle" fill="#ef4444" font-family="Nunito Sans, sans-serif" font-size="11">Private Key</text>
+
+                    <path d="M360,60 L400,60" stroke="#94a3b8" stroke-width="1" fill="none" marker-end="url(#arrowhead2)"/>
+
+                    <rect x="410" y="40" width="100" height="40" rx="6" fill="#0f172a" stroke="#22d3ee" stroke-width="1"/>
+                    <text x="460" y="65" text-anchor="middle" fill="#22d3ee" font-family="Nunito Sans, sans-serif" font-size="11" font-weight="600">Signatur</text>
+
+                    <!-- Row 2: Verification -->
+                    <text x="20" y="145" fill="#10b981" font-family="Chakra Petch, sans-serif" font-size="13" font-weight="600">Verifizieren</text>
+
+                    <rect x="20" y="160" width="90" height="40" rx="6" fill="#0f172a" stroke="#94a3b8" stroke-width="1"/>
+                    <text x="65" y="185" text-anchor="middle" fill="#e2e8f0" font-family="Nunito Sans, sans-serif" font-size="11">Dokument</text>
+
+                    <path d="M115,180 L155,180" stroke="#94a3b8" stroke-width="1" fill="none" marker-end="url(#arrowhead2)"/>
+
+                    <rect x="165" y="160" width="70" height="40" rx="6" fill="#0f172a" stroke="#94a3b8" stroke-width="1"/>
+                    <text x="200" y="185" text-anchor="middle" fill="#e2e8f0" font-family="Nunito Sans, sans-serif" font-size="11">Hash</text>
+
+                    <text x="245" y="185" fill="#e2e8f0" font-family="Nunito Sans, sans-serif" font-size="14">+</text>
+
+                    <rect x="265" y="160" width="90" height="40" rx="6" fill="#0f172a" stroke="#10b981" stroke-width="1"/>
+                    <text x="310" y="185" text-anchor="middle" fill="#10b981" font-family="Nunito Sans, sans-serif" font-size="11">Public Key</text>
+
+                    <path d="M360,180 L400,180" stroke="#94a3b8" stroke-width="1" fill="none" marker-end="url(#arrowhead2)"/>
+
+                    <rect x="410" y="160" width="120" height="40" rx="6" fill="#0f172a" stroke="#10b981" stroke-width="1"/>
+                    <text x="470" y="185" text-anchor="middle" fill="#10b981" font-family="Nunito Sans, sans-serif" font-size="11" font-weight="600">✓ Gültig</text>
+
+                    <defs>
+                        <marker id="arrowhead2" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                            <polygon points="0 0, 8 3, 0 6" fill="#94a3b8"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <p>
+                <strong>Schlüsselinsight:</strong> Wenn sich auch nur ein Bit des Dokuments ändert, stimmt der Hash nicht mehr überein — die Signatur wird ungültig. Das garantiert <em>Integrity</em>. Weil nur der private Schlüssel signieren kann, kann der Sender nicht abstreiten, die Nachricht verschickt zu haben — das ist <em>Non-Repudiation</em>.
+            </p>
+        </div>
+
+        <!-- ========== SECTION 4: ZERTIFIKATE & PKI ========== -->
+        <div class="section">
+            <div class="section-label">Konzept-Vertiefung</div>
+            <h2>Zertifikate &amp; PKI</h2>
+
+            <p>
+                Ein <em>X.509-Zertifikat</em> ist im Grunde ein öffentlicher Schlüssel mit Ausweis: Eine vertrauenswürdige <strong>Certificate Authority (CA)</strong> bestätigt, dass dieser Schlüssel wirklich zu dieser Domain gehört.
+            </p>
+
+            <div class="diagram-wrap">
+                <svg viewBox="0 0 600 160" xmlns="http://www.w3.org/2000/svg" width="600">
+                    <!-- Browser -->
+                    <g transform="translate(30,40)">
+                        <rect x="0" y="0" width="80" height="60" rx="8" fill="#0f172a" stroke="#22d3ee" stroke-width="2"/>
+                        <rect x="8" y="8" width="64" height="8" rx="2" fill="#22d3ee" opacity="0.4"/>
+                        <circle cx="20" cy="36" r="6" fill="none" stroke="#94a3b8" stroke-width="2"/>
+                        <path d="M10,54 Q20,44 30,54" fill="none" stroke="#94a3b8" stroke-width="2"/>
+                        <text x="40" y="85" text-anchor="middle" fill="#e2e8f0" font-family="Nunito Sans, sans-serif" font-size="12">Browser</text>
+                    </g>
+
+                    <!-- Arrow 1 -->
+                    <path d="M120,70 L170,70" stroke="#22d3ee" stroke-width="2" fill="none" marker-end="url(#arrowhead3)"/>
+                    <text x="145" y="60" text-anchor="middle" fill="#94a3b8" font-family="JetBrains Mono, monospace" font-size="10">vertraut</text>
+
+                    <!-- CA -->
+                    <g transform="translate(190,40)">
+                        <rect x="0" y="0" width="80" height="60" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+                        <text x="40" y="38" text-anchor="middle" fill="#f59e0b" font-family="Chakra Petch, sans-serif" font-size="16" font-weight="700">CA</text>
+                        <text x="40" y="85" text-anchor="middle" fill="#e2e8f0" font-family="Nunito Sans, sans-serif" font-size="12">Trust Anchor</text>
+                    </g>
+
+                    <!-- Arrow 2 -->
+                    <path d="M280,70 L330,70" stroke="#f59e0b" stroke-width="2" fill="none" marker-end="url(#arrowhead3)"/>
+                    <text x="305" y="60" text-anchor="middle" fill="#94a3b8" font-family="JetBrains Mono, monospace" font-size="10">signiert</text>
+
+                    <!-- Server Certificate -->
+                    <g transform="translate(350,40)">
+                        <rect x="0" y="0" width="100" height="60" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+                        <rect x="10" y="10" width="80" height="40" rx="4" fill="none" stroke="#10b981" stroke-width="1" stroke-dasharray="3,3"/>
+                        <text x="50" y="36" text-anchor="middle" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="10">Server Cert</text>
+                        <text x="50" y="85" text-anchor="middle" fill="#e2e8f0" font-family="Nunito Sans, sans-serif" font-size="12">Zertifikat</text>
+                    </g>
+
+                    <!-- Arrow 3 -->
+                    <path d="M460,70 L510,70" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrowhead3)"/>
+
+                    <!-- Server -->
+                    <g transform="translate(530,40)">
+                        <rect x="0" y="0" width="80" height="60" rx="8" fill="#0f172a" stroke="#94a3b8" stroke-width="2"/>
+                        <rect x="10" y="15" width="60" height="6" rx="1" fill="#94a3b8" opacity="0.5"/>
+                        <rect x="10" y="28" width="40" height="6" rx="1" fill="#94a3b8" opacity="0.5"/>
+                        <rect x="10" y="41" width="50" height="6" rx="1" fill="#94a3b8" opacity="0.5"/>
+                        <text x="40" y="85" text-anchor="middle" fill="#e2e8f0" font-family="Nunito Sans, sans-serif" font-size="12">Server</text>
+                    </g>
+
+                    <!-- Secure connection highlight -->
+                    <rect x="25" y="110" width="590" height="30" rx="6" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.25)" stroke-width="1"/>
+                    <text x="320" y="130" text-anchor="middle" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="11">🔒 Sichere Verbindung (HTTPS)</text>
+
+                    <defs>
+                        <marker id="arrowhead3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <p>
+                Zertifikate haben ein <strong>Ablaufdatum</strong> und können vorzeitig <strong>widerrufen</strong> werden. Dafür gibt es <em>CRL</em> (Certificate Revocation List) und <em>OCSP</em> (Online Certificate Status Protocol). Dein Browser prüft diese Listen, bevor er eine Verbindung als sicher akzeptiert.
+            </p>
+        </div>
+
+        <!-- ========== SECTION 5: TLS-HANDSHAKE ========== -->
+        <div class="section">
+            <div class="section-label">Protokoll-Überblick</div>
+            <h2>TLS-Handshake (vereinfacht)</h2>
+
+            <p>
+                TLS (Transport Layer Security) schützt Daten <em>in Transit</em> — also während sie durch das Internet fliegen. Der Handshake ist das Begrüßungsritual zwischen Client und Server, bevor verschlüsselte Daten ausgetauscht werden.
+            </p>
+
+            <div class="diagram-wrap">
+                <svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" width="560">
+                    <!-- Client column -->
+                    <text x="60" y="30" text-anchor="middle" fill="#e2e8f0" font-family="Chakra Petch, sans-serif" font-size="14" font-weight="600">Client</text>
+                    <rect x="20" y="40" width="80" height="240" rx="8" fill="#0f172a" stroke="#22d3ee" stroke-width="1"/>
+
+                    <!-- Server column -->
+                    <text x="500" y="30" text-anchor="middle" fill="#e2e8f0" font-family="Chakra Petch, sans-serif" font-size="14" font-weight="600">Server</text>
+                    <rect x="460" y="40" width="80" height="240" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="1"/>
+
+                    <!-- Step 1 -->
+                    <path d="M100,75 L450,75" stroke="#22d3ee" stroke-width="2" fill="none" marker-end="url(#arrowhead4)"/>
+                    <rect x="180" y="52" width="190" height="40" rx="6" fill="rgba(34,211,238,0.08)" stroke="rgba(34,211,238,0.25)" stroke-width="1"/>
+                    <text x="275" y="78" text-anchor="middle" fill="#e2e8f0" font-family="Nunito Sans, sans-serif" font-size="12">1. ClientHello (Cipher Suites)</text>
+
+                    <!-- Step 2 -->
+                    <path d="M450,125 L100,125" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrowhead4)"/>
+                    <rect x="180" y="102" width="190" height="40" rx="6" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.25)" stroke-width="1"/>
+                    <text x="275" y="128" text-anchor="middle" fill="#e2e8f0" font-family="Nunito Sans, sans-serif" font-size="12">2. ServerHello + Zertifikat</text>
+
+                    <!-- Step 3 -->
+                    <path d="M100,175 L450,175" stroke="#22d3ee" stroke-width="2" fill="none" marker-end="url(#arrowhead4)"/>
+                    <rect x="180" y="152" width="190" height="40" rx="6" fill="rgba(34,211,238,0.08)" stroke="rgba(34,211,238,0.25)" stroke-width="1"/>
+                    <text x="275" y="178" text-anchor="middle" fill="#e2e8f0" font-family="Nunito Sans, sans-serif" font-size="12">3. Key Exchange (asymmetrisch)</text>
+
+                    <!-- Step 4 -->
+                    <path d="M100,225 L450,225" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,4" fill="none" marker-end="url(#arrowhead4)"/>
+                    <rect x="155" y="202" width="250" height="40" rx="6" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.25)" stroke-width="1"/>
+                    <text x="280" y="228" text-anchor="middle" fill="#e2e8f0" font-family="Nunito Sans, sans-serif" font-size="12">4. Encrypted Session (symmetrisch, schnell)</text>
+
+                    <!-- Legend / note -->
+                    <text x="280" y="280" text-anchor="middle" fill="#64748b" font-family="JetBrains Mono, monospace" font-size="10">Asymmetrisch = Schlüsselaustausch · Symmetrisch = Datenübertragung</text>
+
+                    <defs>
+                        <marker id="arrowhead4" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <p>
+                <strong>Warum die Kombination?</strong> Asymmetrische Verschlüsselung ist sicher für den Schlüsselaustausch, aber zu langsam für große Datenmengen. Deshalb einigen sich Client und Server auf einen <em>Session-Key</em> für symmetrische Verschlüsselung — das ist die Magie hinter HTTPS.
+            </p>
+        </div>
+
+        <!-- ========== WORKED EXAMPLE ========== -->
+        <div class="worked-example">
+            <div class="we-label">🔍 Worked Example — Realer Breach</div>
+            <div class="we-title">LinkedIn 2012 — Das Problem mit schwachem Hashing</div>
+
+            <p style="color: var(--text-secondary);">
+                Im Jahr 2012 wurden bei LinkedIn <strong>6,5 Millionen Passwort-Hashes</strong> geleakt. Das Problem: Die Hashes waren als <em>unsalted SHA-1</em> gespeichert.
+            </p>
+
+            <h3>Offensive Perspektive</h3>
+            <p style="color: var(--text-secondary);">
+                Angreifer konnten vorberechnete <em>Rainbow Tables</em> nutzen, um Millionen gängiger Passwörter in Sekundenbruchteilen abzugleichen. Dank moderner GPUs waren über <strong>60 % der Passwörter innerhalb weniger Tage geknackt</strong>.
+            </p>
+
+            <h3>Defensive Perspektive</h3>
+            <p style="color: var(--text-secondary);">
+                Heute speichern sichere Systeme Passwörter mit <em>salted hashing</em> und <em>key stretching</em> — typischerweise mit <strong>bcrypt</strong> oder <strong>Argon2</strong>. Ein zufälliger <em>Salt</em> pro Passwort macht Rainbow Tables wertlos. Ein optionaler <em>Pepper</em> (globaler Geheimschlüssel) erschwert das Knacken zusätzlich.
+            </p>
+
+            <div class="notebook" style="margin-top: 1.5rem;">
+                <div class="nb-label">📝 Notebook-Notiz</div>
+                <p>Takeaway: Ein Hash ohne Salt ist wie ein Tresor ohne Kombination — mit genug Rechenpower knackbar.</p>
+            </div>
+        </div>
+
+        <!-- ========== ZUSAMMENFASSUNG ========== -->
+        <div class="summary-box">
+            <div class="sb-label">📋 Zusammenfassung — Kernbegriffe</div>
+            <div class="term-list">
+                <span class="term">AES</span>
+                <span class="term">Argon2</span>
+                <span class="term">Asymmetrische Verschlüsselung</span>
+                <span class="term">Certificate Authority (CA)</span>
+                <span class="term">Collision Resistance</span>
+                <span class="term">Digitale Signatur</span>
+                <span class="term">Hashing</span>
+                <span class="term">HTTPS</span>
+                <span class="term">Non-Repudiation</span>
+                <span class="term">Public Key Infrastructure (PKI)</span>
+                <span class="term">RSA</span>
+                <span class="term">Salt</span>
+                <span class="term">SHA-256</span>
+                <span class="term">Symmetrische Verschlüsselung</span>
+                <span class="term">TLS-Handshake</span>
+                <span class="term">X.509-Zertifikat</span>
+            </div>
+        </div>
+
+        <!-- ========== QUERVERWEISE ========== -->
+        <div class="section">
+            <div class="section-label">Querverweise</div>
+            <h2>Verwandte Lektionen</h2>
+            <div class="xref">
+                <a href="../lesson-01-cia-triad/index.html">
+                    <span class="xref-badge web">Web M1</span>
+                    Modul 1: CIA-Triad &amp; Security Controls — die Grundlagen, auf die Kryptografie aufbaut
+                </a>
+                <a href="../../ai-security/lesson-02-llm-architektur-datenfluesse/index.html">
+                    <span class="xref-badge ai">KI M2</span>
+                    KI-Track Modul 2: LLM-Architektur &amp; Datenflüsse — Verschlüsselung von Daten in Transit und At Rest
+                </a>
+            </div>
+        </div>
+
+        <!-- ========== BEWEGUNGSPAUSE ========== -->
+        <div class="movement-gate">
+            <div class="mg-icon">🏋️</div>
+            <div class="mg-title">Bewegungspause — Pflicht vor dem Rätsel!</div>
+            <div class="mg-desc">
+                Theorie aufgenommen? Bevor du zum Rätsel weitergehst, aktiviere deinen Körper. Das konsolidiert das Gelernte und schärft die Aufmerksamkeit für die Übung.
+            </div>
+            <div class="mg-exercise">
+                <div class="exercise-text">
+                    15 Kniebeugen + 20 Sekunden Hampelmann
+                </div>
+            </div>
+            <br>
+            <a href="exercise.html" class="mg-link">
+                Erledigt — weiter zum Rätsel →
+            </a>
+        </div>
+
+        <div class="lesson-footer">
+            Web-Security Track · Phase 1 · Modul 2: Kryptografie-Grundlagen
+        </div>
+    </div>
+
+    <script>
+        function toggle(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('visible');
+            const btn = el.previousElementSibling;
+            if (el.classList.contains('visible')) {
+                btn.textContent = '▼ Einklappen';
+            } else {
+                btn.textContent = '▶ Klick zum Aufdecken — erst selbst überlegen!';
+            }
+        }
+    </script>
+</body>
+</html>
