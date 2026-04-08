@@ -27,10 +27,10 @@
   --accent-purple-dim: #6c71c422;
   --accent-yellow: #b58900;
 
-  /* Text - Solarized light mode colors */
-  --text-primary: #586e75;
-  --text-secondary: #93a1a1;
-  --text-muted: #b58900;
+  /* Text - Solarized light mode colors (darker for better contrast) */
+  --text-primary: #2b3638;
+  --text-secondary: #5a6a6a;
+  --text-muted: #8b6914;
   --text-on-accent: #fdf6e3;
 
   /* Borders */
