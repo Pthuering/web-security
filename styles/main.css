@@ -6,36 +6,36 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
 
 :root {
-  /* Core palette */
-  --bg-primary: #0a0e14;
-  --bg-secondary: #111820;
-  --bg-card: #151d28;
-  --bg-card-hover: #1a2433;
-  --bg-code: #0d1117;
+  /* Core palette - Solarized Light */
+  --bg-primary: #fdf6e3;
+  --bg-secondary: #eee8d5;
+  --bg-card: #f5efe0;
+  --bg-card-hover: #ebe4d4;
+  --bg-code: #f0e9d8;
 
-  /* Accent colors */
-  --accent-green: #00e5a0;
-  --accent-green-dim: #00e5a033;
-  --accent-green-glow: #00e5a018;
-  --accent-cyan: #00d4ff;
-  --accent-cyan-dim: #00d4ff33;
-  --accent-orange: #ff9340;
-  --accent-orange-dim: #ff934033;
-  --accent-red: #ff4d6a;
-  --accent-red-dim: #ff4d6a33;
-  --accent-purple: #b48eff;
-  --accent-purple-dim: #b48eff33;
-  --accent-yellow: #ffd866;
+  /* Accent colors - Solarized palette */
+  --accent-green: #859900;
+  --accent-green-dim: #85990022;
+  --accent-green-glow: #85990010;
+  --accent-cyan: #2aa198;
+  --accent-cyan-dim: #2aa19822;
+  --accent-orange: #cb4b16;
+  --accent-orange-dim: #cb4b1622;
+  --accent-red: #dc322f;
+  --accent-red-dim: #dc322f22;
+  --accent-purple: #6c71c4;
+  --accent-purple-dim: #6c71c422;
+  --accent-yellow: #b58900;
 
-  /* Text */
-  --text-primary: #e6edf5;
-  --text-secondary: #8899aa;
-  --text-muted: #556677;
-  --text-on-accent: #0a0e14;
+  /* Text - Solarized light mode colors */
+  --text-primary: #586e75;
+  --text-secondary: #93a1a1;
+  --text-muted: #b58900;
+  --text-on-accent: #fdf6e3;
 
   /* Borders */
-  --border-subtle: #1e2a3a;
-  --border-medium: #2a3a4a;
+  --border-subtle: #e0d8c8;
+  --border-medium: #d3cbb8;
 
   /* Typography */
   --font-display: 'Space Grotesk', sans-serif;
@@ -74,18 +74,14 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Subtle scan-line texture */
+/* Paper texture effect for light mode */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0, 229, 160, 0.008) 2px,
-    rgba(0, 229, 160, 0.008) 4px
-  );
+  background: 
+    radial-gradient(ellipse at top left, rgba(181, 137, 0, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(42, 161, 152, 0.02) 0%, transparent 50%);
   pointer-events: none;
   z-index: 9999;
 }
@@ -266,17 +262,17 @@ pre .label {
 
 .callout.warning {
   border-left-color: var(--accent-orange);
-  background: rgba(255, 147, 64, 0.06);
+  background: rgba(203, 75, 22, 0.08);
 }
 
 .callout.danger {
   border-left-color: var(--accent-red);
-  background: rgba(255, 77, 106, 0.06);
+  background: rgba(220, 50, 47, 0.08);
 }
 
 .callout.info {
   border-left-color: var(--accent-cyan);
-  background: rgba(0, 212, 255, 0.06);
+  background: rgba(42, 161, 152, 0.08);
 }
 
 .callout-title {
@@ -417,7 +413,7 @@ pre .label {
   padding: 0.8rem 1rem;
   margin-top: 0.3rem;
   border-left: 2px solid var(--accent-orange);
-  background: rgba(255, 147, 64, 0.04);
+  background: rgba(203, 75, 22, 0.06);
   border-radius: 0 var(--radius-md) var(--radius-md) 0;
   font-size: 0.92rem;
 }
@@ -523,7 +519,7 @@ pre .label {
 .movement-break {
   margin: 2.5rem 0;
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(0, 229, 160, 0.06), rgba(0, 212, 255, 0.04));
+  background: linear-gradient(135deg, rgba(133, 153, 0, 0.10), rgba(42, 161, 152, 0.06));
   border: 1px solid var(--accent-green-dim);
   border-radius: var(--radius-lg);
   text-align: center;

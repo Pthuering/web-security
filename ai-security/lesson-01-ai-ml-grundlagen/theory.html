@@ -10,7 +10,7 @@
         :root {
             --accent: var(--accent-cyan);
             --accent-dim: var(--accent-cyan-dim);
-            --accent-glow: rgba(34, 211, 238, 0.12);
+            --accent-glow: rgba(42, 161, 152, 0.12);
             --warning: var(--accent-orange);
             --warning-dim: var(--accent-orange-dim);
             --success: var(--accent-green);
@@ -33,7 +33,7 @@
             gap: 0.5rem;
             padding: 0.35rem 0.9rem;
             background: var(--purple-dim);
-            border: 1px solid rgba(168, 85, 247, 0.25);
+            border: 1px solid rgba(108, 113, 196, 0.25);
             border-radius: 20px;
             font-family: var(--font-mono);
             font-size: 0.75rem;
@@ -99,7 +99,7 @@
             transition: border-color 0.2s;
         }
         .concept-card:hover {
-            border-color: rgba(34, 211, 238, 0.3);
+            border-color: rgba(42, 161, 152, 0.3);
         }
         .concept-card .card-icon {
             font-size: 1.5rem;
@@ -152,7 +152,7 @@
         /* Notebook Prompt */
         .notebook {
             background: var(--warning-dim);
-            border: 1px solid rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(203, 75, 22, 0.2);
             border-radius: var(--radius);
             padding: 1rem 1.2rem;
             margin: 1.5rem 0;
@@ -234,7 +234,7 @@
             transition: border-color 0.2s;
         }
         .recall-q:hover {
-            border-color: rgba(34, 211, 238, 0.3);
+            border-color: rgba(42, 161, 152, 0.3);
         }
         .recall-q .q-text {
             font-size: 0.92rem;
@@ -323,8 +323,8 @@
 
         /* Movement Break */
         .movement-break {
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(34, 211, 238, 0.08));
-            border: 2px dashed rgba(168, 85, 247, 0.3);
+            background: linear-gradient(135deg, rgba(108, 113, 196, 0.08), rgba(42, 161, 152, 0.08));
+            border: 2px dashed rgba(108, 113, 196, 0.3);
             border-radius: var(--radius-lg);
             padding: 2rem;
             text-align: center;
@@ -393,7 +393,7 @@
             transition: all 0.2s;
         }
         .nav-link:hover {
-            border-color: rgba(34, 211, 238, 0.3);
+            border-color: rgba(42, 161, 152, 0.3);
             background: var(--bg-card-hover);
         }
         .nav-link.next {
@@ -513,32 +513,32 @@
             <div class="diagram-wrap">
                 <svg viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg">
                     <!-- ML (outermost) -->
-                    <rect x="10" y="10" width="660" height="300" rx="16" fill="none" stroke="#22d3ee" stroke-width="2" stroke-opacity="0.3"/>
-                    <text x="30" y="40" font-family="Chakra Petch, sans-serif" font-size="14" fill="#22d3ee" font-weight="600">Machine Learning (ML)</text>
+                    <rect x="10" y="10" width="660" height="300" rx="16" fill="none" stroke="#2aa198" stroke-width="2" stroke-opacity="0.3"/>
+                    <text x="30" y="40" font-family="Chakra Petch, sans-serif" font-size="14" fill="#2aa198" font-weight="600">Machine Learning (ML)</text>
                     <text x="30" y="60" font-family="Nunito Sans, sans-serif" font-size="11" fill="#94a3b8">Lernt Muster aus Daten — ohne explizite Programmierung</text>
 
                     <!-- DL -->
-                    <rect x="40" y="80" width="600" height="210" rx="12" fill="none" stroke="#a855f7" stroke-width="2" stroke-opacity="0.3"/>
-                    <text x="60" y="108" font-family="Chakra Petch, sans-serif" font-size="13" fill="#a855f7" font-weight="600">Deep Learning (DL)</text>
+                    <rect x="40" y="80" width="600" height="210" rx="12" fill="none" stroke="#6c71c4" stroke-width="2" stroke-opacity="0.3"/>
+                    <text x="60" y="108" font-family="Chakra Petch, sans-serif" font-size="13" fill="#6c71c4" font-weight="600">Deep Learning (DL)</text>
                     <text x="60" y="126" font-family="Nunito Sans, sans-serif" font-size="11" fill="#94a3b8">ML mit neuronalen Netzen (viele Schichten)</text>
 
                     <!-- NLP -->
-                    <rect x="70" y="145" width="380" height="125" rx="10" fill="none" stroke="#f59e0b" stroke-width="2" stroke-opacity="0.3"/>
-                    <text x="90" y="172" font-family="Chakra Petch, sans-serif" font-size="12" fill="#f59e0b" font-weight="600">Natural Language Processing (NLP)</text>
+                    <rect x="70" y="145" width="380" height="125" rx="10" fill="none" stroke="#cb4b16" stroke-width="2" stroke-opacity="0.3"/>
+                    <text x="90" y="172" font-family="Chakra Petch, sans-serif" font-size="12" fill="#cb4b16" font-weight="600">Natural Language Processing (NLP)</text>
                     <text x="90" y="190" font-family="Nunito Sans, sans-serif" font-size="11" fill="#94a3b8">DL für Sprache (Text verstehen / erzeugen)</text>
 
                     <!-- LLMs -->
-                    <rect x="100" y="205" width="200" height="48" rx="8" fill="rgba(239, 68, 68, 0.1)" stroke="#ef4444" stroke-width="2" stroke-opacity="0.5"/>
-                    <text x="120" y="234" font-family="Chakra Petch, sans-serif" font-size="12" fill="#ef4444" font-weight="600">LLMs (GPT, Claude, …)</text>
+                    <rect x="100" y="205" width="200" height="48" rx="8" fill="rgba(220, 50, 47, 0.1)" stroke="#dc322f" stroke-width="2" stroke-opacity="0.5"/>
+                    <text x="120" y="234" font-family="Chakra Petch, sans-serif" font-size="12" fill="#dc322f" font-weight="600">LLMs (GPT, Claude, …)</text>
 
                     <!-- Other DL: Computer Vision -->
-                    <rect x="480" y="145" width="140" height="55" rx="8" fill="none" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.3"/>
-                    <text x="498" y="170" font-family="Nunito Sans, sans-serif" font-size="11" fill="#10b981" font-weight="600">Computer Vision</text>
+                    <rect x="480" y="145" width="140" height="55" rx="8" fill="none" stroke="#859900" stroke-width="1.5" stroke-opacity="0.3"/>
+                    <text x="498" y="170" font-family="Nunito Sans, sans-serif" font-size="11" fill="#859900" font-weight="600">Computer Vision</text>
                     <text x="498" y="186" font-family="Nunito Sans, sans-serif" font-size="10" fill="#94a3b8">Bilder, Video</text>
 
                     <!-- Other DL: Audio -->
-                    <rect x="480" y="210" width="140" height="55" rx="8" fill="none" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.3"/>
-                    <text x="498" y="235" font-family="Nunito Sans, sans-serif" font-size="11" fill="#10b981" font-weight="600">Audio / Speech</text>
+                    <rect x="480" y="210" width="140" height="55" rx="8" fill="none" stroke="#859900" stroke-width="1.5" stroke-opacity="0.3"/>
+                    <text x="498" y="235" font-family="Nunito Sans, sans-serif" font-size="11" fill="#859900" font-weight="600">Audio / Speech</text>
                     <text x="498" y="251" font-family="Nunito Sans, sans-serif" font-size="10" fill="#94a3b8">Whisper, TTS</text>
 
                     <!-- Arrows -->
@@ -617,12 +617,12 @@
             <div class="diagram-wrap">
                 <svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg">
                     <!-- Title -->
-                    <text x="20" y="28" font-family="Chakra Petch, sans-serif" font-size="15" fill="#22d3ee" font-weight="600">Training Pipeline</text>
+                    <text x="20" y="28" font-family="Chakra Petch, sans-serif" font-size="15" fill="#2aa198" font-weight="600">Training Pipeline</text>
                     <text x="20" y="48" font-family="Nunito Sans, sans-serif" font-size="11" fill="#94a3b8">Modell lernt aus Daten → Gewichte werden angepasst</text>
 
                     <!-- Stage 1: Data -->
-                    <rect x="20" y="70" width="130" height="70" rx="8" fill="rgba(34, 211, 238, 0.08)" stroke="#22d3ee" stroke-width="1.5"/>
-                    <text x="85" y="100" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="12" fill="#22d3ee" font-weight="600">Trainingsdaten</text>
+                    <rect x="20" y="70" width="130" height="70" rx="8" fill="rgba(42, 161, 152, 0.08)" stroke="#2aa198" stroke-width="1.5"/>
+                    <text x="85" y="100" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="12" fill="#2aa198" font-weight="600">Trainingsdaten</text>
                     <text x="85" y="118" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Texte, Dokumente,</text>
                     <text x="85" y="130" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Web-Crawls</text>
 
@@ -630,8 +630,8 @@
                     <line x1="155" y1="105" x2="185" y2="105" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
 
                     <!-- Stage 2: Preprocessing -->
-                    <rect x="190" y="70" width="130" height="70" rx="8" fill="rgba(168, 85, 247, 0.08)" stroke="#a855f7" stroke-width="1.5"/>
-                    <text x="255" y="100" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="12" fill="#a855f7" font-weight="600">Preprocessing</text>
+                    <rect x="190" y="70" width="130" height="70" rx="8" fill="rgba(108, 113, 196, 0.08)" stroke="#6c71c4" stroke-width="1.5"/>
+                    <text x="255" y="100" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="12" fill="#6c71c4" font-weight="600">Preprocessing</text>
                     <text x="255" y="118" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Cleaning, Filtering,</text>
                     <text x="255" y="130" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Tokenization</text>
 
@@ -639,8 +639,8 @@
                     <line x1="325" y1="105" x2="355" y2="105" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
 
                     <!-- Stage 3: Training -->
-                    <rect x="360" y="70" width="130" height="70" rx="8" fill="rgba(245, 158, 11, 0.08)" stroke="#f59e0b" stroke-width="1.5"/>
-                    <text x="425" y="100" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="12" fill="#f59e0b" font-weight="600">Training</text>
+                    <rect x="360" y="70" width="130" height="70" rx="8" fill="rgba(203, 75, 22, 0.08)" stroke="#cb4b16" stroke-width="1.5"/>
+                    <text x="425" y="100" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="12" fill="#cb4b16" font-weight="600">Training</text>
                     <text x="425" y="118" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Gewichte anpassen,</text>
                     <text x="425" y="130" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Backpropagation</text>
 
@@ -648,63 +648,63 @@
                     <line x1="495" y1="105" x2="525" y2="105" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
 
                     <!-- Stage 4: Model -->
-                    <rect x="530" y="70" width="140" height="70" rx="8" fill="rgba(16, 185, 129, 0.08)" stroke="#10b981" stroke-width="1.5"/>
-                    <text x="600" y="100" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="12" fill="#10b981" font-weight="600">Fertiges Modell</text>
+                    <rect x="530" y="70" width="140" height="70" rx="8" fill="rgba(133, 153, 0, 0.08)" stroke="#859900" stroke-width="1.5"/>
+                    <text x="600" y="100" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="12" fill="#859900" font-weight="600">Fertiges Modell</text>
                     <text x="600" y="118" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Gewichte gespeichert,</text>
                     <text x="600" y="130" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">bereit für Deployment</text>
 
                     <!-- Attack annotations -->
-                    <rect x="20" y="160" width="130" height="40" rx="6" fill="rgba(239, 68, 68, 0.1)" stroke="#ef4444" stroke-width="1" stroke-dasharray="4,3"/>
-                    <text x="85" y="184" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#ef4444">⚔ Data Poisoning</text>
-                    <line x1="85" y1="140" x2="85" y2="160" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,3"/>
+                    <rect x="20" y="160" width="130" height="40" rx="6" fill="rgba(220, 50, 47, 0.1)" stroke="#dc322f" stroke-width="1" stroke-dasharray="4,3"/>
+                    <text x="85" y="184" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#dc322f">⚔ Data Poisoning</text>
+                    <line x1="85" y1="140" x2="85" y2="160" stroke="#dc322f" stroke-width="1" stroke-dasharray="3,3"/>
 
-                    <rect x="530" y="160" width="140" height="40" rx="6" fill="rgba(239, 68, 68, 0.1)" stroke="#ef4444" stroke-width="1" stroke-dasharray="4,3"/>
-                    <text x="600" y="184" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#ef4444">⚔ Model Theft</text>
-                    <line x1="600" y1="140" x2="600" y2="160" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,3"/>
+                    <rect x="530" y="160" width="140" height="40" rx="6" fill="rgba(220, 50, 47, 0.1)" stroke="#dc322f" stroke-width="1" stroke-dasharray="4,3"/>
+                    <text x="600" y="184" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#dc322f">⚔ Model Theft</text>
+                    <line x1="600" y1="140" x2="600" y2="160" stroke="#dc322f" stroke-width="1" stroke-dasharray="3,3"/>
 
                     <!-- === Inference Pipeline === -->
-                    <text x="20" y="240" font-family="Chakra Petch, sans-serif" font-size="15" fill="#22d3ee" font-weight="600">Inference Pipeline</text>
+                    <text x="20" y="240" font-family="Chakra Petch, sans-serif" font-size="15" fill="#2aa198" font-weight="600">Inference Pipeline</text>
                     <text x="20" y="258" font-family="Nunito Sans, sans-serif" font-size="11" fill="#94a3b8">Modell verarbeitet neue Eingaben → Gewichte sind fix</text>
 
                     <!-- Stage 1: User Input -->
-                    <rect x="20" y="275" width="100" height="60" rx="8" fill="rgba(34, 211, 238, 0.08)" stroke="#22d3ee" stroke-width="1.5"/>
-                    <text x="70" y="300" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#22d3ee" font-weight="600">User Prompt</text>
+                    <rect x="20" y="275" width="100" height="60" rx="8" fill="rgba(42, 161, 152, 0.08)" stroke="#2aa198" stroke-width="1.5"/>
+                    <text x="70" y="300" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#2aa198" font-weight="600">User Prompt</text>
                     <text x="70" y="318" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Eingabe</text>
 
                     <line x1="125" y1="305" x2="150" y2="305" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
 
                     <!-- Stage 2: Tokenizer -->
-                    <rect x="155" y="275" width="100" height="60" rx="8" fill="rgba(168, 85, 247, 0.08)" stroke="#a855f7" stroke-width="1.5"/>
-                    <text x="205" y="300" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#a855f7" font-weight="600">Tokenizer</text>
+                    <rect x="155" y="275" width="100" height="60" rx="8" fill="rgba(108, 113, 196, 0.08)" stroke="#6c71c4" stroke-width="1.5"/>
+                    <text x="205" y="300" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#6c71c4" font-weight="600">Tokenizer</text>
                     <text x="205" y="318" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Text → Tokens</text>
 
                     <line x1="260" y1="305" x2="285" y2="305" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
 
                     <!-- Stage 3: Model -->
-                    <rect x="290" y="275" width="100" height="60" rx="8" fill="rgba(245, 158, 11, 0.08)" stroke="#f59e0b" stroke-width="1.5"/>
-                    <text x="340" y="300" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#f59e0b" font-weight="600">Modell</text>
+                    <rect x="290" y="275" width="100" height="60" rx="8" fill="rgba(203, 75, 22, 0.08)" stroke="#cb4b16" stroke-width="1.5"/>
+                    <text x="340" y="300" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#cb4b16" font-weight="600">Modell</text>
                     <text x="340" y="318" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Verarbeitung</text>
 
                     <line x1="395" y1="305" x2="420" y2="305" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
 
                     <!-- Stage 4: Output -->
-                    <rect x="425" y="275" width="100" height="60" rx="8" fill="rgba(16, 185, 129, 0.08)" stroke="#10b981" stroke-width="1.5"/>
-                    <text x="475" y="300" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#10b981" font-weight="600">Output</text>
+                    <rect x="425" y="275" width="100" height="60" rx="8" fill="rgba(133, 153, 0, 0.08)" stroke="#859900" stroke-width="1.5"/>
+                    <text x="475" y="300" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#859900" font-weight="600">Output</text>
                     <text x="475" y="318" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Antwort</text>
 
                     <line x1="530" y1="305" x2="555" y2="305" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
 
                     <!-- Stage 5: Downstream -->
-                    <rect x="560" y="275" width="110" height="60" rx="8" fill="rgba(239, 68, 68, 0.08)" stroke="#ef4444" stroke-width="1.5" stroke-opacity="0.5"/>
-                    <text x="615" y="300" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#ef4444" font-weight="600">Downstream</text>
+                    <rect x="560" y="275" width="110" height="60" rx="8" fill="rgba(220, 50, 47, 0.08)" stroke="#dc322f" stroke-width="1.5" stroke-opacity="0.5"/>
+                    <text x="615" y="300" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#dc322f" font-weight="600">Downstream</text>
                     <text x="615" y="318" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">DB, API, UI</text>
 
                     <!-- Attack annotations for inference -->
-                    <text x="50" y="365" font-family="JetBrains Mono, monospace" font-size="9" fill="#ef4444">⚔ Prompt Injection</text>
-                    <line x1="70" y1="335" x2="70" y2="350" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,3"/>
+                    <text x="50" y="365" font-family="JetBrains Mono, monospace" font-size="9" fill="#dc322f">⚔ Prompt Injection</text>
+                    <line x1="70" y1="335" x2="70" y2="350" stroke="#dc322f" stroke-width="1" stroke-dasharray="3,3"/>
 
-                    <text x="430" y="365" font-family="JetBrains Mono, monospace" font-size="9" fill="#ef4444">⚔ Insecure Output</text>
-                    <line x1="475" y1="335" x2="475" y2="350" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,3"/>
+                    <text x="430" y="365" font-family="JetBrains Mono, monospace" font-size="9" fill="#dc322f">⚔ Insecure Output</text>
+                    <line x1="475" y1="335" x2="475" y2="350" stroke="#dc322f" stroke-width="1" stroke-dasharray="3,3"/>
 
                     <!-- Arrow marker -->
                     <defs>
