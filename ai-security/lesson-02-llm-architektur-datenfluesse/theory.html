@@ -339,13 +339,13 @@
                 <svg viewBox="0 0 600 120" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                         <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#4a5a5a"/>
                         </marker>
                     </defs>
                     <!-- System Prompt -->
                     <rect x="10" y="15" width="110" height="50" rx="8" fill="rgba(108, 113, 196, 0.08)" stroke="#6c71c4" stroke-width="1.5"/>
                     <text x="65" y="38" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#6c71c4" font-weight="600">System Prompt</text>
-                    <text x="65" y="54" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Entwickler</text>
+                    <text x="65" y="54" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#5a6a6a">Entwickler</text>
 
                     <!-- User Prompt -->
                     <rect x="10" y="75" width="110" height="35" rx="8" fill="rgba(42, 161, 152, 0.08)" stroke="#2aa198" stroke-width="1.5"/>
@@ -356,20 +356,20 @@
                     <text x="145" y="112" font-family="JetBrains Mono, monospace" font-size="8" fill="#dc322f">TB</text>
 
                     <!-- Arrow -->
-                    <line x1="155" y1="55" x2="210" y2="55" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+                    <line x1="155" y1="55" x2="210" y2="55" stroke="#4a5a5a" stroke-width="1.5" marker-end="url(#arr)"/>
 
                     <!-- LLM -->
                     <rect x="220" y="25" width="140" height="60" rx="10" fill="rgba(203, 75, 22, 0.08)" stroke="#cb4b16" stroke-width="1.5"/>
                     <text x="290" y="52" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="13" fill="#cb4b16" font-weight="600">LLM</text>
-                    <text x="290" y="70" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Verarbeitung</text>
+                    <text x="290" y="70" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#5a6a6a">Verarbeitung</text>
 
                     <!-- Arrow -->
-                    <line x1="365" y1="55" x2="420" y2="55" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+                    <line x1="365" y1="55" x2="420" y2="55" stroke="#4a5a5a" stroke-width="1.5" marker-end="url(#arr)"/>
 
                     <!-- Output -->
                     <rect x="430" y="30" width="130" height="50" rx="8" fill="rgba(133, 153, 0, 0.08)" stroke="#859900" stroke-width="1.5"/>
                     <text x="495" y="52" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#859900" font-weight="600">Response</text>
-                    <text x="495" y="68" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">an User</text>
+                    <text x="495" y="68" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#5a6a6a">an User</text>
                 </svg>
                 <div class="diagram-caption">Pattern 1: Direct Chat — eine Trust Boundary (User → LLM)</div>
             </div>
@@ -394,7 +394,7 @@
                 <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                         <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#4a5a5a"/>
                         </marker>
                     </defs>
 
@@ -403,15 +403,15 @@
                     <text x="60" y="92" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#2aa198" font-weight="600">User Query</text>
 
                     <!-- Arrow to embedder -->
-                    <line x1="115" y1="92" x2="155" y2="92" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr2)"/>
+                    <line x1="115" y1="92" x2="155" y2="92" stroke="#4a5a5a" stroke-width="1.5" marker-end="url(#arr2)"/>
 
                     <!-- Embedding -->
                     <rect x="160" y="70" width="100" height="45" rx="8" fill="rgba(108, 113, 196, 0.08)" stroke="#6c71c4" stroke-width="1.5"/>
                     <text x="210" y="88" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="10" fill="#6c71c4" font-weight="600">Embedding</text>
-                    <text x="210" y="103" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">Query → Vektor</text>
+                    <text x="210" y="103" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#5a6a6a">Query → Vektor</text>
 
                     <!-- Arrow to Vector DB -->
-                    <line x1="210" y1="70" x2="210" y2="45" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr2)"/>
+                    <line x1="210" y1="70" x2="210" y2="45" stroke="#4a5a5a" stroke-width="1.5" marker-end="url(#arr2)"/>
 
                     <!-- Vector DB -->
                     <rect x="160" y="5" width="100" height="38" rx="8" fill="rgba(220, 50, 47, 0.06)" stroke="#dc322f" stroke-width="1.5" stroke-opacity="0.5"/>
@@ -423,31 +423,31 @@
                     <text x="275" y="12" font-family="JetBrains Mono, monospace" font-size="8" fill="#dc322f">TB2</text>
 
                     <!-- Arrow: docs back -->
-                    <line x1="265" y1="24" x2="320" y2="50" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr2)"/>
-                    <text x="305" y="30" font-family="Nunito Sans, sans-serif" font-size="8" fill="#94a3b8">relevante Docs</text>
+                    <line x1="265" y1="24" x2="320" y2="50" stroke="#4a5a5a" stroke-width="1.5" marker-end="url(#arr2)"/>
+                    <text x="305" y="30" font-family="Nunito Sans, sans-serif" font-size="8" fill="#5a6a6a">relevante Docs</text>
 
                     <!-- Context Assembly -->
                     <rect x="300" y="55" width="120" height="75" rx="8" fill="rgba(42, 161, 152, 0.04)" stroke="#2aa198" stroke-width="1" stroke-dasharray="4,3"/>
                     <text x="360" y="75" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="10" fill="#2aa198" font-weight="600">Prompt Assembly</text>
-                    <text x="360" y="91" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="8" fill="#94a3b8">System + Docs</text>
-                    <text x="360" y="103" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="8" fill="#94a3b8">+ User Query</text>
+                    <text x="360" y="91" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="8" fill="#5a6a6a">System + Docs</text>
+                    <text x="360" y="103" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="8" fill="#5a6a6a">+ User Query</text>
 
                     <!-- Arrow from query to assembly -->
-                    <line x1="265" y1="92" x2="298" y2="92" stroke="#64748b" stroke-width="1.2" marker-end="url(#arr2)"/>
+                    <line x1="265" y1="92" x2="298" y2="92" stroke="#4a5a5a" stroke-width="1.2" marker-end="url(#arr2)"/>
 
                     <!-- TB1 -->
                     <line x1="130" y1="60" x2="130" y2="125" stroke="#dc322f" stroke-width="1.5" stroke-dasharray="6,4"/>
                     <text x="122" y="130" font-family="JetBrains Mono, monospace" font-size="8" fill="#dc322f">TB1</text>
 
                     <!-- Arrow to LLM -->
-                    <line x1="425" y1="92" x2="460" y2="92" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr2)"/>
+                    <line x1="425" y1="92" x2="460" y2="92" stroke="#4a5a5a" stroke-width="1.5" marker-end="url(#arr2)"/>
 
                     <!-- LLM -->
                     <rect x="465" y="65" width="100" height="55" rx="10" fill="rgba(203, 75, 22, 0.08)" stroke="#cb4b16" stroke-width="1.5"/>
                     <text x="515" y="90" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="12" fill="#cb4b16" font-weight="600">LLM</text>
 
                     <!-- Arrow to Output -->
-                    <line x1="570" y1="92" x2="605" y2="92" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr2)"/>
+                    <line x1="570" y1="92" x2="605" y2="92" stroke="#4a5a5a" stroke-width="1.5" marker-end="url(#arr2)"/>
 
                     <!-- Output -->
                     <rect x="610" y="72" width="60" height="40" rx="8" fill="rgba(133, 153, 0, 0.08)" stroke="#859900" stroke-width="1.5"/>
@@ -483,7 +483,7 @@
                 <svg viewBox="0 0 680 170" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                         <marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#4a5a5a"/>
                         </marker>
                     </defs>
 
@@ -491,15 +491,15 @@
                     <rect x="10" y="50" width="80" height="40" rx="8" fill="rgba(42, 161, 152, 0.08)" stroke="#2aa198" stroke-width="1.5"/>
                     <text x="50" y="74" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#2aa198" font-weight="600">User</text>
 
-                    <line x1="95" y1="70" x2="130" y2="70" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr3)"/>
+                    <line x1="95" y1="70" x2="130" y2="70" stroke="#4a5a5a" stroke-width="1.5" marker-end="url(#arr3)"/>
 
                     <!-- LLM -->
                     <rect x="140" y="40" width="120" height="60" rx="10" fill="rgba(203, 75, 22, 0.08)" stroke="#cb4b16" stroke-width="1.5"/>
                     <text x="200" y="65" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="12" fill="#cb4b16" font-weight="600">LLM</text>
-                    <text x="200" y="82" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">„Ich brauche Tool X"</text>
+                    <text x="200" y="82" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#5a6a6a">„Ich brauche Tool X"</text>
 
                     <!-- Arrow to Tool Router -->
-                    <line x1="265" y1="70" x2="310" y2="70" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr3)"/>
+                    <line x1="265" y1="70" x2="310" y2="70" stroke="#4a5a5a" stroke-width="1.5" marker-end="url(#arr3)"/>
 
                     <!-- TB -->
                     <line x1="295" y1="15" x2="295" y2="155" stroke="#dc322f" stroke-width="2" stroke-dasharray="6,4"/>
@@ -508,12 +508,12 @@
                     <!-- Tool Router -->
                     <rect x="315" y="45" width="90" height="50" rx="8" fill="rgba(108, 113, 196, 0.08)" stroke="#6c71c4" stroke-width="1.5"/>
                     <text x="360" y="67" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="10" fill="#6c71c4" font-weight="600">Tool Router</text>
-                    <text x="360" y="83" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="8" fill="#94a3b8">Function Call</text>
+                    <text x="360" y="83" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="8" fill="#5a6a6a">Function Call</text>
 
                     <!-- Tools -->
-                    <line x1="410" y1="55" x2="445" y2="30" stroke="#64748b" stroke-width="1.2" marker-end="url(#arr3)"/>
-                    <line x1="410" y1="70" x2="445" y2="70" stroke="#64748b" stroke-width="1.2" marker-end="url(#arr3)"/>
-                    <line x1="410" y1="85" x2="445" y2="110" stroke="#64748b" stroke-width="1.2" marker-end="url(#arr3)"/>
+                    <line x1="410" y1="55" x2="445" y2="30" stroke="#4a5a5a" stroke-width="1.2" marker-end="url(#arr3)"/>
+                    <line x1="410" y1="70" x2="445" y2="70" stroke="#4a5a5a" stroke-width="1.2" marker-end="url(#arr3)"/>
+                    <line x1="410" y1="85" x2="445" y2="110" stroke="#4a5a5a" stroke-width="1.2" marker-end="url(#arr3)"/>
 
                     <rect x="450" y="15" width="95" height="32" rx="6" fill="rgba(220, 50, 47, 0.06)" stroke="#dc322f" stroke-width="1" stroke-opacity="0.4"/>
                     <text x="497" y="35" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#dc322f">send_email()</text>
@@ -525,8 +525,8 @@
                     <text x="497" y="115" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#dc322f">run_code()</text>
 
                     <!-- Result arrow back -->
-                    <path d="M 545 70 Q 600 70 600 140 Q 600 155 200 155 Q 200 155 200 105" stroke="#64748b" stroke-width="1.2" fill="none" marker-end="url(#arr3)" stroke-dasharray="4,3"/>
-                    <text x="420" y="152" font-family="Nunito Sans, sans-serif" font-size="8" fill="#94a3b8">Tool-Ergebnis zurück an LLM</text>
+                    <path d="M 545 70 Q 600 70 600 140 Q 600 155 200 155 Q 200 155 200 105" stroke="#4a5a5a" stroke-width="1.2" fill="none" marker-end="url(#arr3)" stroke-dasharray="4,3"/>
+                    <text x="420" y="152" font-family="Nunito Sans, sans-serif" font-size="8" fill="#5a6a6a">Tool-Ergebnis zurück an LLM</text>
                 </svg>
                 <div class="diagram-caption">Pattern 3: Tool Use — das LLM entscheidet, welches Tool aufgerufen wird</div>
             </div>
@@ -575,7 +575,7 @@
                 <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                         <marker id="arr4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#4a5a5a"/>
                         </marker>
                     </defs>
 
@@ -583,7 +583,7 @@
                     <rect x="10" y="80" width="80" height="40" rx="8" fill="rgba(42, 161, 152, 0.08)" stroke="#2aa198" stroke-width="1.5"/>
                     <text x="50" y="104" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#2aa198" font-weight="600">User</text>
 
-                    <line x1="95" y1="100" x2="140" y2="100" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr4)"/>
+                    <line x1="95" y1="100" x2="140" y2="100" stroke="#4a5a5a" stroke-width="1.5" marker-end="url(#arr4)"/>
 
                     <!-- The Loop -->
                     <rect x="130" y="25" width="430" height="175" rx="12" fill="none" stroke="#cb4b16" stroke-width="1" stroke-dasharray="8,4" stroke-opacity="0.3"/>
@@ -592,21 +592,21 @@
                     <!-- Think -->
                     <rect x="150" y="75" width="100" height="50" rx="8" fill="rgba(203, 75, 22, 0.08)" stroke="#cb4b16" stroke-width="1.5"/>
                     <text x="200" y="97" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#cb4b16" font-weight="600">Think</text>
-                    <text x="200" y="113" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="8" fill="#94a3b8">LLM plant</text>
+                    <text x="200" y="113" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="8" fill="#5a6a6a">LLM plant</text>
 
-                    <line x1="255" y1="100" x2="290" y2="100" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr4)"/>
+                    <line x1="255" y1="100" x2="290" y2="100" stroke="#4a5a5a" stroke-width="1.5" marker-end="url(#arr4)"/>
 
                     <!-- Act -->
                     <rect x="295" y="75" width="100" height="50" rx="8" fill="rgba(220, 50, 47, 0.08)" stroke="#dc322f" stroke-width="1.5"/>
                     <text x="345" y="97" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#dc322f" font-weight="600">Act</text>
-                    <text x="345" y="113" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="8" fill="#94a3b8">Tool-Aufruf</text>
+                    <text x="345" y="113" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="8" fill="#5a6a6a">Tool-Aufruf</text>
 
-                    <line x1="400" y1="100" x2="435" y2="100" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr4)"/>
+                    <line x1="400" y1="100" x2="435" y2="100" stroke="#4a5a5a" stroke-width="1.5" marker-end="url(#arr4)"/>
 
                     <!-- Observe -->
                     <rect x="440" y="75" width="100" height="50" rx="8" fill="rgba(133, 153, 0, 0.08)" stroke="#859900" stroke-width="1.5"/>
                     <text x="490" y="97" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#859900" font-weight="600">Observe</text>
-                    <text x="490" y="113" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="8" fill="#94a3b8">Ergebnis lesen</text>
+                    <text x="490" y="113" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="8" fill="#5a6a6a">Ergebnis lesen</text>
 
                     <!-- Loop back arrow -->
                     <path d="M 490 130 Q 490 165 345 165 Q 200 165 200 130" stroke="#cb4b16" stroke-width="1.5" fill="none" marker-end="url(#arr4)" stroke-opacity="0.6"/>
@@ -645,21 +645,21 @@
                 <svg viewBox="0 0 650 120" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                         <marker id="arr5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#4a5a5a"/>
                         </marker>
                     </defs>
 
                     <rect x="10" y="35" width="80" height="40" rx="8" fill="rgba(42, 161, 152, 0.08)" stroke="#2aa198" stroke-width="1.5"/>
                     <text x="50" y="59" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#2aa198" font-weight="600">Input</text>
 
-                    <line x1="95" y1="55" x2="130" y2="55" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr5)"/>
+                    <line x1="95" y1="55" x2="130" y2="55" stroke="#4a5a5a" stroke-width="1.5" marker-end="url(#arr5)"/>
 
                     <!-- Model A: Classifier -->
                     <rect x="135" y="25" width="120" height="60" rx="10" fill="rgba(108, 113, 196, 0.08)" stroke="#6c71c4" stroke-width="1.5"/>
                     <text x="195" y="50" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#6c71c4" font-weight="600">Modell A</text>
-                    <text x="195" y="68" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">z.B. Classifier</text>
+                    <text x="195" y="68" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#5a6a6a">z.B. Classifier</text>
 
-                    <line x1="260" y1="55" x2="295" y2="55" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr5)"/>
+                    <line x1="260" y1="55" x2="295" y2="55" stroke="#4a5a5a" stroke-width="1.5" marker-end="url(#arr5)"/>
 
                     <!-- TB -->
                     <line x1="280" y1="10" x2="280" y2="105" stroke="#dc322f" stroke-width="1.5" stroke-dasharray="6,4"/>
@@ -667,9 +667,9 @@
                     <!-- Model B: LLM -->
                     <rect x="300" y="25" width="120" height="60" rx="10" fill="rgba(203, 75, 22, 0.08)" stroke="#cb4b16" stroke-width="1.5"/>
                     <text x="360" y="50" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#cb4b16" font-weight="600">Modell B</text>
-                    <text x="360" y="68" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">z.B. LLM</text>
+                    <text x="360" y="68" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#5a6a6a">z.B. LLM</text>
 
-                    <line x1="425" y1="55" x2="460" y2="55" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr5)"/>
+                    <line x1="425" y1="55" x2="460" y2="55" stroke="#4a5a5a" stroke-width="1.5" marker-end="url(#arr5)"/>
 
                     <!-- TB2 -->
                     <line x1="445" y1="10" x2="445" y2="105" stroke="#dc322f" stroke-width="1.5" stroke-dasharray="6,4"/>
@@ -677,9 +677,9 @@
                     <!-- Model C: Safety -->
                     <rect x="465" y="25" width="120" height="60" rx="10" fill="rgba(133, 153, 0, 0.08)" stroke="#859900" stroke-width="1.5"/>
                     <text x="525" y="50" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-size="11" fill="#859900" font-weight="600">Modell C</text>
-                    <text x="525" y="68" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#94a3b8">z.B. Safety Filter</text>
+                    <text x="525" y="68" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="9" fill="#5a6a6a">z.B. Safety Filter</text>
 
-                    <line x1="590" y1="55" x2="615" y2="55" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr5)"/>
+                    <line x1="590" y1="55" x2="615" y2="55" stroke="#4a5a5a" stroke-width="1.5" marker-end="url(#arr5)"/>
 
                     <text x="630" y="59" font-family="Chakra Petch, sans-serif" font-size="11" fill="#859900" font-weight="600">✓</text>
 
@@ -706,25 +706,25 @@
             <div class="diagram-wrap">
                 <svg viewBox="0 0 600 190" xmlns="http://www.w3.org/2000/svg">
                     <!-- Headers -->
-                    <text x="20" y="20" font-family="Chakra Petch, sans-serif" font-size="11" fill="#94a3b8" font-weight="600">Architektur</text>
-                    <text x="270" y="20" font-family="Chakra Petch, sans-serif" font-size="11" fill="#94a3b8" font-weight="600">Trust Boundaries</text>
-                    <text x="480" y="20" font-family="Chakra Petch, sans-serif" font-size="11" fill="#94a3b8" font-weight="600">Risiko</text>
+                    <text x="20" y="20" font-family="Chakra Petch, sans-serif" font-size="11" fill="#5a6a6a" font-weight="600">Architektur</text>
+                    <text x="270" y="20" font-family="Chakra Petch, sans-serif" font-size="11" fill="#5a6a6a" font-weight="600">Trust Boundaries</text>
+                    <text x="480" y="20" font-family="Chakra Petch, sans-serif" font-size="11" fill="#5a6a6a" font-weight="600">Risiko</text>
                     <line x1="10" y1="28" x2="590" y2="28" stroke="#1e293b" stroke-width="1"/>
 
                     <!-- Row 1 -->
-                    <text x="20" y="52" font-family="Nunito Sans, sans-serif" font-size="11" fill="#e2e8f0">Direct Chat</text>
+                    <text x="20" y="52" font-family="Nunito Sans, sans-serif" font-size="11" fill="#2b3638">Direct Chat</text>
                     <rect x="270" y="38" width="16" height="16" rx="3" fill="#dc322f" opacity="0.3"/><text x="278" y="50" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#dc322f">1</text>
                     <text x="480" y="52" font-family="Nunito Sans, sans-serif" font-size="10" fill="#859900">Niedrig</text>
 
                     <!-- Row 2 -->
-                    <text x="20" y="82" font-family="Nunito Sans, sans-serif" font-size="11" fill="#e2e8f0">RAG</text>
+                    <text x="20" y="82" font-family="Nunito Sans, sans-serif" font-size="11" fill="#2b3638">RAG</text>
                     <rect x="270" y="68" width="16" height="16" rx="3" fill="#dc322f" opacity="0.4"/><rect x="292" y="68" width="16" height="16" rx="3" fill="#dc322f" opacity="0.4"/>
                     <text x="278" y="80" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#dc322f">1</text>
                     <text x="300" y="80" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#dc322f">2</text>
                     <text x="480" y="82" font-family="Nunito Sans, sans-serif" font-size="10" fill="#cb4b16">Mittel</text>
 
                     <!-- Row 3 -->
-                    <text x="20" y="112" font-family="Nunito Sans, sans-serif" font-size="11" fill="#e2e8f0">Tool Use</text>
+                    <text x="20" y="112" font-family="Nunito Sans, sans-serif" font-size="11" fill="#2b3638">Tool Use</text>
                     <rect x="270" y="98" width="16" height="16" rx="3" fill="#dc322f" opacity="0.5"/><rect x="292" y="98" width="16" height="16" rx="3" fill="#dc322f" opacity="0.5"/><rect x="314" y="98" width="16" height="16" rx="3" fill="#dc322f" opacity="0.5"/>
                     <text x="278" y="110" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#dc322f">1</text>
                     <text x="300" y="110" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#dc322f">2</text>
@@ -732,13 +732,13 @@
                     <text x="480" y="112" font-family="Nunito Sans, sans-serif" font-size="10" fill="#cb4b16">Hoch</text>
 
                     <!-- Row 4 -->
-                    <text x="20" y="142" font-family="Nunito Sans, sans-serif" font-size="11" fill="#e2e8f0">Agent Loop</text>
+                    <text x="20" y="142" font-family="Nunito Sans, sans-serif" font-size="11" fill="#2b3638">Agent Loop</text>
                     <rect x="270" y="128" width="16" height="16" rx="3" fill="#dc322f" opacity="0.7"/><rect x="292" y="128" width="16" height="16" rx="3" fill="#dc322f" opacity="0.7"/><rect x="314" y="128" width="16" height="16" rx="3" fill="#dc322f" opacity="0.7"/><rect x="336" y="128" width="16" height="16" rx="3" fill="#dc322f" opacity="0.7"/>
                     <text x="380" y="141" font-family="JetBrains Mono, monospace" font-size="9" fill="#dc322f">× N Iterationen</text>
                     <text x="480" y="142" font-family="Nunito Sans, sans-serif" font-size="10" fill="#dc322f" font-weight="600">Kritisch</text>
 
                     <!-- Row 5 -->
-                    <text x="20" y="172" font-family="Nunito Sans, sans-serif" font-size="11" fill="#e2e8f0">Multi-Model</text>
+                    <text x="20" y="172" font-family="Nunito Sans, sans-serif" font-size="11" fill="#2b3638">Multi-Model</text>
                     <rect x="270" y="158" width="16" height="16" rx="3" fill="#dc322f" opacity="0.6"/><rect x="292" y="158" width="16" height="16" rx="3" fill="#dc322f" opacity="0.6"/>
                     <text x="318" y="171" font-family="JetBrains Mono, monospace" font-size="9" fill="#dc322f">× N Modelle</text>
                     <text x="480" y="172" font-family="Nunito Sans, sans-serif" font-size="10" fill="#cb4b16">Variabel</text>
